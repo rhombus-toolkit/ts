@@ -1,0 +1,22 @@
+{
+    "files.exclude": {
+        "**/.git": true,
+        "**/.svn": true,
+        "**/.hg": true,
+        "**/CVS": true,
+        "**/.DS_Store": true,
+        "**/Thumbs.db": true,
+        "**/node_modules": true,
+        "libraries/*/temp/": true,
+        "libraries/*/lib*/": true,
+        "libraries/*/CHANGELOG.*": true,
+        "LICENSE": true,
+        "**/*.md": true,
+        "**/.*": true,
+        "common/config/rush/??[tonp]*": true,
+        "common/?[!o]*": true,
+        
+    },
+    "explorer.excludeGitIgnore": true,
+    "explorerExclude.backup": null
+}

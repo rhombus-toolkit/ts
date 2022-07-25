@@ -1,0 +1,17 @@
+{
+  "name": "@rhombus-toolkit/kinda-weak-map",
+  "entries": [
+    {
+      "version": "1.2.0",
+      "tag": "@rhombus-toolkit/kinda-weak-map_v1.2.0",
+      "date": "Mon, 25 Jul 2022 05:38:56 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "init"
+          }
+        ]
+      }
+    }
+  ]
+}

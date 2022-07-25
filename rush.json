@@ -473,5 +473,82 @@
     //   "reviewCategory": "tools",
     //   "tags": ["tools"]
     // }
+    {
+      "packageName": "@rhombus-toolkit/async-timers",
+      "projectFolder": "libraries/async-timers",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@rhombus-toolkit/audio-context",
+      "projectFolder": "libraries/audio-context",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@rhombus-toolkit/case-converter",
+      "projectFolder": "libraries/case-converter",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@rhombus-toolkit/defer",
+      "projectFolder": "libraries/defer",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@rhombus-toolkit/fetch",
+      "projectFolder": "libraries/fetch",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    },
+    // {
+    //   "packageName": "@rhombus-toolkit/fniterate",
+    //   "projectFolder": "libraries/fniterate",
+    //   "reviewCategory": "production"
+    // },
+    {
+      "packageName": "@rhombus-toolkit/func",
+      "projectFolder": "libraries/func",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@rhombus-toolkit/kinda-weak-map",
+      "projectFolder": "libraries/kinda-weak-map",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@rhombus-toolkit/logger",
+      "projectFolder": "libraries/logger",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@rhombus-toolkit/set-immediate",
+      "projectFolder": "libraries/set-immediate",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@rhombus-toolkit/singleton",
+      "projectFolder": "libraries/singleton",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@rhombus-toolkit/type-guards",
+      "projectFolder": "libraries/type-guards",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    },
+    {
+      "packageName": "@rhombus-toolkit/type-helpers",
+      "projectFolder": "libraries/type-helpers",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    }
   ]
 }

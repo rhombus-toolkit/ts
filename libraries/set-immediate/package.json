@@ -1,0 +1,29 @@
+{
+  "name": "@rhombus-toolkit/set-immediate",
+  "version": "1.1.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rhombus-toolkit/ts.git",
+    "directory": "libraries/set-immediate"
+  },
+  "main": "lib/index.js",
+  "sideEffects": [
+    "lib/index.js"
+  ],
+  "scripts": {
+    "test": "heft test --clean",
+    "build": "heft build --clean",
+    "build:watch": "heft build"
+  },
+  "keywords": [],
+  "author": "Thomas Butler",
+  "dependencies": {
+    "setimmediate": "^1.0.5"
+  },
+  "devDependencies": {
+    "@rushstack/heft-web-rig": "^0.10.24",
+    
+    "@rushstack/heft": "^0.46.6"
+  }
+}

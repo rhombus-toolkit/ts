@@ -1,0 +1,1 @@
+{"version":3,"file":"identity.js","sourceRoot":"","sources":["../src/identity.ts"],"names":[],"mappings":";;;AAAO,MAAM,QAAQ,GAAG,CAAI,CAAI,EAAK,EAAE,CAAC,CAAC,CAAC;AAA7B,QAAA,QAAQ,YAAqB;AAC1C,kBAAe,gBAAQ,CAAC","sourcesContent":["export const identity = <T>(t: T): T => t;\nexport default identity;\n"]}

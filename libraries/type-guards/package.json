@@ -1,6 +1,6 @@
 {
   "name": "@rhombus-toolkit/type-guards",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "",
   "repository": {
     "type": "git",
@@ -17,7 +17,7 @@
   "keywords": [],
   "author": "Thomas Butler",
   "dependencies": {
-    "@rhombus-toolkit/func": "1.1.0"
+    "@rhombus-toolkit/func": "1.2.0"
   },
   "devDependencies": {
     "@rushstack/heft-web-rig": "^0.10.24",

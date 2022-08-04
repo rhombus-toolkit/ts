@@ -1,0 +1,63 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
+
+version: 2
+updates:
+  - package-ecosystem: "npm"
+    directory: "/libraries/async-timers"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/libraries/audio-context"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/libraries/case-converter"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/libraries/defer"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/libraries/fetch"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/libraries/fniterate"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/libraries/func"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/libraries/kinda-weak-map"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/libraries/logger"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/libraries/my-controls"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/libraries/set-immediate"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/libraries/singleton"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/libraries/type-guards"
+    schedule:
+      interval: "daily"
+  - package-ecosystem: "npm"
+    directory: "/libraries/type-helpers"
+    schedule:
+      interval: "daily"

@@ -23,7 +23,7 @@
     "@rhombus-toolkit/type-helpers": "1.2.0"
   },
   "devDependencies": {
-    "@rushstack/heft-web-rig": "^0.11.0",
+    "@rushstack/heft-web-rig": "^0.12.0",
     
     "@rushstack/heft": "^0.48.0"
   }

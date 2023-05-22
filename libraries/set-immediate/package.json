@@ -22,7 +22,7 @@
     "setimmediate": "^1.0.5"
   },
   "devDependencies": {
-    "@rushstack/heft-web-rig": "^0.14.1",
+    "@rushstack/heft-web-rig": "^0.15.0",
     
     "@rushstack/heft": "^0.50.0"
   }

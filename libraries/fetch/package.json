@@ -25,6 +25,6 @@
   "devDependencies": {
     "@rushstack/heft-web-rig": "^0.15.0",
     
-    "@rushstack/heft": "^0.50.0"
+    "@rushstack/heft": "^0.51.0"
   }
 }

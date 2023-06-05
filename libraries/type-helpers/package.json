@@ -20,7 +20,7 @@
     "@rhombus-toolkit/func": "1.2.0"
   },
   "devDependencies": {
-    "@rushstack/heft-web-rig": "^0.15.0",
+    "@rushstack/heft-web-rig": "^0.16.0",
     
     "@rushstack/heft": "^0.51.0"
   }

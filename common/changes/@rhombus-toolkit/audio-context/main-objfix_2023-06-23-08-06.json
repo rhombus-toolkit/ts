@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@rhombus-toolkit/audio-context",
+      "comment": "tooling upgrades (no functional change)",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@rhombus-toolkit/audio-context"
+}

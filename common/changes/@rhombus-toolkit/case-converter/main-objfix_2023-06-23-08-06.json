@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@rhombus-toolkit/case-converter",
+      "comment": "tooling upgrades (no functional change)",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@rhombus-toolkit/case-converter"
+}

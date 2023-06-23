@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "god freakin damn rush publish",
+      "type": "patch",
+      "packageName": "@rhombus-toolkit/logger"
+    }
+  ],
+  "packageName": "@rhombus-toolkit/logger",
+  "email": "rhom6us@users.noreply.github.com"
+}

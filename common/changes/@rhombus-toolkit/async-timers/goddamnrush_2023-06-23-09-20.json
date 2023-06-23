@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "god freakin damn rush publish",
+      "type": "patch",
+      "packageName": "@rhombus-toolkit/async-timers"
+    }
+  ],
+  "packageName": "@rhombus-toolkit/async-timers",
+  "email": "rhom6us@users.noreply.github.com"
+}

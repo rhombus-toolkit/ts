@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "god freakin damn rush publish",
+      "type": "patch",
+      "packageName": "@rhombus-toolkit/kinda-weak-map"
+    }
+  ],
+  "packageName": "@rhombus-toolkit/kinda-weak-map",
+  "email": "rhom6us@users.noreply.github.com"
+}

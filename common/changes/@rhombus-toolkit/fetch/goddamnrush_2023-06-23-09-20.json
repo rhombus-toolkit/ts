@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "god freakin damn rush publish",
+      "type": "patch",
+      "packageName": "@rhombus-toolkit/fetch"
+    }
+  ],
+  "packageName": "@rhombus-toolkit/fetch",
+  "email": "rhom6us@users.noreply.github.com"
+}

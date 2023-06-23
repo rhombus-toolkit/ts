@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "god freakin damn rush publish",
+      "type": "patch",
+      "packageName": "@rhombus-toolkit/audio-context"
+    }
+  ],
+  "packageName": "@rhombus-toolkit/audio-context",
+  "email": "rhom6us@users.noreply.github.com"
+}

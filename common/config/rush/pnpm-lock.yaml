@@ -47,9 +47,6 @@ dependencies:
   '@rushstack/heft-web-rig':
     specifier: ^0.18.10
     version: 0.18.10(@rushstack/heft@0.56.0)
-  '@types/heft-jest':
-    specifier: ~1.0.3
-    version: 1.0.3
   eslint:
     specifier: ^8.20.0
     version: 8.20.0
@@ -6175,11 +6172,12 @@ packages:
     dev: false
 
   file:projects/async-timers.tgz:
-    resolution: {integrity: sha512-ahEinMieaH3/zIi6UGsLXJNFHBrpHEYkRczcj/mtUBMkGC4wVsz1Gw2Ayjqs/qAuTsAerHGJFUlTjeHRpwiA9Q==, tarball: file:projects/async-timers.tgz}
+    resolution: {integrity: sha512-KOToRG8Iv0Q30kdN15NHoWaOFTPu+NC/Rc4kFEjGSwqOAfFS9VJJGqWVn+N+tsvXTzF3HnfWzP+8k4qiEOKBPQ==, tarball: file:projects/async-timers.tgz}
     name: '@rush-temp/async-timers'
     version: 0.0.0
     dependencies:
       '@rushstack/heft': 0.56.0
+      '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       eslint: 8.20.0
@@ -6206,11 +6204,12 @@ packages:
     dev: false
 
   file:projects/audio-context.tgz:
-    resolution: {integrity: sha512-CZp4HsKnVr9eimya4Ld5n9eNEOpquz9WSvOL8Z4QXw0zr1ldDx66BsIltA+ZltS7iUNdxa6yG+wCWBtQv5pmNw==, tarball: file:projects/audio-context.tgz}
+    resolution: {integrity: sha512-iKGx4lXFe1K57gy2ykFkHtYXdiLlb2Vj2lnYUeNq4saG0acH0b2e09Qv87M0GeFLcD13yOxqwpLqzlmfLI8pGQ==, tarball: file:projects/audio-context.tgz}
     name: '@rush-temp/audio-context'
     version: 0.0.0
     dependencies:
       '@rushstack/heft': 0.56.0
+      '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       typescript: 5.1.3
@@ -6236,11 +6235,12 @@ packages:
     dev: false
 
   file:projects/case-converter.tgz:
-    resolution: {integrity: sha512-z6H+avbRMNphbuBJsFHrefsUuy/PEDFnoLPoc9avRZC7qfzNuJ9O8rBWeufEjzLR09m2amZZB36t5SvMJxFJ8Q==, tarball: file:projects/case-converter.tgz}
+    resolution: {integrity: sha512-ocK/mLffxJ/Huiix3gqrbB7Qpv2LDDG72Nh8Bfgwof3YmqRHwGAn+7JKIYPVWga2FuuPbXCQu3EDlNrqLuv7uQ==, tarball: file:projects/case-converter.tgz}
     name: '@rush-temp/case-converter'
     version: 0.0.0
     dependencies:
       '@rushstack/heft': 0.56.0
+      '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       typescript: 5.1.3
@@ -6266,11 +6266,12 @@ packages:
     dev: false
 
   file:projects/defer.tgz:
-    resolution: {integrity: sha512-3lglKckv1lPOYc2dMlSfVZ3PiNaQsDhoNHehF45vYi1+mFkdBRLUJcOOjJGOAOHp1C1ahm54ziGA1cZo0qb8NQ==, tarball: file:projects/defer.tgz}
+    resolution: {integrity: sha512-+/kox4LESV0+gXpi6B0xM5UdOXpFlTYCk+mW42b1DDbAOLOnKSQorpasFVgZClhxlfcTj1cdKlQa+5VlOTfImA==, tarball: file:projects/defer.tgz}
     name: '@rush-temp/defer'
     version: 0.0.0
     dependencies:
       '@rushstack/heft': 0.56.0
+      '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       typescript: 5.1.3
@@ -6296,11 +6297,12 @@ packages:
     dev: false
 
   file:projects/fetch.tgz:
-    resolution: {integrity: sha512-WYAHmeBCQim2NERATcoWJYrrLfv8k/kVYrBHwjpozNPnaOdbCKRW7UiEvgi/FUcYeZOuALnUQB5SIkWQOTgcnA==, tarball: file:projects/fetch.tgz}
+    resolution: {integrity: sha512-AguwrxTxULTURgfpYUHsJB4oCAR4A4GqincwQMdiVQvzOMJRCvrJcDF5inPykBNKT2F3tLKz4/KzupdCEfZAyA==, tarball: file:projects/fetch.tgz}
     name: '@rush-temp/fetch'
     version: 0.0.0
     dependencies:
       '@rushstack/heft': 0.56.0
+      '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       typescript: 5.1.3
@@ -6326,11 +6328,12 @@ packages:
     dev: false
 
   file:projects/func.tgz:
-    resolution: {integrity: sha512-KCo788RwQuGS3vZHExKHIjs+FBL/G38r3cA9tLBxCxclo4mv2TcKKUaiYSkLJMmAOv1LjGHL9aQKnJxLdDGSig==, tarball: file:projects/func.tgz}
+    resolution: {integrity: sha512-VEEzAvHPmRffF4YPkovj6WHAiWdPGR+55Az3EJ6SGpyHcniO6oJBAvs/GPTakgvKPpmQhjbT+NHsZ4OO4FAyAg==, tarball: file:projects/func.tgz}
     name: '@rush-temp/func'
     version: 0.0.0
     dependencies:
       '@rushstack/heft': 0.56.0
+      '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       typescript: 5.1.3
@@ -6356,11 +6359,12 @@ packages:
     dev: false
 
   file:projects/kinda-weak-map.tgz:
-    resolution: {integrity: sha512-qxlHZ0vQMZKlEotreOGTIqdItMIM/oGLZtbm2lCwcNEuhxn8CVRb+ssvI0T31vDoAu4KtLiezhkfk9AVSDDvXQ==, tarball: file:projects/kinda-weak-map.tgz}
+    resolution: {integrity: sha512-EuPOIbTqHQqcw75+W5yauXH08GfCgXeUXp5STpRSr4xp6YE7XnDW6VPNkzpBqvTGt03wylFm3ejYEof/7u4ZeQ==, tarball: file:projects/kinda-weak-map.tgz}
     name: '@rush-temp/kinda-weak-map'
     version: 0.0.0
     dependencies:
       '@rushstack/heft': 0.56.0
+      '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       tslib: 2.5.3
@@ -6387,11 +6391,12 @@ packages:
     dev: false
 
   file:projects/logger.tgz:
-    resolution: {integrity: sha512-MJ4wKDc291D5UWzuzDG6DQ9bbtyN/zmAqRKisR/erysTDTuiSGO6Lu9xuWqiWcfCOkXRdzv1SrPaIleujX+PVQ==, tarball: file:projects/logger.tgz}
+    resolution: {integrity: sha512-QewDKilMcUz4CrHMnPWQGXeL/kRVS7N8kd0K7pPMC+Z+WcDGk72YBhg0DH82QyeaAuPEjevs1GTbhmKv+8nMIQ==, tarball: file:projects/logger.tgz}
     name: '@rush-temp/logger'
     version: 0.0.0
     dependencies:
       '@rushstack/heft': 0.56.0
+      '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       typescript: 5.1.3
@@ -6417,11 +6422,12 @@ packages:
     dev: false
 
   file:projects/set-immediate.tgz:
-    resolution: {integrity: sha512-URQ11u0VuuXQ8czo7hGTiEiAo/IIWX6G20bPUlo3+Q6uTcZEbUZ9Ym7RiK0Dsn7clJQ3Yyeq0/rte5IB1Xsw7Q==, tarball: file:projects/set-immediate.tgz}
+    resolution: {integrity: sha512-D/CTSAJrvq9WXRpoYyHvokVRHZa4Q/YxV7xOUQsYEsgL5tIDhATXvRLZ5HTiRwVV3BnKbwEVcJEirxtwue2N+A==, tarball: file:projects/set-immediate.tgz}
     name: '@rush-temp/set-immediate'
     version: 0.0.0
     dependencies:
       '@rushstack/heft': 0.56.0
+      '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       setimmediate: 1.0.5
@@ -6448,11 +6454,12 @@ packages:
     dev: false
 
   file:projects/singleton.tgz:
-    resolution: {integrity: sha512-ViTyxkoXWjayRCi3ZoybD0tKz3gbf+/bLl1ddZ0U7qdS7VEezHoYMI1BU/ip6chGxgTyRGU1pDKW/NA2bD0cow==, tarball: file:projects/singleton.tgz}
+    resolution: {integrity: sha512-StSwWa8f3peSgNwszmOqcSQEi7lE1mkqRbLlddOUuekLNrWVw16mxItizPJXyRjZk1XGmhAgV5Hd8/KPGNDhpg==, tarball: file:projects/singleton.tgz}
     name: '@rush-temp/singleton'
     version: 0.0.0
     dependencies:
       '@rushstack/heft': 0.56.0
+      '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       typescript: 5.1.3
@@ -6478,11 +6485,12 @@ packages:
     dev: false
 
   file:projects/type-guards.tgz:
-    resolution: {integrity: sha512-nbyfroNuzqZgd/BDH0OaeB8ebmLrtGYWTH7XSTGG4BfZ71LwglUbJLEoO7qstBf2iqZFnLjMiK4McUl2Tcq6Pg==, tarball: file:projects/type-guards.tgz}
+    resolution: {integrity: sha512-2SEBlmbkNz6bhGuUAbe0TGzSId1jIpBF8ADK9dENGbNiF80PVVR1YU9194T3dbxw3UcuFqpyNBCQVVQcObsnrA==, tarball: file:projects/type-guards.tgz}
     name: '@rush-temp/type-guards'
     version: 0.0.0
     dependencies:
       '@rushstack/heft': 0.56.0
+      '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       typescript: 5.1.3
@@ -6508,11 +6516,12 @@ packages:
     dev: false
 
   file:projects/type-helpers.tgz:
-    resolution: {integrity: sha512-kFo7Ma81ORj/x02NIxaw7NgdTQJCC1aOy4EKbP27TviJRoBqjCoR3RXMJCjpaf1vJrY3PvQVTsnQpR1gjPzz9g==, tarball: file:projects/type-helpers.tgz}
+    resolution: {integrity: sha512-YdyseSLsVKPpO/dUnUMDGl/6d1/1smY8f3sbqrS097FY1Cb/6K7poCJ/3GdhFPVbz1I+QHIPRTagUI2pyI+nnw==, tarball: file:projects/type-helpers.tgz}
     name: '@rush-temp/type-helpers'
     version: 0.0.0
     dependencies:
       '@rushstack/heft': 0.56.0
+      '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       typescript: 5.1.3

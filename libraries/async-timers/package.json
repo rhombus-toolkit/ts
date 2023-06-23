@@ -25,7 +25,6 @@
     "@rushstack/heft": "^0.56.0",
     "@rushstack/heft-web-rig": "^0.18.10",
     "eslint": "^8.20.0",
-    "typescript": "^5.1.3",
-    "@types/heft-jest": "~1.0.3"
+    "typescript": "^5.1.3"
   }
 }

@@ -1,22 +1,21 @@
 {
     "files.exclude": {
-        "**/.git": true,
-        "**/.svn": true,
-        "**/.hg": true,
-        "**/CVS": true,
-        "**/.DS_Store": true,
-        "**/Thumbs.db": true,
-        "**/node_modules": true,
+        "**/.git": false,
+        "**/.svn": false,
+        "**/.hg": false,
+        "**/CVS": false,
+        "**/.DS_Store": false,
+        "**/Thumbs.db": false,
         "libraries/*/temp/": true,
         "libraries/*/lib*/": true,
         "libraries/*/CHANGELOG.*": true,
-        "LICENSE": true,
-        "**/*.md": true,
+        "LICENSE": false,
+        "**/*.md": false,
         "**/.*": true,
-        "common/config/rush/??[tonp]*": true,
-        "common/?[!o]*": true,
-        
+        "common/config/rush/??[tonp]*": false,
+        "common/?[!o]*": false,
+        "**/node_modules": false
     },
-    "explorer.excludeGitIgnore": true,
-    "explorerExclude.backup": null
+    "explorer.excludeGitIgnore": false,
+    "explorerExclude.backup": {}
 }

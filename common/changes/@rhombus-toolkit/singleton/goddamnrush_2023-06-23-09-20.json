@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "god freakin damn rush publish",
+      "type": "patch",
+      "packageName": "@rhombus-toolkit/singleton"
+    }
+  ],
+  "packageName": "@rhombus-toolkit/singleton",
+  "email": "rhom6us@users.noreply.github.com"
+}

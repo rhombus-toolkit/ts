@@ -2,6 +2,23 @@
   "name": "@rhombus-toolkit/type-guards",
   "entries": [
     {
+      "version": "1.2.2",
+      "tag": "@rhombus-toolkit/type-guards_v1.2.2",
+      "date": "Fri, 23 Jun 2023 09:27:29 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "god freakin damn rush publish"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@rhombus-toolkit/func\" from `1.2.1` to `1.2.2`"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.2.1",
       "tag": "@rhombus-toolkit/type-guards_v1.2.1",
       "date": "Fri, 23 Jun 2023 08:16:55 GMT",

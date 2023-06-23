@@ -2,6 +2,18 @@
   "name": "@rhombus-toolkit/case-converter",
   "entries": [
     {
+      "version": "1.2.2",
+      "tag": "@rhombus-toolkit/case-converter_v1.2.2",
+      "date": "Fri, 23 Jun 2023 09:27:29 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "god freakin damn rush publish"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.2.1",
       "tag": "@rhombus-toolkit/case-converter_v1.2.1",
       "date": "Fri, 23 Jun 2023 08:16:55 GMT",

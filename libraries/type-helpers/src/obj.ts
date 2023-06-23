@@ -1,18 +1,18 @@
 
-export type keys<T> = keyof T;
-export function keys<T>(obj: T): keys<T>[] {
+export type keys<T extends {}> = keyof T;
+export function keys<T extends {}>(obj: T): keys<T>[] {
     return Object.keys(obj) as any;
 }
 
-export type entries<T> = {
+export type entries<T extends {}> = {
     [K in keyof T]: [K, T[K]]
 }[keyof T][]
-export function entries<T>(obj: T): entries<T>{
+export function entries<T extends {}>(obj: T): entries<T>{
     return Object.entries(obj) as any;
 }
 
-export type values<T> = T[keyof T];
-export function values<T>(obj: T): values<T>[] {
+export type values<T extends {}> = T[keyof T];
+export function values<T extends {}>(obj: T): values<T>[] {
     return Object.values(obj);
 }
 

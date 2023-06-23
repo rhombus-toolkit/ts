@@ -1,5 +1,4 @@
 export * from './array';
-export * from './await';
 export * from './cast';
 export * from './CheapRingBuffer';
 export * from './counter';

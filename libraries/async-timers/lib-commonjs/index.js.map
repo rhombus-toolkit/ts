@@ -1,1 +1,0 @@
-{"version":3,"file":"index.js","sourceRoot":"","sources":["../src/index.ts"],"names":[],"mappings":";;;AAAA,6DAAmC;AACnC,8DAAoC;AACpC,4DAAkC","sourcesContent":["export * from './listenEventAsync';\nexport * from './setImmediateAsync';\nexport * from './setTimeoutAsync';\n\n\n"]}

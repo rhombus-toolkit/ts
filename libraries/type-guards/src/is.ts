@@ -1,7 +1,7 @@
 export function isArray(value: any): value is Array<any> {
     return Array.isArray(value);
 }
-export function isDefined<T>(p: T | undefined): p is T | null {
+export function isDefined<T>(p: T | undefined | null): p is T | null {
     return p !== undefined;
 }
 
@@ -77,7 +77,7 @@ export function isAsyncGenerator(value: any): value is AsyncGenerator<any, any, 
 }
 function getProtoSquared(obj: any) {
     try {
-        return Reflect.getPrototypeOf(Reflect.getPrototypeOf(obj));
+        return Reflect.getPrototypeOf(Reflect.getPrototypeOf(obj)!);
     } catch {
         return undefined;
     }

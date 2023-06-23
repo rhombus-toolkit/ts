@@ -1,4 +1,3 @@
-export default KindaWeakMap;
 export class KindaWeakMap<K, V extends object> implements Map<K, V> {
     readonly #map = new Map<K, WeakRef<V>>();
     readonly #registry = new FinalizationRegistry((key: K) => {
@@ -63,3 +62,4 @@ export class KindaWeakMap<K, V extends object> implements Map<K, V> {
     readonly [Symbol.toStringTag] = 'KindaWeakMap' as const;
 
 }
+export default KindaWeakMap;

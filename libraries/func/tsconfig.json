@@ -1,13 +1,11 @@
 {
   "extends": "@rushstack/heft-web-rig/profiles/library/tsconfig-base.json",
   "compilerOptions": {
-
-      "target": "esnext",
-      "lib": [
-          "DOM",
-          "ESNext"
-      ],
-
-
+    "target": "ESNext",
+    "lib": [
+      "ESNext",
+      "DOM"
+    ],
+    "types": []
   }
 }

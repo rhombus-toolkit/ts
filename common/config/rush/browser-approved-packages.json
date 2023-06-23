@@ -19,6 +19,10 @@
       "allowedCategories": [ "production" ]
     },
     {
+      "name": "@rushstack/heft-jest-plugin",
+      "allowedCategories": [ "production" ]
+    },
+    {
       "name": "@rushstack/heft-web-rig",
       "allowedCategories": [ "production" ]
     },

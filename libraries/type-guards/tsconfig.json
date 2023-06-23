@@ -1,4 +1,10 @@
 {
-  "extends": "./node_modules/@rushstack/heft-web-rig/profiles/library/tsconfig-base.json",
-"compilerOptions": { "target": "ESNext", "lib": ["ESNext", "DOM"] }
+  "extends": "@rushstack/heft-web-rig/profiles/library/tsconfig-base.json",
+  "compilerOptions": {
+    "target": "ESNext",
+    "lib": [
+      "ESNext", "DOM"
+    ],
+    "types": []
+  }
 }

@@ -6,8 +6,8 @@ export function keys<T>(obj: T): keys<T>[] {
 
 export type entries<T> = {
     [K in keyof T]: [K, T[K]]
-}[keyof T]
-export function entries<T>(obj: T): entries<T>[]{
+}[keyof T][]
+export function entries<T>(obj: T): entries<T>{
     return Object.entries(obj) as any;
 }
 

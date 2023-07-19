@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@rhombus-toolkit/kinda-weak-map",
+      "comment": "new rig package",
+      "type": "patch"
+    }
+  ],
+  "packageName": "@rhombus-toolkit/kinda-weak-map"
+}

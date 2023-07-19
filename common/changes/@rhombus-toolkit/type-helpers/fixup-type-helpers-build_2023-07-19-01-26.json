@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@rhombus-toolkit/type-helpers",
+      "comment": "new rig package",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@rhombus-toolkit/type-helpers"
+}

@@ -1,0 +1,10 @@
+{
+  "changes": [
+    {
+      "packageName": "@rhombus-toolkit/func",
+      "comment": "new rig package",
+      "type": "minor"
+    }
+  ],
+  "packageName": "@rhombus-toolkit/func"
+}

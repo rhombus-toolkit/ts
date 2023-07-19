@@ -1,6 +1,13 @@
 # Change Log - @rhombus-toolkit/logger
 
-This log was last generated on Fri, 23 Jun 2023 09:27:29 GMT and should not be manually modified.
+This log was last generated on Wed, 19 Jul 2023 01:33:48 GMT and should not be manually modified.
+
+## 1.2.3
+Wed, 19 Jul 2023 01:33:48 GMT
+
+### Patches
+
+- new rig package
 
 ## 1.2.2
 Fri, 23 Jun 2023 09:27:29 GMT

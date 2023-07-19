@@ -22,6 +22,6 @@
   "devDependencies": {
         "@rhombus-toolkit/heft-web-rig": "^0.17.0",
     "@rushstack/eslint-config": "^3.0.0",
-    "@rushstack/heft": "^0.51.0"
+    "@rushstack/heft": "^0.57.1"
   }
 }

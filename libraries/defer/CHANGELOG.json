@@ -2,6 +2,20 @@
   "name": "@rhombus-toolkit/defer",
   "entries": [
     {
+      "version": "1.2.3",
+      "tag": "@rhombus-toolkit/defer_v1.2.3",
+      "date": "Wed, 19 Jul 2023 01:27:49 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "new rig package",
+            "author": "Thomas Butler <rhom6us@users.noreply.github.com>",
+            "commit": "9a1d734c20c07a2665ee58da6f335c8b1f8cc6a7"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.2.2",
       "tag": "@rhombus-toolkit/defer_v1.2.2",
       "date": "Fri, 23 Jun 2023 09:27:29 GMT",

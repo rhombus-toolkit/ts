@@ -23,6 +23,9 @@ dependencies:
   '@rush-temp/func':
     specifier: file:./projects/func.tgz
     version: file:projects/func.tgz
+  '@rush-temp/heft-web-rig':
+    specifier: file:./projects/heft-web-rig.tgz
+    version: file:projects/heft-web-rig.tgz
   '@rush-temp/kinda-weak-map':
     specifier: file:./projects/kinda-weak-map.tgz
     version: file:projects/kinda-weak-map.tgz
@@ -41,12 +44,9 @@ dependencies:
   '@rush-temp/type-helpers':
     specifier: file:./projects/type-helpers.tgz
     version: file:projects/type-helpers.tgz
-  '@rushstack/heft':
-    specifier: ^0.56.0
-    version: 0.56.0
   '@rushstack/heft-web-rig':
-    specifier: ^0.18.10
-    version: 0.18.10(@rushstack/heft@0.56.0)
+    specifier: ^0.18.19
+    version: 0.18.19(@rushstack/heft@0.57.1)
   eslint:
     specifier: ^8.20.0
     version: 8.20.0
@@ -718,6 +718,16 @@ packages:
       - '@types/node'
     dev: false
 
+  /@microsoft/api-extractor-model@7.27.5:
+    resolution: {integrity: sha512-9/tBzYMJitR+o+zkPr1lQh2+e8ClcaTF6eZo7vZGDqRt2O5XmXWPbYJZmxyM3wb5at6lfJNEeGZrQXLjsQ0Nbw==}
+    dependencies:
+      '@microsoft/tsdoc': 0.14.2
+      '@microsoft/tsdoc-config': 0.16.2
+      '@rushstack/node-core-library': 3.59.6
+    transitivePeerDependencies:
+      - '@types/node'
+    dev: false
+
   /@microsoft/api-extractor@7.36.0:
     resolution: {integrity: sha512-P+kYgJFDXIr+UNzhRMhlpM/dderi6ab4lxn35vdhfAIMPtGCSXIJxrrtpTOQmQW8CZtmoZX06LYoUsKCc1zjow==}
     hasBin: true
@@ -732,6 +742,26 @@ packages:
       lodash: 4.17.21
       resolve: 1.22.2
       semver: 7.3.8
+      source-map: 0.6.1
+      typescript: 5.0.4
+    transitivePeerDependencies:
+      - '@types/node'
+    dev: false
+
+  /@microsoft/api-extractor@7.36.3:
+    resolution: {integrity: sha512-u0H6362AQq+r55X8drHx4npgkrCfJnMzRRHfQo8PMNKB8TcBnrTLfXhXWi+xnTM6CzlU/netEN8c4bq581Rnrg==}
+    hasBin: true
+    dependencies:
+      '@microsoft/api-extractor-model': 7.27.5
+      '@microsoft/tsdoc': 0.14.2
+      '@microsoft/tsdoc-config': 0.16.2
+      '@rushstack/node-core-library': 3.59.6
+      '@rushstack/rig-package': 0.4.0
+      '@rushstack/ts-command-line': 4.15.1
+      colors: 1.2.5
+      lodash: 4.17.21
+      resolve: 1.22.2
+      semver: 7.5.4
       source-map: 0.6.1
       typescript: 5.0.4
     transitivePeerDependencies:
@@ -786,6 +816,16 @@ packages:
       - '@types/node'
     dev: false
 
+  /@rushstack/debug-certificate-manager@1.2.51:
+    resolution: {integrity: sha512-aq5bGpQ+iewaDPmDX6R5TE7Fn9f2DGangAAU2JG5a9L3cz85e+YmhkBYMAQx0uaZVE2QTFLysn+xw1l54cDg4A==}
+    dependencies:
+      '@rushstack/node-core-library': 3.59.6
+      node-forge: 1.3.1
+      sudo: 1.0.3
+    transitivePeerDependencies:
+      - '@types/node'
+    dev: false
+
   /@rushstack/heft-api-extractor-plugin@0.1.10(@rushstack/heft@0.56.0):
     resolution: {integrity: sha512-GHrkKwgzcFpR1XyQutY8+nt36Yae8bTi//kWeNQhzXQkAepsjL6FH/LSRj7YmJV0B6YXSd55ULvnlPjiiGe7sw==}
     peerDependencies:
@@ -799,11 +839,35 @@ packages:
       - '@types/node'
     dev: false
 
+  /@rushstack/heft-api-extractor-plugin@0.1.15(@rushstack/heft@0.57.1):
+    resolution: {integrity: sha512-P3zmnn9PklvJMCJaFmzgelh17BoBcI9bAFbZso8CIn47ANlwtXYbYR66OujKGmg2gPwp1QuProUsOM6YHUQdhQ==}
+    peerDependencies:
+      '@rushstack/heft': 0.57.1
+    dependencies:
+      '@rushstack/heft': 0.57.1
+      '@rushstack/heft-config-file': 0.13.2
+      '@rushstack/node-core-library': 3.59.6
+      semver: 7.5.4
+    transitivePeerDependencies:
+      - '@types/node'
+    dev: false
+
   /@rushstack/heft-config-file@0.13.0:
     resolution: {integrity: sha512-ElIJwPs78kTa4UTAEsrHKcA9lvkG2JlPf7DVkGHQToTJ/PGbzMC3csrlt/Aa9Uzig+fQiy0XAJ9e/9ot7RhArQ==}
     engines: {node: '>=10.13.0'}
     dependencies:
       '@rushstack/node-core-library': 3.59.4
+      '@rushstack/rig-package': 0.4.0
+      jsonpath-plus: 4.0.0
+    transitivePeerDependencies:
+      - '@types/node'
+    dev: false
+
+  /@rushstack/heft-config-file@0.13.2:
+    resolution: {integrity: sha512-eJCuVnKR+uSG7qyeyICA57IOBD3OoOlNTpsJgNjcZZiTj+ZlKPaGmJ8/mzXwNiEpTIlRsVvoQURYFz9QY9sfnQ==}
+    engines: {node: '>=10.13.0'}
+    dependencies:
+      '@rushstack/node-core-library': 3.59.6
       '@rushstack/rig-package': 0.4.0
       jsonpath-plus: 4.0.0
     transitivePeerDependencies:
@@ -832,6 +896,28 @@ packages:
       - ts-node
     dev: false
 
+  /@rushstack/heft-jest-plugin@0.7.16(@rushstack/heft@0.57.1):
+    resolution: {integrity: sha512-ZbVSQm9BYMPYyTPskBLcMcaLSOdTDNbTd6pWd7YeIn+KwDNUlroEK3QjMRktlrXnjlEkBxxszZ7oyQ/ViemeJg==}
+    peerDependencies:
+      '@rushstack/heft': ^0.57.1
+    dependencies:
+      '@jest/core': 29.5.0
+      '@jest/reporters': 29.5.0
+      '@jest/transform': 29.5.0
+      '@rushstack/heft': 0.57.1
+      '@rushstack/heft-config-file': 0.13.2
+      '@rushstack/node-core-library': 3.59.6
+      jest-config: 29.5.0(@types/node@20.3.1)
+      jest-resolve: 29.5.0
+      jest-snapshot: 29.5.0
+      lodash: 4.17.21
+    transitivePeerDependencies:
+      - '@types/node'
+      - node-notifier
+      - supports-color
+      - ts-node
+    dev: false
+
   /@rushstack/heft-lint-plugin@0.1.11(@rushstack/heft@0.56.0):
     resolution: {integrity: sha512-ZgQehI0hv/jxkZcRHt26OVRhzuoGMQceNG9Phz+0rmWSHi2jM4KVq4hFrmEKbUJSKMHjP3AKtpKEq6mpowJBTg==}
     peerDependencies:
@@ -840,6 +926,18 @@ packages:
       '@rushstack/heft': 0.56.0
       '@rushstack/node-core-library': 3.59.4
       semver: 7.3.8
+    transitivePeerDependencies:
+      - '@types/node'
+    dev: false
+
+  /@rushstack/heft-lint-plugin@0.1.19(@rushstack/heft@0.57.1):
+    resolution: {integrity: sha512-gH9ThCPLX5L6V/RuvQqfhoZwPj8wpFD1XERzQdLttVH+o7DI+5nnAW5+7VkNEdme5E0DsO2cHMtNzdBFYIY9Nw==}
+    peerDependencies:
+      '@rushstack/heft': 0.57.1
+    dependencies:
+      '@rushstack/heft': 0.57.1
+      '@rushstack/node-core-library': 3.59.6
+      semver: 7.5.4
     transitivePeerDependencies:
       - '@types/node'
     dev: false
@@ -860,6 +958,22 @@ packages:
       - '@types/node'
     dev: false
 
+  /@rushstack/heft-sass-plugin@0.11.22(@rushstack/heft@0.57.1):
+    resolution: {integrity: sha512-81FvpICDT83VFfto076GUEO53FuWlAsERvzYANEdfMxvdKUOA+coFVNbyBZPNQXe4AUm7RMAvKwEh9IR8ULZ+Q==}
+    peerDependencies:
+      '@rushstack/heft': ^0.57.1
+    dependencies:
+      '@rushstack/heft': 0.57.1
+      '@rushstack/heft-config-file': 0.13.2
+      '@rushstack/node-core-library': 3.59.6
+      '@rushstack/typings-generator': 0.10.33
+      postcss: 8.4.24
+      postcss-modules: 1.5.0
+      sass-embedded: 1.62.0
+    transitivePeerDependencies:
+      - '@types/node'
+    dev: false
+
   /@rushstack/heft-typescript-plugin@0.1.11(@rushstack/heft@0.56.0):
     resolution: {integrity: sha512-jIE8gv6W33DrcZwc779ab5qbZv2hmM6flxYa8IlVTPdaPklI472uE9bA1sZ1UlFVwbmRxamnUeoMhRid+GGMJA==}
     peerDependencies:
@@ -870,6 +984,21 @@ packages:
       '@rushstack/node-core-library': 3.59.4
       '@types/tapable': 1.0.6
       semver: 7.3.8
+      tapable: 1.1.3
+    transitivePeerDependencies:
+      - '@types/node'
+    dev: false
+
+  /@rushstack/heft-typescript-plugin@0.1.18(@rushstack/heft@0.57.1):
+    resolution: {integrity: sha512-apYm1CVzUHZNGnLohHkO2izqmXUsMUSKd4IZHeXZ7HY3QAWLF+67Wh+DB0+5GkbujPdY/ct/F9H+LQ67p//kgA==}
+    peerDependencies:
+      '@rushstack/heft': 0.57.1
+    dependencies:
+      '@rushstack/heft': 0.57.1
+      '@rushstack/heft-config-file': 0.13.2
+      '@rushstack/node-core-library': 3.59.6
+      '@types/tapable': 1.0.6
+      semver: 7.5.4
       tapable: 1.1.3
     transitivePeerDependencies:
       - '@types/node'
@@ -929,6 +1058,83 @@ packages:
       - webpack-cli
     dev: false
 
+  /@rushstack/heft-web-rig@0.18.19(@rushstack/heft@0.57.1):
+    resolution: {integrity: sha512-FXhEiPOa47kafaEEXB20q9XqEVPSxI1DSdtQkIp2GjGYRUIGTuKP0yAxOseoa9fqWnaBP0xQsjoTaBvroPkIGA==}
+    peerDependencies:
+      '@rushstack/heft': ^0.57.1
+    dependencies:
+      '@microsoft/api-extractor': 7.36.3
+      '@rushstack/heft': 0.57.1
+      '@rushstack/heft-api-extractor-plugin': 0.1.15(@rushstack/heft@0.57.1)
+      '@rushstack/heft-jest-plugin': 0.7.16(@rushstack/heft@0.57.1)
+      '@rushstack/heft-lint-plugin': 0.1.19(@rushstack/heft@0.57.1)
+      '@rushstack/heft-sass-plugin': 0.11.22(@rushstack/heft@0.57.1)
+      '@rushstack/heft-typescript-plugin': 0.1.18(@rushstack/heft@0.57.1)
+      '@rushstack/heft-webpack5-plugin': 0.8.10(@rushstack/heft@0.57.1)(webpack@5.82.1)
+      '@types/heft-jest': 1.0.1
+      autoprefixer: 10.4.14(postcss@8.4.24)
+      css-loader: 6.6.0(webpack@5.82.1)
+      css-minimizer-webpack-plugin: 3.4.1(webpack@5.82.1)
+      eslint: 8.7.0
+      html-webpack-plugin: 5.5.3(webpack@5.82.1)
+      jest-environment-jsdom: 29.5.0
+      mini-css-extract-plugin: 2.5.3(webpack@5.82.1)
+      postcss: 8.4.24
+      postcss-loader: 6.2.1(postcss@8.4.24)(webpack@5.82.1)
+      sass: 1.49.11
+      sass-loader: 12.4.0(sass@1.49.11)(webpack@5.82.1)
+      source-map-loader: 3.0.2(webpack@5.82.1)
+      style-loader: 3.3.3(webpack@5.82.1)
+      terser-webpack-plugin: 5.3.9(webpack@5.82.1)
+      typescript: 5.0.4
+      url-loader: 4.1.1(webpack@5.82.1)
+      webpack: 5.82.1
+      webpack-bundle-analyzer: 4.5.0
+      webpack-merge: 5.8.0
+    transitivePeerDependencies:
+      - '@parcel/css'
+      - '@swc/core'
+      - '@types/node'
+      - bufferutil
+      - canvas
+      - clean-css
+      - csso
+      - debug
+      - esbuild
+      - fibers
+      - file-loader
+      - node-notifier
+      - node-sass
+      - supports-color
+      - ts-node
+      - uglify-js
+      - utf-8-validate
+      - webpack-cli
+    dev: false
+
+  /@rushstack/heft-webpack5-plugin@0.8.10(@rushstack/heft@0.57.1)(webpack@5.82.1):
+    resolution: {integrity: sha512-vs55ZHNftqd/56fZHFaB8SqElvxMDsOY+FRm1Tjl2niXv/JPnwvV62fBtTB7osgnNZTq0uNE921EZ1i10fCZ/Q==}
+    peerDependencies:
+      '@rushstack/heft': ^0.57.1
+      webpack: ~5.82.1
+    dependencies:
+      '@rushstack/debug-certificate-manager': 1.2.51
+      '@rushstack/heft': 0.57.1
+      '@rushstack/node-core-library': 3.59.6
+      '@types/tapable': 1.0.6
+      tapable: 1.1.3
+      watchpack: 2.4.0
+      webpack: 5.82.1
+      webpack-dev-server: 4.9.3(webpack@5.82.1)
+    transitivePeerDependencies:
+      - '@types/node'
+      - bufferutil
+      - debug
+      - supports-color
+      - utf-8-validate
+      - webpack-cli
+    dev: false
+
   /@rushstack/heft-webpack5-plugin@0.8.2(@rushstack/heft@0.56.0)(webpack@5.82.1):
     resolution: {integrity: sha512-BsoqRMPLrAa3Z/kyMeEkbXEm5ajGLZO2hRXvdNEZOSY8nWDKrwJDmqh+W+It8y88CcLW6lnxLXtXA+vlfde1Og==}
     peerDependencies:
@@ -974,6 +1180,28 @@ packages:
       - '@types/node'
     dev: false
 
+  /@rushstack/heft@0.57.1:
+    resolution: {integrity: sha512-fmlArc2t2j6qzN9AM9CCTBngKIMT6QunZ19vy3CSMjZ7Za/tLwtNRNqdutRtQ+MFgVjZzf/vufsk7GekmGQufQ==}
+    engines: {node: '>=10.13.0'}
+    hasBin: true
+    dependencies:
+      '@rushstack/heft-config-file': 0.13.2
+      '@rushstack/node-core-library': 3.59.6
+      '@rushstack/rig-package': 0.4.0
+      '@rushstack/ts-command-line': 4.15.1
+      '@types/tapable': 1.0.6
+      argparse: 1.0.10
+      chokidar: 3.4.3
+      fast-glob: 3.2.12
+      git-repo-info: 2.1.1
+      ignore: 5.1.9
+      tapable: 1.1.3
+      true-case-path: 2.2.1
+      watchpack: 2.4.0
+    transitivePeerDependencies:
+      - '@types/node'
+    dev: false
+
   /@rushstack/node-core-library@3.59.4:
     resolution: {integrity: sha512-YAKJDC6Mz/KA1D7bvB88WaRX3knt/ZuLzkRu5G9QADGSjLtvTWzCNCytRF2PCSaaHOZaZsWul4F1KQdgFgUDqA==}
     peerDependencies:
@@ -988,6 +1216,23 @@ packages:
       jju: 1.4.0
       resolve: 1.22.2
       semver: 7.3.8
+      z-schema: 5.0.5
+    dev: false
+
+  /@rushstack/node-core-library@3.59.6:
+    resolution: {integrity: sha512-bMYJwNFfWXRNUuHnsE9wMlW/mOB4jIwSUkRKtu02CwZhQdmzMsUbxE0s1xOLwTpNIwlzfW/YT7OnOHgDffLgYg==}
+    peerDependencies:
+      '@types/node': '*'
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+    dependencies:
+      colors: 1.2.5
+      fs-extra: 7.0.1
+      import-lazy: 4.0.0
+      jju: 1.4.0
+      resolve: 1.22.2
+      semver: 7.5.4
       z-schema: 5.0.5
     dev: false
 
@@ -1016,6 +1261,19 @@ packages:
         optional: true
     dependencies:
       '@rushstack/node-core-library': 3.59.4
+      chokidar: 3.4.3
+      glob: 7.0.6
+    dev: false
+
+  /@rushstack/typings-generator@0.10.33:
+    resolution: {integrity: sha512-lCWiY3Ro3oi3TCkgNvAObb/A0sUI2EqGpYQKsMkugPyiNrwS7SGC8XcFuA7u0hsdpVMMJ/9fw20MFRMDYQ8Y6w==}
+    peerDependencies:
+      '@types/node': '*'
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+    dependencies:
+      '@rushstack/node-core-library': 3.59.6
       chokidar: 3.4.3
       glob: 7.0.6
     dev: false
@@ -2077,7 +2335,7 @@ packages:
       postcss-modules-scope: 3.0.0(postcss@8.4.24)
       postcss-modules-values: 4.0.0(postcss@8.4.24)
       postcss-value-parser: 4.2.0
-      semver: 7.5.3
+      semver: 7.5.4
       webpack: 5.82.1
     dev: false
 
@@ -3754,7 +4012,7 @@ packages:
       jest-util: 29.5.0
       natural-compare: 1.4.0
       pretty-format: 29.5.0
-      semver: 7.5.3
+      semver: 7.5.4
     transitivePeerDependencies:
       - supports-color
     dev: false
@@ -4522,7 +4780,7 @@ packages:
       cosmiconfig: 7.1.0
       klona: 2.0.6
       postcss: 8.4.24
-      semver: 7.5.3
+      semver: 7.5.4
       webpack: 5.82.1
     dev: false
 
@@ -5262,8 +5520,8 @@ packages:
       lru-cache: 6.0.0
     dev: false
 
-  /semver@7.5.3:
-    resolution: {integrity: sha512-QBlUtyVk/5EeHbi7X0fw6liDZc7BBmEaSYn01fMU1OUYbf6GPsbTtd8WmnqbI20SeycoHSeiybkE/q1Q+qlThQ==}
+  /semver@7.5.4:
+    resolution: {integrity: sha512-1bCSESV6Pv+i21Hvpxp3Dx+pSD8lIPt8uVjRrxAUt/nbswYc+tK6Y2btiULjd4+fnq15PX+nqQDC7Oft7WkwcA==}
     engines: {node: '>=10'}
     hasBin: true
     dependencies:
@@ -6172,171 +6430,98 @@ packages:
     dev: false
 
   file:projects/async-timers.tgz:
-    resolution: {integrity: sha512-KOToRG8Iv0Q30kdN15NHoWaOFTPu+NC/Rc4kFEjGSwqOAfFS9VJJGqWVn+N+tsvXTzF3HnfWzP+8k4qiEOKBPQ==, tarball: file:projects/async-timers.tgz}
+    resolution: {integrity: sha512-yhohlsUiWFNsWtTJNNEw8Y5B0F3YF9Lek+CFjY4lweLlTsVNO0Zq8Z53aYlgxyuzM+hqCN4bQFb+pRlH08FrqQ==, tarball: file:projects/async-timers.tgz}
     name: '@rush-temp/async-timers'
     version: 0.0.0
     dependencies:
-      '@rushstack/heft': 0.56.0
+      '@rushstack/heft': 0.57.1
       '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       eslint: 8.20.0
       typescript: 5.1.3
     transitivePeerDependencies:
-      - '@parcel/css'
-      - '@swc/core'
       - '@types/node'
-      - bufferutil
-      - canvas
-      - clean-css
-      - csso
-      - debug
-      - esbuild
-      - fibers
-      - file-loader
-      - node-notifier
-      - node-sass
       - supports-color
-      - ts-node
-      - uglify-js
-      - utf-8-validate
-      - webpack-cli
     dev: false
 
   file:projects/audio-context.tgz:
-    resolution: {integrity: sha512-iKGx4lXFe1K57gy2ykFkHtYXdiLlb2Vj2lnYUeNq4saG0acH0b2e09Qv87M0GeFLcD13yOxqwpLqzlmfLI8pGQ==, tarball: file:projects/audio-context.tgz}
+    resolution: {integrity: sha512-JIZ3k/bU02OKhYfYnN9FvjjVRQRyjl2ocL3VGfF6ZGUuw0XCKYoRViABpFyCqCWXWPaTQG6l8g0MqvAhC0J6oA==, tarball: file:projects/audio-context.tgz}
     name: '@rush-temp/audio-context'
     version: 0.0.0
     dependencies:
-      '@rushstack/heft': 0.56.0
+      '@rushstack/heft': 0.57.1
       '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       typescript: 5.1.3
     transitivePeerDependencies:
-      - '@parcel/css'
-      - '@swc/core'
       - '@types/node'
-      - bufferutil
-      - canvas
-      - clean-css
-      - csso
-      - debug
-      - esbuild
-      - fibers
-      - file-loader
-      - node-notifier
-      - node-sass
-      - supports-color
-      - ts-node
-      - uglify-js
-      - utf-8-validate
-      - webpack-cli
     dev: false
 
   file:projects/case-converter.tgz:
-    resolution: {integrity: sha512-ocK/mLffxJ/Huiix3gqrbB7Qpv2LDDG72Nh8Bfgwof3YmqRHwGAn+7JKIYPVWga2FuuPbXCQu3EDlNrqLuv7uQ==, tarball: file:projects/case-converter.tgz}
+    resolution: {integrity: sha512-cB2KzYr7wuYfPBqTtuYkvEn14uNa22KeMBuHwxN5DwqyIYrrzoHFlmuJx51S00lON0y9S6WCbDKCbjTERYpByA==, tarball: file:projects/case-converter.tgz}
     name: '@rush-temp/case-converter'
     version: 0.0.0
     dependencies:
-      '@rushstack/heft': 0.56.0
+      '@rushstack/heft': 0.57.1
       '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       typescript: 5.1.3
     transitivePeerDependencies:
-      - '@parcel/css'
-      - '@swc/core'
       - '@types/node'
-      - bufferutil
-      - canvas
-      - clean-css
-      - csso
-      - debug
-      - esbuild
-      - fibers
-      - file-loader
-      - node-notifier
-      - node-sass
-      - supports-color
-      - ts-node
-      - uglify-js
-      - utf-8-validate
-      - webpack-cli
     dev: false
 
   file:projects/defer.tgz:
-    resolution: {integrity: sha512-+/kox4LESV0+gXpi6B0xM5UdOXpFlTYCk+mW42b1DDbAOLOnKSQorpasFVgZClhxlfcTj1cdKlQa+5VlOTfImA==, tarball: file:projects/defer.tgz}
+    resolution: {integrity: sha512-QtLQqRV0AED/a8LDAyekqEoCdDYp1YsSr3KOUrES48SttMBm2HONwyorVSIa24y61/DZUC8uvn/Xza0wXdzu7Q==, tarball: file:projects/defer.tgz}
     name: '@rush-temp/defer'
     version: 0.0.0
     dependencies:
-      '@rushstack/heft': 0.56.0
+      '@rushstack/heft': 0.57.1
       '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       typescript: 5.1.3
     transitivePeerDependencies:
-      - '@parcel/css'
-      - '@swc/core'
       - '@types/node'
-      - bufferutil
-      - canvas
-      - clean-css
-      - csso
-      - debug
-      - esbuild
-      - fibers
-      - file-loader
-      - node-notifier
-      - node-sass
-      - supports-color
-      - ts-node
-      - uglify-js
-      - utf-8-validate
-      - webpack-cli
     dev: false
 
   file:projects/fetch.tgz:
-    resolution: {integrity: sha512-AguwrxTxULTURgfpYUHsJB4oCAR4A4GqincwQMdiVQvzOMJRCvrJcDF5inPykBNKT2F3tLKz4/KzupdCEfZAyA==, tarball: file:projects/fetch.tgz}
+    resolution: {integrity: sha512-WorZlDS2eOy9+b+dm4MA3Af8lu2eVbCpf7gn4to69GsxlCo0vmWiAYP82WVtW/Xzr8e95IF2h/TTp6sB7dudAQ==, tarball: file:projects/fetch.tgz}
     name: '@rush-temp/fetch'
     version: 0.0.0
     dependencies:
-      '@rushstack/heft': 0.56.0
+      '@rushstack/heft': 0.57.1
       '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       typescript: 5.1.3
     transitivePeerDependencies:
-      - '@parcel/css'
-      - '@swc/core'
       - '@types/node'
-      - bufferutil
-      - canvas
-      - clean-css
-      - csso
-      - debug
-      - esbuild
-      - fibers
-      - file-loader
-      - node-notifier
-      - node-sass
-      - supports-color
-      - ts-node
-      - uglify-js
-      - utf-8-validate
-      - webpack-cli
     dev: false
 
   file:projects/func.tgz:
-    resolution: {integrity: sha512-VEEzAvHPmRffF4YPkovj6WHAiWdPGR+55Az3EJ6SGpyHcniO6oJBAvs/GPTakgvKPpmQhjbT+NHsZ4OO4FAyAg==, tarball: file:projects/func.tgz}
+    resolution: {integrity: sha512-hARgXEE4l7w5fXRvpNNQ+EtPuTtsXyRCeNIAcBcLV9QFl0PAERiGbkwtbg2mv2+6g35buHmE1Zyhg2ex9QyZRw==, tarball: file:projects/func.tgz}
     name: '@rush-temp/func'
     version: 0.0.0
     dependencies:
-      '@rushstack/heft': 0.56.0
+      '@rushstack/heft': 0.57.1
       '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       typescript: 5.1.3
+    transitivePeerDependencies:
+      - '@types/node'
+    dev: false
+
+  file:projects/heft-web-rig.tgz:
+    resolution: {integrity: sha512-3pS2lOYWI1nWd3qeNYcZI3tdJE1ZcB7APgHtW06gpbkeNdGEAHH5gB7NI9/f3DcN15sS5gex16B5whok9QOFdg==, tarball: file:projects/heft-web-rig.tgz}
+    name: '@rush-temp/heft-web-rig'
+    version: 0.0.0
+    dependencies:
+      '@rushstack/heft': 0.57.1
+      '@rushstack/heft-web-rig': 0.18.19(@rushstack/heft@0.57.1)
     transitivePeerDependencies:
       - '@parcel/css'
       - '@swc/core'
@@ -6359,189 +6544,87 @@ packages:
     dev: false
 
   file:projects/kinda-weak-map.tgz:
-    resolution: {integrity: sha512-EuPOIbTqHQqcw75+W5yauXH08GfCgXeUXp5STpRSr4xp6YE7XnDW6VPNkzpBqvTGt03wylFm3ejYEof/7u4ZeQ==, tarball: file:projects/kinda-weak-map.tgz}
+    resolution: {integrity: sha512-YChQ/Ty3odIx4QmUSpRsNgH64sKGLlCYCGt2KK7YpW+vzbH6HSuY9RmKJkNsYmOFopNkNqiYKX6x3g4XSe03wg==, tarball: file:projects/kinda-weak-map.tgz}
     name: '@rush-temp/kinda-weak-map'
     version: 0.0.0
     dependencies:
-      '@rushstack/heft': 0.56.0
+      '@rushstack/heft': 0.57.1
       '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       tslib: 2.5.3
       typescript: 5.1.3
     transitivePeerDependencies:
-      - '@parcel/css'
-      - '@swc/core'
       - '@types/node'
-      - bufferutil
-      - canvas
-      - clean-css
-      - csso
-      - debug
-      - esbuild
-      - fibers
-      - file-loader
-      - node-notifier
-      - node-sass
-      - supports-color
-      - ts-node
-      - uglify-js
-      - utf-8-validate
-      - webpack-cli
     dev: false
 
   file:projects/logger.tgz:
-    resolution: {integrity: sha512-QewDKilMcUz4CrHMnPWQGXeL/kRVS7N8kd0K7pPMC+Z+WcDGk72YBhg0DH82QyeaAuPEjevs1GTbhmKv+8nMIQ==, tarball: file:projects/logger.tgz}
+    resolution: {integrity: sha512-f0BXlJ5nw1kv+ldyIPeIMbf59+mcUpoX3JdtjZA1RfNASoBs5XCoCTC5u6J2MJWXdOXx/2/C+Ih+RySOZnHH8A==, tarball: file:projects/logger.tgz}
     name: '@rush-temp/logger'
     version: 0.0.0
     dependencies:
-      '@rushstack/heft': 0.56.0
+      '@rushstack/heft': 0.57.1
       '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       typescript: 5.1.3
     transitivePeerDependencies:
-      - '@parcel/css'
-      - '@swc/core'
       - '@types/node'
-      - bufferutil
-      - canvas
-      - clean-css
-      - csso
-      - debug
-      - esbuild
-      - fibers
-      - file-loader
-      - node-notifier
-      - node-sass
-      - supports-color
-      - ts-node
-      - uglify-js
-      - utf-8-validate
-      - webpack-cli
     dev: false
 
   file:projects/set-immediate.tgz:
-    resolution: {integrity: sha512-D/CTSAJrvq9WXRpoYyHvokVRHZa4Q/YxV7xOUQsYEsgL5tIDhATXvRLZ5HTiRwVV3BnKbwEVcJEirxtwue2N+A==, tarball: file:projects/set-immediate.tgz}
+    resolution: {integrity: sha512-jARWYaO4F2A5d+CoKLZ32hCcBxfPYZiNsoEHBqlJ1ltWOrd0FziZskg/yTNs0lHkTNxvJFH74QaCj0wVcBsCbg==, tarball: file:projects/set-immediate.tgz}
     name: '@rush-temp/set-immediate'
     version: 0.0.0
     dependencies:
-      '@rushstack/heft': 0.56.0
+      '@rushstack/heft': 0.57.1
       '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       setimmediate: 1.0.5
       typescript: 5.1.3
     transitivePeerDependencies:
-      - '@parcel/css'
-      - '@swc/core'
       - '@types/node'
-      - bufferutil
-      - canvas
-      - clean-css
-      - csso
-      - debug
-      - esbuild
-      - fibers
-      - file-loader
-      - node-notifier
-      - node-sass
-      - supports-color
-      - ts-node
-      - uglify-js
-      - utf-8-validate
-      - webpack-cli
     dev: false
 
   file:projects/singleton.tgz:
-    resolution: {integrity: sha512-StSwWa8f3peSgNwszmOqcSQEi7lE1mkqRbLlddOUuekLNrWVw16mxItizPJXyRjZk1XGmhAgV5Hd8/KPGNDhpg==, tarball: file:projects/singleton.tgz}
+    resolution: {integrity: sha512-zgDUy1K3IJxi+SclHFO8tK4S55OxhaIJYWDWBexEi+ei+vVLjzYvVWDB6h9DLu07OLBiiv+OSCk53JQlH2p1HA==, tarball: file:projects/singleton.tgz}
     name: '@rush-temp/singleton'
     version: 0.0.0
     dependencies:
-      '@rushstack/heft': 0.56.0
+      '@rushstack/heft': 0.57.1
       '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       typescript: 5.1.3
     transitivePeerDependencies:
-      - '@parcel/css'
-      - '@swc/core'
       - '@types/node'
-      - bufferutil
-      - canvas
-      - clean-css
-      - csso
-      - debug
-      - esbuild
-      - fibers
-      - file-loader
-      - node-notifier
-      - node-sass
-      - supports-color
-      - ts-node
-      - uglify-js
-      - utf-8-validate
-      - webpack-cli
     dev: false
 
   file:projects/type-guards.tgz:
-    resolution: {integrity: sha512-2SEBlmbkNz6bhGuUAbe0TGzSId1jIpBF8ADK9dENGbNiF80PVVR1YU9194T3dbxw3UcuFqpyNBCQVVQcObsnrA==, tarball: file:projects/type-guards.tgz}
+    resolution: {integrity: sha512-pN795jVQYtFtF4JRv5R5dpxGuWloSQdHCNtoeH+ntrKEAc8Pm4Yr1SSNptfq7TDLhE3YWrCOYR8jMlV6cscXKw==, tarball: file:projects/type-guards.tgz}
     name: '@rush-temp/type-guards'
     version: 0.0.0
     dependencies:
-      '@rushstack/heft': 0.56.0
+      '@rushstack/heft': 0.57.1
       '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       typescript: 5.1.3
     transitivePeerDependencies:
-      - '@parcel/css'
-      - '@swc/core'
       - '@types/node'
-      - bufferutil
-      - canvas
-      - clean-css
-      - csso
-      - debug
-      - esbuild
-      - fibers
-      - file-loader
-      - node-notifier
-      - node-sass
-      - supports-color
-      - ts-node
-      - uglify-js
-      - utf-8-validate
-      - webpack-cli
     dev: false
 
   file:projects/type-helpers.tgz:
-    resolution: {integrity: sha512-YdyseSLsVKPpO/dUnUMDGl/6d1/1smY8f3sbqrS097FY1Cb/6K7poCJ/3GdhFPVbz1I+QHIPRTagUI2pyI+nnw==, tarball: file:projects/type-helpers.tgz}
+    resolution: {integrity: sha512-tyFN5kFSfOdxG+fNnpixdFWgEkdDjmff65ncvqGG2GML85D64IG4nZeots8iFoeNPGs6B8WuYHtLNHaFuzkOgg==, tarball: file:projects/type-helpers.tgz}
     name: '@rush-temp/type-helpers'
     version: 0.0.0
     dependencies:
-      '@rushstack/heft': 0.56.0
+      '@rushstack/heft': 0.57.1
       '@rushstack/heft-jest-plugin': 0.7.11(@rushstack/heft@0.56.0)
       '@rushstack/heft-web-rig': 0.18.10(@rushstack/heft@0.56.0)
       '@types/heft-jest': 1.0.3
       typescript: 5.1.3
     transitivePeerDependencies:
-      - '@parcel/css'
-      - '@swc/core'
       - '@types/node'
-      - bufferutil
-      - canvas
-      - clean-css
-      - csso
-      - debug
-      - esbuild
-      - fibers
-      - file-loader
-      - node-notifier
-      - node-sass
-      - supports-color
-      - ts-node
-      - uglify-js
-      - utf-8-validate
-      - webpack-cli
     dev: false

@@ -1,0 +1,25 @@
+{
+  "name": "@rhombus-toolkit/heft-web-rig",
+  "private": true,
+  "version": "1.2.2",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rhombus-toolkit/ts.git",
+    "directory": "libraries/heft-web-rig"
+  },
+  "sideEffects": false,
+  "scripts": {
+    "test": "",
+    "build": "",
+    "build:watch": ""
+  },
+  "keywords": [],
+  "author": "Thomas Butler",
+  "dependencies": {
+    "@rushstack/heft-web-rig": "^0.18.19",
+    "@rushstack/heft": "~0.57.1"
+  },
+  "devDependencies": {
+  }
+}

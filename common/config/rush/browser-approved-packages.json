@@ -7,6 +7,10 @@
       "allowedCategories": [ "production" ]
     },
     {
+      "name": "@rhombus-toolkit/heft-web-rig",
+      "allowedCategories": [ "production" ]
+    },
+    {
       "name": "@rhombus-toolkit/set-immediate",
       "allowedCategories": [ "production" ]
     },
@@ -16,7 +20,7 @@
     },
     {
       "name": "@rushstack/heft",
-      "allowedCategories": [ "production" ]
+      "allowedCategories": [ "production", "tools" ]
     },
     {
       "name": "@rushstack/heft-jest-plugin",
@@ -24,7 +28,7 @@
     },
     {
       "name": "@rushstack/heft-web-rig",
-      "allowedCategories": [ "production" ]
+      "allowedCategories": [ "production", "tools" ]
     },
     {
       "name": "eslint",

@@ -7,7 +7,7 @@
         "**/.DS_Store": false,
         "**/Thumbs.db": false,
         "libraries/*/temp/": true,
-        "libraries/*/lib*/": true,
+        "libraries/*/lib*/": false,
         "libraries/*/CHANGELOG.*": true,
         "LICENSE": false,
         "**/*.md": false,

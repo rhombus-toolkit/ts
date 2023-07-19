@@ -1,0 +1,33 @@
+{
+  "$schema": "http://json.schemastore.org/tsconfig",
+  "extends": "@rushstack/heft-web-rig/profiles/app/tsconfig-base.json",
+  "compilerOptions": {
+    "outDir": "../../../../../lib",
+    "rootDir": "../../../../../src",
+    "rootDirs": [
+      "../../../../../src",
+      "../../../../../temp/sass-ts"
+    ],
+    "typeRoots": [
+      "../../../../../node_modules/@types",
+      // "../../node_modules/@types"
+    ],
+    "useUnknownInCatchVariables": true,
+    "types": [
+      // "heft-jest"
+    ],
+    "moduleResolution": "Bundler",
+    "lib": [
+      "es5",
+      "scripthost",
+      "es2015.collection",
+      "es2015.promise",
+      "es2015.iterable",
+      "dom"
+    ]
+  },
+  "include": [
+    "../../../../../src/**/*.ts",
+    "../../../../../src/**/*.tsx"
+  ]
+}

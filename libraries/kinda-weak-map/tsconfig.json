@@ -1,5 +1,5 @@
 {
-  "extends": "@rushstack/heft-web-rig/profiles/library/tsconfig-base.json",
+  "extends": "@rhombus-toolkit/heft-web-rig/profiles/library/tsconfig-base.json",
   "compilerOptions": {
     "target": "ES2021",
     "module": "ES2020",

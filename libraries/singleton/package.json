@@ -22,9 +22,8 @@
     "@rhombus-toolkit/func": "1.2.2"
   },
   "devDependencies": {
-    "@rushstack/heft-web-rig": "^0.18.10",
-    
-    "@rushstack/heft": "^0.57.0",
-    "typescript": "^5.1.3"
+        "@rushstack/heft": "~0.57.1",
+    "typescript": "^5.1.3",
+    "@rhombus-toolkit/heft-web-rig": "~1.2.2"
   }
 }

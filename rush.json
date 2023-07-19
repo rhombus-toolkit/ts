@@ -139,6 +139,12 @@
       "projectFolder": "libraries/type-helpers",
       "reviewCategory": "production",
       "shouldPublish": true
+    },
+    {
+      "packageName": "@rhombus-toolkit/heft-web-rig",
+      "projectFolder": "rigs/heft-web-rig",
+      "reviewCategory": "tools",
+      "shouldPublish": false
     }
   ]
 }

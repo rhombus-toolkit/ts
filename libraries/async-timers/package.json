@@ -1,6 +1,6 @@
 {
   "name": "@rhombus-toolkit/async-timers",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "description": "",
   "repository": {
     "type": "git",
@@ -17,8 +17,8 @@
   "keywords": [],
   "author": "Thomas Butler",
   "dependencies": {
-    "@rhombus-toolkit/func": "1.2.2",
-    "@rhombus-toolkit/set-immediate": "1.2.2"
+    "@rhombus-toolkit/func": "1.3.0",
+    "@rhombus-toolkit/set-immediate": "1.2.3"
   },
   "devDependencies": {
         "@rushstack/heft": "~0.57.1",

@@ -1,6 +1,13 @@
 # Change Log - @rhombus-toolkit/func
 
-This log was last generated on Wed, 19 Jul 2023 01:33:48 GMT and should not be manually modified.
+This log was last generated on Sat, 22 Jul 2023 12:25:14 GMT and should not be manually modified.
+
+## 2.0.0
+Sat, 22 Jul 2023 12:25:14 GMT
+
+### Breaking changes
+
+- make Func args readonly (tuples)
 
 ## 1.3.0
 Wed, 19 Jul 2023 01:33:48 GMT

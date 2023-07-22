@@ -1,6 +1,11 @@
 # Change Log - @rhombus-toolkit/logger
 
-This log was last generated on Wed, 19 Jul 2023 01:33:48 GMT and should not be manually modified.
+This log was last generated on Sat, 22 Jul 2023 12:22:27 GMT and should not be manually modified.
+
+## 1.2.4
+Sat, 22 Jul 2023 12:22:27 GMT
+
+_Version update only_
 
 ## 1.2.3
 Wed, 19 Jul 2023 01:33:48 GMT

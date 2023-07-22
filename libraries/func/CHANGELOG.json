@@ -2,6 +2,18 @@
   "name": "@rhombus-toolkit/func",
   "entries": [
     {
+      "version": "3.0.0",
+      "tag": "@rhombus-toolkit/func_v3.0.0",
+      "date": "Sat, 22 Jul 2023 15:29:40 GMT",
+      "comments": {
+        "major": [
+          {
+            "comment": "switched to the more advanced, generic version"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.0.2",
       "tag": "@rhombus-toolkit/func_v2.0.2",
       "date": "Sat, 22 Jul 2023 12:34:22 GMT",

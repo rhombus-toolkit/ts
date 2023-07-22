@@ -2,6 +2,18 @@
   "name": "@rhombus-toolkit/func",
   "entries": [
     {
+      "version": "2.0.2",
+      "tag": "@rhombus-toolkit/func_v2.0.2",
+      "date": "Sat, 22 Jul 2023 12:34:22 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "include the build this time!"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.0.0",
       "tag": "@rhombus-toolkit/func_v2.0.0",
       "date": "Sat, 22 Jul 2023 12:25:14 GMT",

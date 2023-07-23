@@ -17,7 +17,7 @@
   "keywords": [],
   "author": "Thomas Butler",
   "dependencies": {
-    "@rhombus-toolkit/func": "2.0.0"
+    "@rhombus-toolkit/func": "3.0.0"
   },
   "devDependencies": {
         "@rushstack/heft": "~0.58.0",

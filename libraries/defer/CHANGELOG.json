@@ -2,6 +2,18 @@
   "name": "@rhombus-toolkit/defer",
   "entries": [
     {
+      "version": "1.3.0",
+      "tag": "@rhombus-toolkit/defer_v1.3.0",
+      "date": "Sun, 23 Jul 2023 01:04:05 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "brought in AbortablePromise"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.2.3",
       "tag": "@rhombus-toolkit/defer_v1.2.3",
       "date": "Wed, 19 Jul 2023 01:33:48 GMT",

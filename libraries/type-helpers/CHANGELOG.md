@@ -1,6 +1,13 @@
 # Change Log - @rhombus-toolkit/type-helpers
 
-This log was last generated on Sat, 22 Jul 2023 12:25:14 GMT and should not be manually modified.
+This log was last generated on Sun, 23 Jul 2023 01:04:05 GMT and should not be manually modified.
+
+## 1.5.0
+Sun, 23 Jul 2023 01:04:05 GMT
+
+### Minor changes
+
+- un-iced string join/split & flattenMap
 
 ## 1.4.1
 Sat, 22 Jul 2023 12:25:14 GMT

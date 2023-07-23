@@ -2,6 +2,18 @@
   "name": "@rhombus-toolkit/type-helpers",
   "entries": [
     {
+      "version": "1.5.0",
+      "tag": "@rhombus-toolkit/type-helpers_v1.5.0",
+      "date": "Sun, 23 Jul 2023 01:04:05 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "un-iced string join/split & flattenMap"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.4.1",
       "tag": "@rhombus-toolkit/type-helpers_v1.4.1",
       "date": "Sat, 22 Jul 2023 12:25:14 GMT",

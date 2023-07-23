@@ -1,6 +1,13 @@
 # Change Log - @rhombus-toolkit/defer
 
-This log was last generated on Wed, 19 Jul 2023 01:33:48 GMT and should not be manually modified.
+This log was last generated on Sun, 23 Jul 2023 01:04:05 GMT and should not be manually modified.
+
+## 1.3.0
+Sun, 23 Jul 2023 01:04:05 GMT
+
+### Minor changes
+
+- brought in AbortablePromise
 
 ## 1.2.3
 Wed, 19 Jul 2023 01:33:48 GMT

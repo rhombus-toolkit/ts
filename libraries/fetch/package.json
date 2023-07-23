@@ -1,6 +1,6 @@
 {
   "name": "@rhombus-toolkit/fetch",
-  "version": "1.2.4",
+  "version": "1.2.5",
   "description": "",
   "repository": {
     "type": "git",
@@ -20,7 +20,7 @@
   "author": "Thomas Butler",
   "dependencies": {
     "@rhombus-toolkit/func": "2.0.0",
-    "@rhombus-toolkit/type-helpers": "1.4.1"
+    "@rhombus-toolkit/type-helpers": "1.5.0"
   },
   "devDependencies": {
         "@rushstack/heft": "~0.58.0",

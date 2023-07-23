@@ -19,7 +19,7 @@
   "keywords": [],
   "author": "Thomas Butler",
   "dependencies": {
-    "@rhombus-toolkit/func": "2.0.0",
+    "@rhombus-toolkit/func": "3.0.0",
     "@rhombus-toolkit/type-helpers": "1.5.1"
   },
   "devDependencies": {

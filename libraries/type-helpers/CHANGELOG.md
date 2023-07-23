@@ -1,6 +1,13 @@
 # Change Log - @rhombus-toolkit/type-helpers
 
-This log was last generated on Sun, 23 Jul 2023 01:04:05 GMT and should not be manually modified.
+This log was last generated on Sun, 23 Jul 2023 01:12:00 GMT and should not be manually modified.
+
+## 1.5.1
+Sun, 23 Jul 2023 01:12:00 GMT
+
+### Patches
+
+- someone forgot to build before the last release...
 
 ## 1.5.0
 Sun, 23 Jul 2023 01:04:05 GMT

@@ -3,8 +3,10 @@
   "compilerOptions": {
     "target": "ESNext",
     "lib": [
-      "ESNext"
+      "ESNext", "DOM"
     ],
-    "types": []
-  }
+    "types": [],
+    "rootDir": "src"
+  },
+  "include": ["src/**/*.ts"]
 }

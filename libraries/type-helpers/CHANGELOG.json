@@ -2,6 +2,18 @@
   "name": "@rhombus-toolkit/type-helpers",
   "entries": [
     {
+      "version": "1.5.1",
+      "tag": "@rhombus-toolkit/type-helpers_v1.5.1",
+      "date": "Sun, 23 Jul 2023 01:12:00 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "someone forgot to build before the last release..."
+          }
+        ]
+      }
+    },
+    {
       "version": "1.5.0",
       "tag": "@rhombus-toolkit/type-helpers_v1.5.0",
       "date": "Sun, 23 Jul 2023 01:04:05 GMT",

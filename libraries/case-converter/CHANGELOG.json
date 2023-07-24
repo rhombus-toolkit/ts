@@ -2,6 +2,18 @@
   "name": "@rhombus-toolkit/case-converter",
   "entries": [
     {
+      "version": "1.2.4",
+      "tag": "@rhombus-toolkit/case-converter_v1.2.4",
+      "date": "Mon, 24 Jul 2023 08:06:25 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "updated workspace refs"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.2.3",
       "tag": "@rhombus-toolkit/case-converter_v1.2.3",
       "date": "Wed, 19 Jul 2023 01:33:48 GMT",

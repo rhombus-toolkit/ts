@@ -2,6 +2,18 @@
   "name": "@rhombus-toolkit/func",
   "entries": [
     {
+      "version": "3.1.0",
+      "tag": "@rhombus-toolkit/func_v3.1.0",
+      "date": "Mon, 24 Jul 2023 08:06:25 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "separated generic implementation to separate export"
+          }
+        ]
+      }
+    },
+    {
       "version": "3.0.0",
       "tag": "@rhombus-toolkit/func_v3.0.0",
       "date": "Sat, 22 Jul 2023 15:29:40 GMT",

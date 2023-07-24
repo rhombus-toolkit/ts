@@ -8,8 +8,5 @@
       "DOM.Iterable"
     ],
     "types": []
-  },
-  "include": [
-    "src/index.ts"
-  ]
+  }
 }

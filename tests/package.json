@@ -1,0 +1,31 @@
+{
+  "name": "@rhombus-toolkit/tests",
+  "version": "1.0.0",
+  "description": "",
+  "private": "true",
+  "main": "index.js",
+  "scripts": {
+    "build":""
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@rhombus-toolkit/async-timers": "workspace:*",
+    "@rhombus-toolkit/audio-context": "workspace:*",
+    "@rhombus-toolkit/case-converter": "workspace:*",
+    "@rhombus-toolkit/defer": "workspace:*",
+    "@rhombus-toolkit/fetch": "workspace:*",
+    "@rhombus-toolkit/func": "workspace:*",
+    "@rhombus-toolkit/heft-web-rig": "workspace:*",
+    "@rhombus-toolkit/kinda-weak-map": "workspace:*",
+    "@rhombus-toolkit/logger": "workspace:*",
+    "@rhombus-toolkit/set-immediate": "workspace:*",
+    "@rhombus-toolkit/singleton": "workspace:*",
+    "@rhombus-toolkit/type-guards": "workspace:*",
+    "@rhombus-toolkit/type-helpers": "workspace:*"
+  },
+  "devDependencies": {
+    "@rushstack/heft": "~0.57.1"
+  }
+}

@@ -5,18 +5,17 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
   "rushVersion": "5.100.1",
-  "pnpmVersion": "8.6.3",
+  "pnpmVersion": "8.6.10",
   "pnpmOptions": {
     "pnpmStore": "global",
     "strictPeerDependencies": true,
-    "resolutionStrategy": "fast",
     "preventManualShrinkwrapChanges": true,
-    "useWorkspaces": false
+    "useWorkspaces": true
   },
-  "nodeSupportedVersionRange": ">=12.13.0 <13.0.0 || >=14.15.0 <15.0.0 || >=16.13.0 <17.0.0 || >=20.3.0 < 21.0.0",
+  "nodeSupportedVersionRange": ">=18.0.0 < 19.0.0",
   "suppressNodeLtsWarning": false,
   "ensureConsistentVersions": true, //In some cases you may want this turned on, but need to allow certain packages to use a different In those cases, you will need to add an entry to the "allowedAlternativeVersions" section of the common-versions.json.
-  "projectFolderMinDepth": 2,
+  "projectFolderMinDepth": 1,
   "projectFolderMaxDepth": 2,
   // "allowMostlyStandardPackageNames": true,
   "approvedPackagesPolicy": {
@@ -24,7 +23,8 @@
       // Some example categories:
       "production", // projects that ship to production
       "tools", // non-shipping projects that are part of the developer toolchain
-      "prototypes" // experiments that should mostly be ignored by the review process
+      "prototypes",
+      "test"
     ],
     "ignoredNpmScopes": [
       "@types"
@@ -144,6 +144,12 @@
       "packageName": "@rhombus-toolkit/heft-web-rig",
       "projectFolder": "rigs/heft-web-rig",
       "reviewCategory": "tools",
+      "shouldPublish": false
+    },
+    {
+      "packageName": "@rhombus-toolkit/tests",
+      "projectFolder": "tests",
+      "reviewCategory": "test",
       "shouldPublish": false
     }
   ]

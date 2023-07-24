@@ -20,6 +20,6 @@
     "@rushstack/heft-web-rig": "^0.18.19",
     "@rushstack/heft": "~0.57.1"
   },
-  "devDependencies": {
+  "devDependencies": {"@rushstack/heft":"~0.57.1"
   }
 }

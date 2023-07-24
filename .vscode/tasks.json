@@ -1,0 +1,19 @@
+{
+  "tasks": [
+    {
+      "label": "set node verson",
+      "type": "shell",
+      "command": "source ~/.nvs/nvs.sh use lts",
+      "runOptions": {
+        "runOn": "folderOpen"
+      },
+      "group": {
+        "kind": "none"
+      },
+      "presentation": {
+        "echo": false,
+        "reveal": "silent"
+      }
+    }
+  ]
+}

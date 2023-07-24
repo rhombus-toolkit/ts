@@ -3,24 +3,60 @@
   "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/approved-packages.schema.json",
   "packages": [
     {
+      "name": "@rhombus-toolkit/async-timers",
+      "allowedCategories": [ "test" ]
+    },
+    {
+      "name": "@rhombus-toolkit/audio-context",
+      "allowedCategories": [ "test" ]
+    },
+    {
+      "name": "@rhombus-toolkit/case-converter",
+      "allowedCategories": [ "test" ]
+    },
+    {
+      "name": "@rhombus-toolkit/defer",
+      "allowedCategories": [ "test" ]
+    },
+    {
+      "name": "@rhombus-toolkit/fetch",
+      "allowedCategories": [ "test" ]
+    },
+    {
       "name": "@rhombus-toolkit/func",
-      "allowedCategories": [ "production" ]
+      "allowedCategories": [ "production", "test" ]
     },
     {
       "name": "@rhombus-toolkit/heft-web-rig",
-      "allowedCategories": [ "production" ]
+      "allowedCategories": [ "production", "test" ]
+    },
+    {
+      "name": "@rhombus-toolkit/kinda-weak-map",
+      "allowedCategories": [ "test" ]
+    },
+    {
+      "name": "@rhombus-toolkit/logger",
+      "allowedCategories": [ "test" ]
     },
     {
       "name": "@rhombus-toolkit/set-immediate",
-      "allowedCategories": [ "production" ]
+      "allowedCategories": [ "production", "test" ]
+    },
+    {
+      "name": "@rhombus-toolkit/singleton",
+      "allowedCategories": [ "test" ]
+    },
+    {
+      "name": "@rhombus-toolkit/type-guards",
+      "allowedCategories": [ "test" ]
     },
     {
       "name": "@rhombus-toolkit/type-helpers",
-      "allowedCategories": [ "production" ]
+      "allowedCategories": [ "production", "test" ]
     },
     {
       "name": "@rushstack/heft",
-      "allowedCategories": [ "production", "tools" ]
+      "allowedCategories": [ "production", "test", "tools" ]
     },
     {
       "name": "@rushstack/heft-jest-plugin",

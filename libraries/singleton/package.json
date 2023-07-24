@@ -22,7 +22,7 @@
     "@rhombus-toolkit/func": "workspace:*"
   },
   "devDependencies": {
-        "@rushstack/heft": "~0.57.1",
+        "@rushstack/heft": "~0.58.0",
     "typescript": "^5.1.3",
     "@rhombus-toolkit/heft-web-rig": "workspace:*"
   }

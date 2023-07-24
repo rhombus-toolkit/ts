@@ -17,3 +17,6 @@ export type Split<S extends Stringable, D extends Stringable> = _Split<S, D, []>
 type _Split<S extends Stringable, D extends Stringable, Acc extends readonly string[]> =
   S extends `${infer T}${D}${infer U}` ? _Split<U, D, IfEmpty<T, Acc, [...Acc, T]>> : //  [T, ..._Split<U, D>] :
   IfEmpty<S, Acc, [...Acc, S]>;
+
+
+type asdf = Join<['', 'asdf'], '.'>

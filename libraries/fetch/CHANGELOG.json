@@ -2,6 +2,21 @@
   "name": "@rhombus-toolkit/fetch",
   "entries": [
     {
+      "version": "1.2.10",
+      "tag": "@rhombus-toolkit/fetch_v1.2.10",
+      "date": "Mon, 24 Jul 2023 11:27:14 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@rhombus-toolkit/func\" to `3.2.0`"
+          },
+          {
+            "comment": "Updating dependency \"@rhombus-toolkit/type-helpers\" to `1.5.5`"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.2.9",
       "tag": "@rhombus-toolkit/fetch_v1.2.9",
       "date": "Mon, 24 Jul 2023 10:58:00 GMT",

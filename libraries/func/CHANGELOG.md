@@ -1,6 +1,13 @@
 # Change Log - @rhombus-toolkit/func
 
-This log was last generated on Mon, 24 Jul 2023 08:06:25 GMT and should not be manually modified.
+This log was last generated on Mon, 24 Jul 2023 11:27:14 GMT and should not be manually modified.
+
+## 3.2.0
+Mon, 24 Jul 2023 11:27:14 GMT
+
+### Minor changes
+
+- project exports ts only now (it was only types in the first place)
 
 ## 3.1.0
 Mon, 24 Jul 2023 08:06:25 GMT

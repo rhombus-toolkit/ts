@@ -2,6 +2,18 @@
   "name": "@rhombus-toolkit/func",
   "entries": [
     {
+      "version": "3.2.0",
+      "tag": "@rhombus-toolkit/func_v3.2.0",
+      "date": "Mon, 24 Jul 2023 11:27:14 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "project exports ts only now (it was only types in the first place)"
+          }
+        ]
+      }
+    },
+    {
       "version": "3.1.0",
       "tag": "@rhombus-toolkit/func_v3.1.0",
       "date": "Mon, 24 Jul 2023 08:06:25 GMT",

@@ -2,6 +2,18 @@
   "name": "@rhombus-toolkit/logger",
   "entries": [
     {
+      "version": "1.2.6",
+      "tag": "@rhombus-toolkit/logger_v1.2.6",
+      "date": "Mon, 24 Jul 2023 11:27:14 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@rhombus-toolkit/func\" to `3.2.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.2.5",
       "tag": "@rhombus-toolkit/logger_v1.2.5",
       "date": "Mon, 24 Jul 2023 08:06:25 GMT",

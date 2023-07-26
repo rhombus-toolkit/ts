@@ -2,6 +2,18 @@
   "name": "@rhombus-toolkit/type-helpers",
   "entries": [
     {
+      "version": "1.7.2",
+      "tag": "@rhombus-toolkit/type-helpers_v1.7.2",
+      "date": "Wed, 26 Jul 2023 12:05:57 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixed erroneous module resolution error"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.7.1",
       "tag": "@rhombus-toolkit/type-helpers_v1.7.1",
       "date": "Wed, 26 Jul 2023 11:58:55 GMT",

@@ -1,6 +1,6 @@
 {
   "name": "@rhombus-toolkit/type-helpers",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "",
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
     "@rhombus-toolkit/heft-web-rig": "workspace:*"
   },
   "devDependencies": {
-        "@rushstack/heft": "~0.58.0",
+    "@rushstack/heft": "~0.58.0",
     "typescript": "^5.1.3"
   }
 }

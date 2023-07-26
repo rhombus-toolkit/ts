@@ -144,7 +144,7 @@
        * the folder that contains rush.json.  If custom parameters are associated with this command, their
        * values will be appended to the end of this string.
        */
-      "shellCommand": "rush build && rush publish --apply --target-branch main --publish"
+      "shellCommand": "rush build && git add -A && rush change && git add -A && rush publish --apply --target-branch main --publish"
 
       /**
        * If your "shellCommand" script depends on NPM packages, the recommended best practice is

@@ -20,7 +20,7 @@
     "@rhombus-toolkit/func": "workspace:*"
   },
   "devDependencies": {
-        "@rhombus-toolkit/heft-web-rig": "^0.17.0",
+        "@rhombus-toolkit/heft-web-rig": "^2.1.0",
     "@rushstack/eslint-config": "^3.0.0",
     "@rushstack/heft": "^0.58.0"
   }

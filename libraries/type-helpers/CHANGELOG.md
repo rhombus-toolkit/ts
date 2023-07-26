@@ -1,6 +1,13 @@
 # Change Log - @rhombus-toolkit/type-helpers
 
-This log was last generated on Wed, 26 Jul 2023 12:35:47 GMT and should not be manually modified.
+This log was last generated on Wed, 26 Jul 2023 12:47:20 GMT and should not be manually modified.
+
+## 1.7.4
+Wed, 26 Jul 2023 12:47:20 GMT
+
+### Patches
+
+- set types field in package.json
 
 ## 1.7.3
 Wed, 26 Jul 2023 12:35:47 GMT

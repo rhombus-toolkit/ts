@@ -1,6 +1,6 @@
 {
   "name": "@rhombus-toolkit/type-helpers",
-  "version": "1.7.3",
+  "version": "1.7.4",
   "description": "",
   "repository": {
     "type": "git",
@@ -8,6 +8,7 @@
     "directory": "libraries/type-helpers"
   },
   "main": "lib/index.js",
+  "types": "src/index.ts",
   "sideEffects": false,
   "scripts": {
     "test": "heft test --clean",

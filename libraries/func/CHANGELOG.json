@@ -2,6 +2,18 @@
   "name": "@rhombus-toolkit/func",
   "entries": [
     {
+      "version": "3.5.1",
+      "tag": "@rhombus-toolkit/func_v3.5.1",
+      "date": "Wed, 26 Jul 2023 11:58:55 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixed up tsconfig"
+          }
+        ]
+      }
+    },
+    {
       "version": "3.5.0",
       "tag": "@rhombus-toolkit/func_v3.5.0",
       "date": "Wed, 26 Jul 2023 08:21:53 GMT",

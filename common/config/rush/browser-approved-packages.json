@@ -67,6 +67,10 @@
       "allowedCategories": [ "production", "tools" ]
     },
     {
+      "name": "@tsconfig/recommended",
+      "allowedCategories": [ "production", "test", "tools" ]
+    },
+    {
       "name": "eslint",
       "allowedCategories": [ "production" ]
     },

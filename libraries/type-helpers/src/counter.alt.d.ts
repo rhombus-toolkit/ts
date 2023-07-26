@@ -2,7 +2,7 @@ import { Length, Skip, Tail } from './array';
 import { Cast } from './cast';
 
 
-type CounterArray = never[];
+type CounterArray = any[];
 type Next<I extends CounterArray> = [never, ...I];
 
 
@@ -31,3 +31,9 @@ export type Add<X extends number, Y extends number> =
 
 export type Subtract<X extends number, Y extends number> =
     Length<Skip<Y, Counter<X>>>;
+
+export type Multiply<X extends number, Y extends number> = Length<_Mult<_Counter<X>, _Counter<Y>, []>>;
+type _Mult<X extends any[], Y extends any[], R extends any[]> =
+    Length<Y> extends 0 ? R :
+    _Mult<X, Prev<Y>, [...R, ...X]>;
+

@@ -14,7 +14,8 @@
         "**/.*": true,
         "common/config/rush/??[tonp]*": true,
         "common/?[!o]*": true,
-        "**/node_modules": true
+        "**/node_modules": true,
+        "**/rush-logs": true
     },
     "explorer.excludeGitIgnore": false,
     "explorerExclude.backup": {}

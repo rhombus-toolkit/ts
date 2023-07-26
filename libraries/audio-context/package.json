@@ -1,6 +1,6 @@
 {
   "name": "@rhombus-toolkit/audio-context",
-  "version": "2.2.0",
+  "version": "2.2.1",
   "description": "",
   "repository": {
     "type": "git",
@@ -17,9 +17,11 @@
   },
   "keywords": [],
   "author": "Thomas Butler",
+  "dependencies": {
+    "@rhombus-toolkit/heft-web-rig": "workspace:*"
+  },
   "devDependencies": {
         "@rushstack/heft": "~0.58.0",
-    "typescript": "^5.1.3",
-    "@rhombus-toolkit/heft-web-rig": "workspace:*"
+    "typescript": "^5.1.3"
   }
 }

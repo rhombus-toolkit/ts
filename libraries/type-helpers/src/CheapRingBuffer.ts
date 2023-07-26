@@ -1,7 +1,11 @@
 export class CheapRingBuffer<T> extends Array<T> {
-  #position = 0;
+  constructor(readonly maxLength: number) {
+    super();
+  }
   override push(value: T) {
-    super.shift();
+    if (this.length == this.maxLength) {
+      super.shift();
+    }
     return super.push(value);
   }
 }

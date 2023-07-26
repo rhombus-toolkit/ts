@@ -17,9 +17,7 @@
   "keywords": [],
   "author": "Thomas Butler",
   "dependencies": {
-    "@rushstack/heft-web-rig": "^0.18.19",
-    "@rushstack/heft": "~0.57.1"
-  },
-  "devDependencies": {"@rushstack/heft":"~0.57.1"
+    "@rushstack/heft-web-rig": "~0.18.20",
+    "@rushstack/heft": "~0.58.0"
   }
 }

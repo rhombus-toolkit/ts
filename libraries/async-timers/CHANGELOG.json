@@ -2,6 +2,26 @@
   "name": "@rhombus-toolkit/async-timers",
   "entries": [
     {
+      "version": "1.4.2",
+      "tag": "@rhombus-toolkit/async-timers_v1.4.2",
+      "date": "Wed, 26 Jul 2023 11:58:55 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixed up tsconfig"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@rhombus-toolkit/func\" to `3.5.1`"
+          },
+          {
+            "comment": "Updating dependency \"@rhombus-toolkit/set-immediate\" to `1.3.1`"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.4.1",
       "tag": "@rhombus-toolkit/async-timers_v1.4.1",
       "date": "Wed, 26 Jul 2023 08:21:53 GMT",

@@ -1,13 +1,3 @@
 {
-  "extends": "@rhombus-toolkit/heft-web-rig/profiles/library/tsconfig-base.json",
-  "compilerOptions": {
-    "target": "ES2021",
-    "module": "ES2020",
-    "lib": [
-      "ES2015",
-      "ES2021.WeakRef"
-    ],
-    "importHelpers": false,
-    "types": []
-  }
+  "extends": "@rhombus-toolkit/heft-web-rig/profiles/library/tsconfig-base.json"
 }

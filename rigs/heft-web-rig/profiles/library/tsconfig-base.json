@@ -1,33 +1,38 @@
 {
   "$schema": "http://json.schemastore.org/tsconfig",
-  "extends": "@rushstack/heft-web-rig/profiles/app/tsconfig-base.json",
   "compilerOptions": {
     "outDir": "../../../../../lib",
-    "rootDir": "../../../../../src",
-    "rootDirs": [
-      "../../../../../src",
-      "../../../../../temp/sass-ts"
-    ],
-    "typeRoots": [
-      "../../../../../node_modules/@types",
-      // "../../node_modules/@types"
-    ],
+    "forceConsistentCasingInFileNames": true,
+    "jsx": "react",
+    "allowJs": false,
+    "declaration": true,
+    "sourceMap": true,
+    "declarationMap": true,
+    "inlineSources": true,
+    "experimentalDecorators": false,
+    "strict": true,
     "useUnknownInCatchVariables": true,
+    "esModuleInterop": true,
+    "noEmitOnError": false,
+    "allowUnreachableCode": true,
+    "importHelpers": false,
     "types": [
       // "heft-jest"
     ],
+    "module": "ESNext",
     "moduleResolution": "Bundler",
+    "moduleDetection": "force",
+    "target": "ES2020",
     "lib": [
-      "es5",
-      "scripthost",
-      "es2015.collection",
-      "es2015.promise",
-      "es2015.iterable",
-      "dom"
-    ]
+      "ESNext",
+      "DOM",
+      "ScriptHost"
+    ],
+    "skipLibCheck": true,
+    "incremental": true,
+    "isolatedModules": true
   },
-  "include": [
-    "../../../../../src/**/*.ts",
-    "../../../../../src/**/*.tsx"
+  "exclude": [
+    "**/*.test-d.ts"
   ]
 }

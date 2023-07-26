@@ -2,6 +2,18 @@
   "name": "@rhombus-toolkit/defer",
   "entries": [
     {
+      "version": "1.4.1",
+      "tag": "@rhombus-toolkit/defer_v1.4.1",
+      "date": "Wed, 26 Jul 2023 11:58:55 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "fixed up tsconfig"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.4.0",
       "tag": "@rhombus-toolkit/defer_v1.4.0",
       "date": "Wed, 26 Jul 2023 08:09:07 GMT",

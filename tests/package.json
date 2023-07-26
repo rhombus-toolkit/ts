@@ -26,6 +26,6 @@
     "@rhombus-toolkit/type-helpers": "workspace:*"
   },
   "devDependencies": {
-    "@rushstack/heft": "~0.57.1"
+    "@rushstack/heft": "~0.58.0"
   }
 }

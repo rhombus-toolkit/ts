@@ -1,8 +1,9 @@
 import { Func } from '@rhombus-toolkit/func';
-import { Cast } from './cast';
-import { Dec, Inc } from './counter';
-import { DeepDictionary, DeepDictionaryItem } from './deep-record';
-import { fromEntries } from './obj';
+import { Cast } from '../src/cast';
+import { Dec, Inc } from '../src/counter';
+import { DeepDictionary, DeepDictionaryItem, DeepRecord, DeepRecordItem } from '../src/deep-record';
+import { fromEntries } from '../src/obj';
+import { Falsy } from '../src/truthy';
 // type _flattenMap<T extends DeepDictionaryItem<Func>, prefix extends string = '', CurrentDepth extends number = 0> =
 //   CurrentDepth extends 10 ? never :
 //   T extends DeepDictionary<Func> ? {
@@ -30,12 +31,13 @@ function join<S1 extends string, S2 extends string>(a: S1, b: S2) {
   return [a, b].filter(Boolean).join(".") as join<S1, S2>;
 }
 type join<A extends string, B extends PropertyKey> =
-  A extends '' ? B :
-  B extends '' ? A :
+  A extends Falsy ? B :
+  B extends Falsy ? A :
   `${A}.${Cast<B, string>}`;
 
-export type flattenMap<T, TLeaf, MaxDepth extends number = 10> = fromEntries<_flattenMap<T, TLeaf, '', MaxDepth>>;
-type _flattenMap<T, Leaf, prefix extends string, MaxDepth extends number> =
+
+export type flattenMap<T extends DeepDictionary<any>, TLeaf, MaxDepth extends number = 5> = fromEntries<_flattenMap<T, TLeaf, '', MaxDepth>>;
+type _flattenMap<T extends DeepDictionary<any>, Leaf, prefix extends string, MaxDepth extends number> =
   MaxDepth extends 0 ? never :
   T extends Leaf ? [prefix, T] :
   T extends Record<any, any> ? {

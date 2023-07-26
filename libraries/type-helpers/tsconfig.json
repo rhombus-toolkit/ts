@@ -1,14 +1,4 @@
 {
   "extends": "@rhombus-toolkit/heft-web-rig/profiles/library/tsconfig-base.json",
-  "compilerOptions": {
-    "target": "ESNext",
-    "lib": [
-      "ESNext"
-    ],
-    "types": [],
-    "rootDir": "src"
-  },
-  "include": [
-    "src/**/*.ts"
-  ]
+  "exclude": ["on-ice"]
 }

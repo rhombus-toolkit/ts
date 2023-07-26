@@ -8,5 +8,8 @@
       "DOM.Iterable"
     ],
     "types": []
-  }
+  },
+  "include": [
+    "src"
+  ]
 }

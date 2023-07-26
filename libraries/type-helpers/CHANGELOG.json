@@ -2,6 +2,29 @@
   "name": "@rhombus-toolkit/type-helpers",
   "entries": [
     {
+      "version": "1.6.0",
+      "tag": "@rhombus-toolkit/type-helpers_v1.6.0",
+      "date": "Wed, 26 Jul 2023 08:01:09 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "new UnionToIntersection type"
+          },
+          {
+            "comment": "new UnionToIntersection type"
+          },
+          {
+            "comment": "new UnionToIntersection type"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@rhombus-toolkit/func\" to `3.2.1`"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.5.5",
       "tag": "@rhombus-toolkit/type-helpers_v1.5.5",
       "date": "Mon, 24 Jul 2023 11:27:14 GMT",

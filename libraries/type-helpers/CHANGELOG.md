@@ -1,6 +1,15 @@
 # Change Log - @rhombus-toolkit/type-helpers
 
-This log was last generated on Mon, 24 Jul 2023 11:27:14 GMT and should not be manually modified.
+This log was last generated on Wed, 26 Jul 2023 08:01:09 GMT and should not be manually modified.
+
+## 1.6.0
+Wed, 26 Jul 2023 08:01:09 GMT
+
+### Minor changes
+
+- new UnionToIntersection type
+- new UnionToIntersection type
+- new UnionToIntersection type
 
 ## 1.5.5
 Mon, 24 Jul 2023 11:27:14 GMT

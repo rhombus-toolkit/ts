@@ -2,6 +2,23 @@
   "name": "@rhombus-toolkit/type-helpers",
   "entries": [
     {
+      "version": "1.5.8",
+      "tag": "@rhombus-toolkit/type-helpers_v1.5.8",
+      "date": "Wed, 26 Jul 2023 08:04:37 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "version bump"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@rhombus-toolkit/func\" to `3.2.3`"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.5.5",
       "tag": "@rhombus-toolkit/type-helpers_v1.5.5",
       "date": "Mon, 24 Jul 2023 11:27:14 GMT",

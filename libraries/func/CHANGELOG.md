@@ -1,6 +1,13 @@
 # Change Log - @rhombus-toolkit/func
 
-This log was last generated on Mon, 24 Jul 2023 11:27:14 GMT and should not be manually modified.
+This log was last generated on Wed, 26 Jul 2023 08:04:37 GMT and should not be manually modified.
+
+## 3.2.3
+Wed, 26 Jul 2023 08:04:37 GMT
+
+### Patches
+
+- version bump
 
 ## 3.2.0
 Mon, 24 Jul 2023 11:27:14 GMT

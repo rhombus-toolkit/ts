@@ -2,6 +2,18 @@
   "name": "@rhombus-toolkit/kinda-weak-map",
   "entries": [
     {
+      "version": "1.4.2",
+      "tag": "@rhombus-toolkit/kinda-weak-map_v1.4.2",
+      "date": "Wed, 26 Jul 2023 12:33:33 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@rhombus-toolkit/heft-web-rig\" to `2.1.1`"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.4.1",
       "tag": "@rhombus-toolkit/kinda-weak-map_v1.4.1",
       "date": "Wed, 26 Jul 2023 11:58:55 GMT",

@@ -1,6 +1,13 @@
 # Change Log - @rhombus-toolkit/func
 
-This log was last generated on Wed, 26 Jul 2023 08:09:07 GMT and should not be manually modified.
+This log was last generated on Wed, 26 Jul 2023 08:21:53 GMT and should not be manually modified.
+
+## 3.5.0
+Wed, 26 Jul 2023 08:21:53 GMT
+
+### Minor changes
+
+- made types co/contra-variant friendly; switch to .d.ts files
 
 ## 3.4.0
 Wed, 26 Jul 2023 08:09:07 GMT

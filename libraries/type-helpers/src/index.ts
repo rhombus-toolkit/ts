@@ -13,4 +13,5 @@ export * from './range';
 export * from './restify';
 export * from './string';
 export * from './tuple';
+export * from './union-to-intersection';
 export * from './utility-types';

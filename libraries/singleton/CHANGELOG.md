@@ -1,6 +1,11 @@
 # Change Log - @rhombus-toolkit/singleton
 
-This log was last generated on Wed, 26 Jul 2023 08:09:07 GMT and should not be manually modified.
+This log was last generated on Wed, 26 Jul 2023 08:21:53 GMT and should not be manually modified.
+
+## 1.3.1
+Wed, 26 Jul 2023 08:21:53 GMT
+
+_Version update only_
 
 ## 1.3.0
 Wed, 26 Jul 2023 08:09:07 GMT

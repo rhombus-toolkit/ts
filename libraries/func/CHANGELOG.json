@@ -2,6 +2,18 @@
   "name": "@rhombus-toolkit/func",
   "entries": [
     {
+      "version": "3.5.0",
+      "tag": "@rhombus-toolkit/func_v3.5.0",
+      "date": "Wed, 26 Jul 2023 08:21:53 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "made types co/contra-variant friendly; switch to .d.ts files"
+          }
+        ]
+      }
+    },
+    {
       "version": "3.4.0",
       "tag": "@rhombus-toolkit/func_v3.4.0",
       "date": "Wed, 26 Jul 2023 08:09:07 GMT",

@@ -1,6 +1,6 @@
 {
   "name": "@rhombus-toolkit/type-helpers",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "description": "",
   "repository": {
     "type": "git",
@@ -17,10 +17,10 @@
   "keywords": [],
   "author": "Thomas Butler",
   "dependencies": {
-    "@rhombus-toolkit/func": "workspace:*",
-    "@rhombus-toolkit/heft-web-rig": "workspace:*"
+    "@rhombus-toolkit/func": "workspace:*"
   },
   "devDependencies": {
+    "@rhombus-toolkit/heft-web-rig": "workspace:*",
     "@rushstack/heft": "~0.58.0",
     "typescript": "^5.1.3"
   }

@@ -16,9 +16,7 @@
     "noEmitOnError": false,
     "allowUnreachableCode": true,
     "importHelpers": false,
-    "types": [
-      // "heft-jest"
-    ],
+    "types": [   ],
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "moduleDetection": "force",

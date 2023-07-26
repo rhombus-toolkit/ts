@@ -2,6 +2,18 @@
   "name": "@rhombus-toolkit/func",
   "entries": [
     {
+      "version": "3.5.2",
+      "tag": "@rhombus-toolkit/func_v3.5.2",
+      "date": "Wed, 26 Jul 2023 12:17:33 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@rhombus-toolkit/heft-web-rig\" to `2.0.2`"
+          }
+        ]
+      }
+    },
+    {
       "version": "3.5.1",
       "tag": "@rhombus-toolkit/func_v3.5.1",
       "date": "Wed, 26 Jul 2023 11:58:55 GMT",

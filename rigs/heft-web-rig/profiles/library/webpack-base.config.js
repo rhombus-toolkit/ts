@@ -1,2 +1,4 @@
 'use strict';
-module.exports = require("@rushstack/heft-web-rig/profiles/library/webpack-base.config");
+const rigConfig = require("@rushstack/heft-web-rig/profiles/library/webpack-base.config");
+
+module.exports = rigConfig;

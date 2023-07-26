@@ -2,6 +2,18 @@
   "name": "@rhombus-toolkit/defer",
   "entries": [
     {
+      "version": "1.4.2",
+      "tag": "@rhombus-toolkit/defer_v1.4.2",
+      "date": "Wed, 26 Jul 2023 12:17:33 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@rhombus-toolkit/heft-web-rig\" to `2.0.2`"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.4.1",
       "tag": "@rhombus-toolkit/defer_v1.4.1",
       "date": "Wed, 26 Jul 2023 11:58:55 GMT",

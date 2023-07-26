@@ -2,6 +2,21 @@
   "name": "@rhombus-toolkit/logger",
   "entries": [
     {
+      "version": "1.3.3",
+      "tag": "@rhombus-toolkit/logger_v1.3.3",
+      "date": "Wed, 26 Jul 2023 12:09:21 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@rhombus-toolkit/func\" to `3.5.2`"
+          },
+          {
+            "comment": "Updating dependency \"@rhombus-toolkit/heft-web-rig\" to `2.0.0`"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.3.2",
       "tag": "@rhombus-toolkit/logger_v1.3.2",
       "date": "Wed, 26 Jul 2023 11:58:55 GMT",

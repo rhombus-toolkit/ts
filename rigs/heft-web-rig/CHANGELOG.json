@@ -1,0 +1,17 @@
+{
+  "name": "@rhombus-toolkit/heft-web-rig",
+  "entries": [
+    {
+      "version": "2.0.0",
+      "tag": "@rhombus-toolkit/heft-web-rig_v2.0.0",
+      "date": "Wed, 26 Jul 2023 12:09:21 GMT",
+      "comments": {
+        "major": [
+          {
+            "comment": "now publishing this rig bc it is a non-dev dep of other projects"
+          }
+        ]
+      }
+    }
+  ]
+}

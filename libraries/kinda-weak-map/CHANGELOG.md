@@ -1,6 +1,11 @@
 # Change Log - @rhombus-toolkit/kinda-weak-map
 
-This log was last generated on Wed, 26 Jul 2023 11:58:55 GMT and should not be manually modified.
+This log was last generated on Wed, 26 Jul 2023 12:09:21 GMT and should not be manually modified.
+
+## 1.4.2
+Wed, 26 Jul 2023 12:09:21 GMT
+
+_Version update only_
 
 ## 1.4.1
 Wed, 26 Jul 2023 11:58:55 GMT

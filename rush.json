@@ -144,7 +144,7 @@
       "packageName": "@rhombus-toolkit/heft-web-rig",
       "projectFolder": "rigs/heft-web-rig",
       "reviewCategory": "tools",
-      "shouldPublish": false
+      "shouldPublish": true
     },
     {
       "packageName": "@rhombus-toolkit/tests",

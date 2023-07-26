@@ -1,7 +1,7 @@
 export * from './array';
 export * from './cast';
 export * from './CheapRingBuffer';
-export * from './counter.alt';
+export * from './counter';
 // export * from './curry';
 export * from './deep-record';
 // export * from './flattenMap';

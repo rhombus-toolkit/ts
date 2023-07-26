@@ -2,6 +2,21 @@
   "name": "@rhombus-toolkit/type-helpers",
   "entries": [
     {
+      "version": "1.7.3",
+      "tag": "@rhombus-toolkit/type-helpers_v1.7.3",
+      "date": "Wed, 26 Jul 2023 12:28:24 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@rhombus-toolkit/func\" to `3.5.2`"
+          },
+          {
+            "comment": "Updating dependency \"@rhombus-toolkit/heft-web-rig\" to `2.1.1`"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.7.2",
       "tag": "@rhombus-toolkit/type-helpers_v1.7.2",
       "date": "Wed, 26 Jul 2023 12:05:57 GMT",

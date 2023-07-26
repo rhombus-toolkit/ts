@@ -1,0 +1,17 @@
+{
+  "name": "@rhombus-toolkit/heft-web-rig",
+  "entries": [
+    {
+      "version": "2.1.1",
+      "tag": "@rhombus-toolkit/heft-web-rig_v2.1.1",
+      "date": "Wed, 26 Jul 2023 12:28:24 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "now publishing"
+          }
+        ]
+      }
+    }
+  ]
+}

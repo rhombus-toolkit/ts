@@ -2,6 +2,18 @@
   "name": "@rhombus-toolkit/audio-context",
   "entries": [
     {
+      "version": "2.2.2",
+      "tag": "@rhombus-toolkit/audio-context_v2.2.2",
+      "date": "Wed, 26 Jul 2023 12:23:35 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@rhombus-toolkit/heft-web-rig\" to `2.0.5`"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.2.1",
       "tag": "@rhombus-toolkit/audio-context_v2.2.1",
       "date": "Wed, 26 Jul 2023 11:58:55 GMT",

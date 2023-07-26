@@ -1,14 +1,12 @@
 {
   "name": "@rhombus-toolkit/heft-web-rig",
-  "private": false,
-  "version": "2.0.0",
+  "version": "2.0.5",
   "description": "",
   "repository": {
     "type": "git",
     "url": "https://github.com/rhombus-toolkit/ts.git",
     "directory": "libraries/heft-web-rig"
   },
-  "sideEffects": false,
   "scripts": {
     "test": "",
     "build": "",

@@ -1,6 +1,13 @@
 # Change Log - @rhombus-toolkit/set-immediate
 
-This log was last generated on Mon, 24 Jul 2023 08:06:25 GMT and should not be manually modified.
+This log was last generated on Wed, 26 Jul 2023 07:49:59 GMT and should not be manually modified.
+
+## 1.2.5
+Wed, 26 Jul 2023 07:49:59 GMT
+
+### Patches
+
+- upgraded heft version
 
 ## 1.2.4
 Mon, 24 Jul 2023 08:06:25 GMT

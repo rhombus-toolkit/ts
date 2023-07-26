@@ -1,6 +1,13 @@
 # Change Log - @rhombus-toolkit/type-guards
 
-This log was last generated on Mon, 24 Jul 2023 11:27:14 GMT and should not be manually modified.
+This log was last generated on Wed, 26 Jul 2023 07:49:59 GMT and should not be manually modified.
+
+## 1.2.7
+Wed, 26 Jul 2023 07:49:59 GMT
+
+### Patches
+
+- upgraded heft version
 
 ## 1.2.6
 Mon, 24 Jul 2023 11:27:14 GMT

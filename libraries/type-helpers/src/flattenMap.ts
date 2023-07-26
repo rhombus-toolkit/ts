@@ -3,6 +3,7 @@ import { Cast } from './cast';
 import { Dec, Inc } from './counter';
 import { DeepDictionary, DeepDictionaryItem } from './deep-record';
 import { fromEntries } from './obj';
+
 // type _flattenMap<T extends DeepDictionaryItem<Func>, prefix extends string = '', CurrentDepth extends number = 0> =
 //   CurrentDepth extends 10 ? never :
 //   T extends DeepDictionary<Func> ? {

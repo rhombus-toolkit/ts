@@ -8,5 +8,7 @@
       "DOM.Iterable"
     ],
     "types": []
-  }
+  },
+  "include": ["src"],
+  "exclude": ["./**/*.test-d.ts"]
 }

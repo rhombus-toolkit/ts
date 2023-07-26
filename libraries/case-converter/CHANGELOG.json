@@ -2,6 +2,18 @@
   "name": "@rhombus-toolkit/case-converter",
   "entries": [
     {
+      "version": "1.2.5",
+      "tag": "@rhombus-toolkit/case-converter_v1.2.5",
+      "date": "Wed, 26 Jul 2023 07:49:59 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "upgraded heft version"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.2.4",
       "tag": "@rhombus-toolkit/case-converter_v1.2.4",
       "date": "Mon, 24 Jul 2023 08:06:25 GMT",

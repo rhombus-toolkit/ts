@@ -2,6 +2,21 @@
   "name": "@rhombus-toolkit/async-timers",
   "entries": [
     {
+      "version": "1.2.7",
+      "tag": "@rhombus-toolkit/async-timers_v1.2.7",
+      "date": "Wed, 26 Jul 2023 07:49:59 GMT",
+      "comments": {
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@rhombus-toolkit/func\" to `3.2.1`"
+          },
+          {
+            "comment": "Updating dependency \"@rhombus-toolkit/set-immediate\" to `1.2.5`"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.2.6",
       "tag": "@rhombus-toolkit/async-timers_v1.2.6",
       "date": "Mon, 24 Jul 2023 11:27:14 GMT",

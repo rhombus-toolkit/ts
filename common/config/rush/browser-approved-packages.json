@@ -75,7 +75,15 @@
       "allowedCategories": [ "production" ]
     },
     {
+      "name": "tsd",
+      "allowedCategories": [ "production" ]
+    },
+    {
       "name": "tslib",
+      "allowedCategories": [ "production" ]
+    },
+    {
+      "name": "type-fest",
       "allowedCategories": [ "production" ]
     },
     {

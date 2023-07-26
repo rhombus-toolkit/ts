@@ -2,6 +2,21 @@
   "name": "@rhombus-toolkit/func",
   "entries": [
     {
+      "version": "3.2.1",
+      "tag": "@rhombus-toolkit/func_v3.2.1",
+      "date": "Wed, 26 Jul 2023 07:49:59 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "switched to .d.ts filetypes"
+          },
+          {
+            "comment": "now using .d.ts files"
+          }
+        ]
+      }
+    },
+    {
       "version": "3.2.0",
       "tag": "@rhombus-toolkit/func_v3.2.0",
       "date": "Mon, 24 Jul 2023 11:27:14 GMT",

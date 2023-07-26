@@ -1,6 +1,6 @@
 {
   "name": "@rhombus-toolkit/heft-web-rig",
-  "private": true,
+  "private": false,
   "version": "1.2.6",
   "description": "",
   "repository": {

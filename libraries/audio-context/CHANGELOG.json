@@ -2,6 +2,18 @@
   "name": "@rhombus-toolkit/audio-context",
   "entries": [
     {
+      "version": "2.2.0",
+      "tag": "@rhombus-toolkit/audio-context_v2.2.0",
+      "date": "Wed, 26 Jul 2023 08:09:07 GMT",
+      "comments": {
+        "minor": [
+          {
+            "comment": "version bump"
+          }
+        ]
+      }
+    },
+    {
       "version": "2.1.4",
       "tag": "@rhombus-toolkit/audio-context_v2.1.4",
       "date": "Mon, 24 Jul 2023 08:06:25 GMT",

@@ -1,6 +1,13 @@
 # Change Log - @rhombus-toolkit/type-helpers
 
-This log was last generated on Wed, 26 Jul 2023 12:49:00 GMT and should not be manually modified.
+This log was last generated on Fri, 29 May 2026 17:51:58 GMT and should not be manually modified.
+
+## 1.8.0
+Fri, 29 May 2026 17:51:58 GMT
+
+### Minor changes
+
+- Add Str<T> string-intersection type helper
 
 ## 1.7.5
 Wed, 26 Jul 2023 12:49:00 GMT

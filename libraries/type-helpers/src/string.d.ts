@@ -1,4 +1,5 @@
 export type Stringable = string | number | boolean | bigint | undefined | null;
+export type Str<T> = string & T;
 export type Join<T extends readonly Stringable[], D extends string> = _Join<ClearEmpties<T>, D>;
 type _Join<T extends readonly Stringable[], D extends string> =
   T extends [] ? '' :

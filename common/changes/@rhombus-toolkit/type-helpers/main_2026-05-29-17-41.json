@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "Add Str<T> string-intersection type helper",
+      "type": "minor",
+      "packageName": "@rhombus-toolkit/type-helpers"
+    }
+  ],
+  "packageName": "@rhombus-toolkit/type-helpers",
+  "email": "2511516+fnrhombus@users.noreply.github.com"
+}

@@ -1,0 +1,31 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.node-version'
+
+      - name: Install
+        run: node common/scripts/install-run-rush.js install
+
+      - name: Rebuild
+        run: node common/scripts/install-run-rush.js rebuild --verbose
+        # No separate test step — command-line.json defines no custom "test" command.
+        # The rebuild serves as the CI gate.

@@ -84,7 +84,7 @@
     },
     {
       "name": "typescript",
-      "allowedCategories": [ "production" ]
+      "allowedCategories": [ "production", "test" ]
     }
   ]
 }

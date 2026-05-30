@@ -67,6 +67,7 @@ common/autoinstallers/*/.npmrc
 # Heft
 .heft
 
-**/temp/build.typescript/*.json
+# Heft / Rush per-project build scratch
+**/temp/
 
 libraries/*/lib*

@@ -4,15 +4,15 @@
  */
 {
   "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
-  "rushVersion": "5.100.1",
-  "pnpmVersion": "8.6.10",
+  "rushVersion": "5.175.1",
+  "pnpmVersion": "9.15.9",
   "pnpmOptions": {
     "pnpmStore": "global",
     "strictPeerDependencies": true,
     "preventManualShrinkwrapChanges": true,
     "useWorkspaces": true
   },
-  "nodeSupportedVersionRange": ">=18.0.0 < 19.0.0",
+  "nodeSupportedVersionRange": ">=20.18.0 <25.0.0",
   "suppressNodeLtsWarning": false,
   "ensureConsistentVersions": true, //In some cases you may want this turned on, but need to allow certain packages to use a different In those cases, you will need to add an entry to the "allowedAlternativeVersions" section of the common-versions.json.
   "projectFolderMinDepth": 1,
@@ -93,11 +93,6 @@
       "reviewCategory": "production",
       "shouldPublish": true
     },
-    // {
-    //   "packageName": "@rhombus-toolkit/fniterate",
-    //   "projectFolder": "libraries/fniterate",
-    //   "reviewCategory": "production"
-    // },
     {
       "packageName": "@rhombus-toolkit/func",
       "projectFolder": "libraries/func",

@@ -36,26 +36,16 @@ export class KindaWeakMap<K, V extends object> implements Map<K, V> {
     get size() {
         return this.#map.size;
     }
-    entries(): IterableIterator<[K, V]> {
-        type me = this;
-        return (function* (this: me) {
-            for (const [key, ref] of this.#map.entries()) {
-                yield [key, ref.deref()] as [K, V];
-            }
-        }).call(this);
+    entries(): MapIterator<[K, V]> {
+        return this.#map.entries().map(([key, ref]) => [key, ref.deref()] as [K, V]);
     }
-    keys(): IterableIterator<K> {
+    keys(): MapIterator<K> {
         return this.#map.keys();
     }
-    values(): IterableIterator<V> {
-        type me = this;
-        return (function* (this: me) {
-            for (const [, value] of this.entries()) {
-                yield value;
-            }
-        }).call(this);
+    values(): MapIterator<V> {
+        return this.#map.values().map((ref) => ref.deref() as V);
     }
-    [Symbol.iterator](): IterableIterator<[K, V]> {
+    [Symbol.iterator](): MapIterator<[K, V]> {
         return this.entries();
     }
 

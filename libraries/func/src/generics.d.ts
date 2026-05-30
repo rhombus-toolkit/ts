@@ -14,15 +14,15 @@ type Replace<T, R> =
     T extends MessageEvent<infer X> ? MessageEvent<Replace<X, R>> :
     T extends Map<infer X, infer Y> ? Map<Replace<X, R>, Replace<Y, R>> :
     T extends Set<infer X> ? Set<Replace<X, R>> :
-    T extends WeakMap<infer X, infer Y> ? WeakMap<Replace<X, R>, Replace<Y, R>> :
-    T extends WeakSet<infer X> ? WeakSet<Replace<X, R>> :
+    T extends WeakMap<infer X, infer Y> ? WeakMap<Replace<X, R> & WeakKey, Replace<Y, R>> :
+    T extends WeakSet<infer X> ? WeakSet<Replace<X, R> & WeakKey> :
     T extends Iterable<infer X> ? Iterable<Replace<X, R>> :
     T extends AsyncIterable<infer X> ? AsyncIterable<Replace<X, R>> :
     T extends _Ctor<infer X, infer Y> ? _Ctor<ReplaceArray<X, R>, Replace<Y, R>> :
     T extends _ACtor<infer X, infer Y> ? _ACtor<ReplaceArray<X, R>, Replace<Y, R>> :
     T extends _Func<infer X, infer Y> ? _Func<ReplaceArray<X, R>, Replace<Y, R>> :
     T extends Record<any, any> ? {
-        [K in keyof T as Replace<K, R>] : Replace<T[K], R>
+        [K in keyof T as Replace<K, R> & PropertyKey] : Replace<T[K], R>
     }
     : T;
 

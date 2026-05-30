@@ -1,4 +1,9 @@
 {
   "extends": "@rhombus-toolkit/heft-web-rig/profiles/library/tsconfig-base.json",
-  "exclude": ["on-ice"]
+  "compilerOptions": {
+    "outDir": "lib"
+  },
+  "exclude": [
+    "on-ice"
+  ]
 }

@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@rhombus-toolkit/heft-web-rig": "workspace:*",
-    "@rushstack/heft": "~0.58.0",
+    "@rushstack/heft": "~1.2.17",
     "typescript": "^5.1.3"
   }
 }

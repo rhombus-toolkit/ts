@@ -8,6 +8,7 @@ export * from './deep-record';
 export * from './identity';
 // export * from './Lazy';
 export * from './node-callback-to-async';
+export * from './opaque';
 export * as obj from './obj';
 export * from './range';
 export * from './restify';

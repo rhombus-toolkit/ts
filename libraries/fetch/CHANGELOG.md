@@ -1,6 +1,13 @@
 # Change Log - @rhombus-toolkit/fetch
 
-This log was last generated on Fri, 29 May 2026 17:51:58 GMT and should not be manually modified.
+This log was last generated on Sun, 31 May 2026 05:39:43 GMT and should not be manually modified.
+
+## 1.3.8
+Sun, 31 May 2026 05:39:43 GMT
+
+### Patches
+
+- Upgrade build toolchain (Rush 5.175, Heft 1.x, TypeScript 5.8, ESLint 9, pnpm 9, node 24).
 
 ## 1.3.7
 Fri, 29 May 2026 17:51:58 GMT

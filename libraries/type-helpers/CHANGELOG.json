@@ -2,6 +2,31 @@
   "name": "@rhombus-toolkit/type-helpers",
   "entries": [
     {
+      "version": "1.9.0",
+      "tag": "@rhombus-toolkit/type-helpers_v1.9.0",
+      "date": "Sun, 31 May 2026 05:39:43 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Upgrade build toolchain (Rush 5.175, Heft 1.x, TypeScript 5.8, ESLint 9, pnpm 9, node 24)."
+          }
+        ],
+        "minor": [
+          {
+            "comment": "Add Opaque<Type, Scope> branded-type helper"
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@rhombus-toolkit/func\" to `3.5.3`"
+          },
+          {
+            "comment": "Updating dependency \"@rhombus-toolkit/heft-web-rig\" to `2.1.1`"
+          }
+        ]
+      }
+    },
+    {
       "version": "1.8.0",
       "tag": "@rhombus-toolkit/type-helpers_v1.8.0",
       "date": "Fri, 29 May 2026 17:51:58 GMT",

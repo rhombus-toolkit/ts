@@ -2,6 +2,23 @@
   "name": "@rhombus-toolkit/func",
   "entries": [
     {
+      "version": "3.5.3",
+      "tag": "@rhombus-toolkit/func_v3.5.3",
+      "date": "Sun, 31 May 2026 05:39:43 GMT",
+      "comments": {
+        "patch": [
+          {
+            "comment": "Upgrade build toolchain (Rush 5.175, Heft 1.x, TypeScript 5.8, ESLint 9, pnpm 9, node 24)."
+          }
+        ],
+        "dependency": [
+          {
+            "comment": "Updating dependency \"@rhombus-toolkit/heft-web-rig\" to `2.1.1`"
+          }
+        ]
+      }
+    },
+    {
       "version": "3.5.2",
       "tag": "@rhombus-toolkit/func_v3.5.2",
       "date": "Wed, 26 Jul 2023 12:35:47 GMT",

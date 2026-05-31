@@ -1,6 +1,13 @@
 # Change Log - @rhombus-toolkit/defer
 
-This log was last generated on Wed, 26 Jul 2023 11:58:55 GMT and should not be manually modified.
+This log was last generated on Sun, 31 May 2026 05:39:43 GMT and should not be manually modified.
+
+## 1.4.2
+Sun, 31 May 2026 05:39:43 GMT
+
+### Patches
+
+- Upgrade build toolchain (Rush 5.175, Heft 1.x, TypeScript 5.8, ESLint 9, pnpm 9, node 24).
 
 ## 1.4.1
 Wed, 26 Jul 2023 11:58:55 GMT

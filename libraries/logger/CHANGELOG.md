@@ -1,6 +1,13 @@
 # Change Log - @rhombus-toolkit/logger
 
-This log was last generated on Wed, 26 Jul 2023 12:35:47 GMT and should not be manually modified.
+This log was last generated on Sun, 31 May 2026 05:39:43 GMT and should not be manually modified.
+
+## 1.3.4
+Sun, 31 May 2026 05:39:43 GMT
+
+### Patches
+
+- Upgrade build toolchain (Rush 5.175, Heft 1.x, TypeScript 5.8, ESLint 9, pnpm 9, node 24).
 
 ## 1.3.3
 Wed, 26 Jul 2023 12:35:47 GMT

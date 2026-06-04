@@ -1,6 +1,6 @@
 {
     "name": "@rhombus-toolkit/typed-pluralizer",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "description": "Type-level English pluralization and verb conjugation built from template-literal types",
     "repository": {
         "type": "git",

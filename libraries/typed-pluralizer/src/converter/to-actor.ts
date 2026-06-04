@@ -47,7 +47,7 @@ type dont =
 
 export type ToActor<T extends string> = _ToActor<Lowercase<T>>;
 
-type _ToActor<T> =
+type _ToActor<T extends string> =
     // if (dont.hasOwnProperty(str)) return null; — no actor form => never
     T extends dont ? never
     : // if (irregulars.hasOwnProperty(str)) return irregulars[str];
@@ -65,6 +65,5 @@ type _ToActor<T> =
     // 3 or 4 chars: ([1-2 chars][vowel])t => double the final t.
     T extends `${Letter}${Vowel}t` ? ReplaceEnding<T, 't', 'tter'>
     : T extends `${Letter}${Letter}${Vowel}t` ? ReplaceEnding<T, 't', 'tter'>
-    : // return str + 'er';
-    T extends `${string}${Letter}` ? `${T}er`
-    : T;
+    : // return str + 'er'; — unconditional append (matches upstream)
+        `${T}er`;

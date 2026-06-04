@@ -14,7 +14,7 @@
 // and output is always lowercase; upstream regexes are non-/i but only ever see
 // lowercase input, so behaviour is identical.
 
-import { Letter, ReplaceEnding } from '../util';
+import { ReplaceEnding } from '../util';
 
 // Irregular adjective/verb->noun pairs (upstream `irregulars` object literal).
 type irregulars = {
@@ -24,7 +24,7 @@ type irregulars = {
 
 export type ToNoun<T extends string> = _ToNoun<Lowercase<T>>;
 
-type _ToNoun<T> =
+type _ToNoun<T extends string> =
     // if (!w) return ''; — empty input has no conversion => never
     T extends '' ? never
     : // if (irregulars.hasOwnProperty(w)) return irregulars[w];
@@ -57,6 +57,5 @@ type _ToNoun<T> =
     T extends `${string}ous` ? ReplaceEnding<T, 'ous', 'ousness'>
     : // if (w.match(/s$/)) return w;
     T extends `${string}s` ? T
-    : // return w + 'ness';
-    T extends `${string}${Letter}` ? `${T}ness`
-    : T;
+    : // return w + 'ness'; — unconditional append (matches upstream)
+        `${T}ness`;

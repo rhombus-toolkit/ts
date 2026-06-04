@@ -115,6 +115,16 @@ namespace transforms {
     isAssignable<ToNoun<'hot'>, 'hotness'>;
     // @ts-expect-no-error
     isAssignable<ToNoun<'red'>, 'redness'>;
+    // final fallthrough is unconditional (`return w + 'ness'`): inputs whose
+    // lowercased form ends in a non-letter (digit/punctuation) still get `ness`.
+    // @ts-expect-no-error
+    isAssignable<ToNoun<'ab3'>, 'ab3ness'>;
+    // @ts-expect-no-error
+    isAssignable<ToNoun<'x9'>, 'x9ness'>;
+    // @ts-expect-no-error
+    isAssignable<ToNoun<'a1'>, 'a1ness'>;
+    // @ts-expect-no-error
+    isAssignable<ToNoun<'x-'>, 'x-ness'>;
 }
 
 namespace caseFolding {

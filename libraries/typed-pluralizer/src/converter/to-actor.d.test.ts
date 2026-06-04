@@ -119,6 +119,16 @@ namespace transforms {
     isAssignable<ToActor<'read'>, 'reader'>;
     // @ts-expect-no-error
     isAssignable<ToActor<'paint'>, 'painter'>;
+    // final fallthrough is unconditional (`return str + 'er'`): empty input and
+    // inputs ending in a non-letter (digit/punctuation) still get `er` appended.
+    // @ts-expect-no-error
+    isAssignable<ToActor<''>, 'er'>;
+    // @ts-expect-no-error
+    isAssignable<ToActor<'go2'>, 'go2er'>;
+    // @ts-expect-no-error
+    isAssignable<ToActor<'2'>, '2er'>;
+    // @ts-expect-no-error
+    isAssignable<ToActor<'do-'>, 'do-er'>;
 }
 
 namespace caseFolding {

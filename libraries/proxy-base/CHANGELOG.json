@@ -1,0 +1,17 @@
+{
+  "name": "@rhombus-toolkit/proxy-base",
+  "entries": [
+    {
+      "version": "1.0.0",
+      "tag": "@rhombus-toolkit/proxy-base_v1.0.0",
+      "date": "Thu, 04 Jun 2026 18:03:00 GMT",
+      "comments": {
+        "major": [
+          {
+            "comment": "Initial release: ProxyBase — directly-extendable per-instance prototype Proxy with protected overridable hook methods"
+          }
+        ]
+      }
+    }
+  ]
+}

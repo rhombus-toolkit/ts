@@ -8,32 +8,40 @@ declare function isAssignable<TExpected>(actual?: TExpected): void;
 // marked @ts-expect-error with the actual produced literal in the TODO.
 
 namespace axis {
-  // @ts-expect-no-error
-  isAssignable<PluralizationRules<'axis'>, 'axes'>;
+    // @ts-expect-no-error
+    isAssignable<PluralizationRules<'axis'>, 'axes'>;
 }
 
 namespace alias {
-  // @ts-expect-no-error
-  isAssignable<PluralizationRules<'alias'>, 'aliases'>;
+    // @ts-expect-no-error
+    isAssignable<PluralizationRules<'alias'>, 'aliases'>;
 }
 
 namespace alumnus {
-  // expected 'alumni'
-  // @ts-expect-error
-  isAssignable<PluralizationRules<'alumnus'>, 'alumni'>; // TODO known-wrong: produces 'alumnuses'
-  // @ts-expect-no-error
-  isAssignable<PluralizationRules<'alumnus'>, 'alumnuses'>;
+    // expected 'alumni'
+    // @ts-expect-error
+    isAssignable<PluralizationRules<'alumnus'>, 'alumni'>; // TODO known-wrong: produces 'alumnuses'
+    // @ts-expect-no-error
+    isAssignable<PluralizationRules<'alumnus'>, 'alumnuses'>;
 }
 
 namespace hero {
-  // @ts-expect-no-error
-  isAssignable<PluralizationRules<'hero'>, 'heroes'>;
+    // @ts-expect-no-error
+    isAssignable<PluralizationRules<'hero'>, 'heroes'>;
+}
+
+namespace caseFolding {
+    // Input is folded through Lowercase<T> before matching; output is lowercase.
+    // @ts-expect-no-error
+    isAssignable<PluralizationRules<'AXIS'>, 'axes'>;
+    // @ts-expect-no-error
+    isAssignable<PluralizationRules<'Hero'>, 'heroes'>;
 }
 
 namespace unmatched {
-  // Words that match no implemented rule fall through to `never`.
-  // @ts-expect-no-error
-  isAssignable<PluralizationRules<'cat'>, never>;
-  // @ts-expect-no-error
-  isAssignable<never, PluralizationRules<'cat'>>;
+    // Words that match no implemented rule fall through to `never`.
+    // @ts-expect-no-error
+    isAssignable<PluralizationRules<'cat'>, never>;
+    // @ts-expect-no-error
+    isAssignable<never, PluralizationRules<'cat'>>;
 }

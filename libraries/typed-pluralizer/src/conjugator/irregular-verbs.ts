@@ -104,9 +104,16 @@ type map = {
     suit: 'suited';
 };
 
+// Upstream builds its reverse lookup with a reducer (`h[value] = key`), so when
+// two infinitives share a past-tense form the LAST key written wins — a single
+// string, not a union. A naive `{[K in keyof T as T[K]]: K}` instead UNIONS the
+// colliding keys, which would make `ToInfinitive<'was'>` resolve to `'be' | 'is'`
+// rather than upstream's `'is'`. `'was'` (from both `be` and `is`) is the only
+// duplicate-value collision in `map`, and `is` is written after `be`, so we pin
+// the last-wins result explicitly via the trailing intersection member.
 type Invert<T extends Record<PropertyKey, PropertyKey>> = {
     [K in keyof T as T[K]]: K;
-};
+} & { was: 'is' };
 
 export type FromInfinitive<T> = T extends keyof map ? map[T] : never;
 export type ToInfinitive<T> = T extends keyof Invert<map> ? Invert<map>[T] : undefined;

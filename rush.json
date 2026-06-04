@@ -3,161 +3,158 @@
  * For full documentation, please see https://rushjs.io
  */
 {
-  "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
-  "rushVersion": "5.175.1",
-  "pnpmVersion": "9.15.9",
-  "pnpmOptions": {
-    "pnpmStore": "global",
-    "strictPeerDependencies": true,
-    "preventManualShrinkwrapChanges": true,
-    "useWorkspaces": true
-  },
-  "nodeSupportedVersionRange": ">=20.18.0 <25.0.0",
-  "suppressNodeLtsWarning": false,
-  "ensureConsistentVersions": true, //In some cases you may want this turned on, but need to allow certain packages to use a different In those cases, you will need to add an entry to the "allowedAlternativeVersions" section of the common-versions.json.
-  "projectFolderMinDepth": 1,
-  "projectFolderMaxDepth": 2,
-  // "allowMostlyStandardPackageNames": true,
-  "approvedPackagesPolicy": {
-    "reviewCategories": [
-      // Some example categories:
-      "production", // projects that ship to production
-      "tools", // non-shipping projects that are part of the developer toolchain
-      "prototypes",
-      "test"
-    ],
-    "ignoredNpmScopes": [
-      "@types"
+    "$schema": "https://developer.microsoft.com/json-schemas/rush/v5/rush.schema.json",
+    "rushVersion": "5.175.1",
+    "pnpmVersion": "9.15.9",
+    "pnpmOptions": {
+        "pnpmStore": "global",
+        "strictPeerDependencies": true,
+        "preventManualShrinkwrapChanges": true,
+        "useWorkspaces": true
+    },
+    "nodeSupportedVersionRange": ">=20.18.0 <25.0.0",
+    "suppressNodeLtsWarning": false,
+    "ensureConsistentVersions": true, //In some cases you may want this turned on, but need to allow certain packages to use a different In those cases, you will need to add an entry to the "allowedAlternativeVersions" section of the common-versions.json.
+    "projectFolderMinDepth": 1,
+    "projectFolderMaxDepth": 2,
+    // "allowMostlyStandardPackageNames": true,
+    "approvedPackagesPolicy": {
+        "reviewCategories": [
+            // Some example categories:
+            "production", // projects that ship to production
+            "tools", // non-shipping projects that are part of the developer toolchain
+            "prototypes",
+            "test"
+        ],
+        "ignoredNpmScopes": ["@types"]
+    },
+    "gitPolicy": {
+        "allowedEmailRegExps": [
+            "[^@]+@users\\.noreply\\.github\\.com"
+            // "travis@example\\.org"
+        ],
+        "sampleEmail": "mrexample@users.noreply.github.com",
+        "versionBumpCommitMessage": "Bump versions [skip ci]",
+        "changeLogUpdateCommitMessage": "Update changelogs [skip ci]"
+    },
+    "repository": {
+        "url": "https://github.com/rhombus-toolkit/ts",
+        "defaultBranch": "main",
+        "defaultRemote": "origin"
+    },
+    "eventHooks": {
+        "preRushInstall": [
+            // "common/scripts/pre-rush-install.js"
+        ],
+        "postRushInstall": [],
+        "preRushBuild": [],
+        "postRushBuild": []
+    },
+    "variants": [],
+    "telemetryEnabled": false,
+    "hotfixChangeEnabled": false,
+    // "allowedProjectTags": [ "apps", "Web", "tools" ],
+    "projects": [
+        {
+            // "cyclicDependencyProjects": [ // "my-toolchain" ],
+            // "skipRushCheck": false,
+            // "publishFolder": "temp/publish", // If specified, the "publishFolder" is the relative path to a subfolder of the project folder. The "rush publish" command will publish the subfolder instead of the project folder.  The subfolder must contain its own package.json file, which is typically a build output.
+            // "versionPolicyName": "",
+            // "tags": ["apps", "web"]
+            "packageName": "@rhombus-toolkit/async-timers",
+            "projectFolder": "libraries/async-timers",
+            "reviewCategory": "production",
+            "shouldPublish": true
+        },
+        {
+            "packageName": "@rhombus-toolkit/audio-context",
+            "projectFolder": "libraries/audio-context",
+            "reviewCategory": "production",
+            "shouldPublish": true
+        },
+        {
+            "packageName": "@rhombus-toolkit/case-converter",
+            "projectFolder": "libraries/case-converter",
+            "reviewCategory": "production",
+            "shouldPublish": true
+        },
+        {
+            "packageName": "@rhombus-toolkit/defer",
+            "projectFolder": "libraries/defer",
+            "reviewCategory": "production",
+            "shouldPublish": true
+        },
+        {
+            "packageName": "@rhombus-toolkit/fetch",
+            "projectFolder": "libraries/fetch",
+            "reviewCategory": "production",
+            "shouldPublish": true
+        },
+        {
+            "packageName": "@rhombus-toolkit/func",
+            "projectFolder": "libraries/func",
+            "reviewCategory": "production",
+            "shouldPublish": true
+        },
+        {
+            "packageName": "@rhombus-toolkit/kinda-weak-map",
+            "projectFolder": "libraries/kinda-weak-map",
+            "reviewCategory": "production",
+            "shouldPublish": true
+        },
+        {
+            "packageName": "@rhombus-toolkit/logger",
+            "projectFolder": "libraries/logger",
+            "reviewCategory": "production",
+            "shouldPublish": true
+        },
+        {
+            "packageName": "@rhombus-toolkit/proxy-base",
+            "projectFolder": "libraries/proxy-base",
+            "reviewCategory": "production",
+            "shouldPublish": true
+        },
+        {
+            "packageName": "@rhombus-toolkit/set-immediate",
+            "projectFolder": "libraries/set-immediate",
+            "reviewCategory": "production",
+            "shouldPublish": true
+        },
+        {
+            "packageName": "@rhombus-toolkit/singleton",
+            "projectFolder": "libraries/singleton",
+            "reviewCategory": "production",
+            "shouldPublish": true
+        },
+        {
+            "packageName": "@rhombus-toolkit/type-guards",
+            "projectFolder": "libraries/type-guards",
+            "reviewCategory": "production",
+            "shouldPublish": true
+        },
+        {
+            "packageName": "@rhombus-toolkit/type-helpers",
+            "projectFolder": "libraries/type-helpers",
+            "reviewCategory": "production",
+            "shouldPublish": true
+        },
+        {
+            "packageName": "@rhombus-toolkit/typed-pluralizer",
+            "projectFolder": "libraries/typed-pluralizer",
+            "reviewCategory": "production",
+            "shouldPublish": true
+        },
+        {
+            "packageName": "@rhombus-toolkit/heft-web-rig",
+            "projectFolder": "rigs/heft-web-rig",
+            "reviewCategory": "production",
+            "shouldPublish": true
+        },
+        {
+            "packageName": "@rhombus-toolkit/tests",
+            "projectFolder": "tests",
+            "reviewCategory": "test",
+            "shouldPublish": false
+        }
     ]
-  },
-  "gitPolicy": {
-    "allowedEmailRegExps": [
-      "[^@]+@users\\.noreply\\.github\\.com"
-      // "travis@example\\.org"
-    ],
-    "sampleEmail": "mrexample@users.noreply.github.com",
-    "versionBumpCommitMessage": "Bump versions [skip ci]",
-    "changeLogUpdateCommitMessage": "Update changelogs [skip ci]"
-  },
-  "repository": {
-    "url": "https://github.com/rhombus-toolkit/ts",
-    "defaultBranch": "main",
-    "defaultRemote": "origin"
-  },
-  "eventHooks": {
-    "preRushInstall": [
-      // "common/scripts/pre-rush-install.js"
-    ],
-    "postRushInstall": [],
-    "preRushBuild": [],
-    "postRushBuild": []
-  },
-  "variants": [  ],
-  "telemetryEnabled": false,
-  "hotfixChangeEnabled": false,
-  // "allowedProjectTags": [ "apps", "Web", "tools" ],
-  "projects": [
-
-    {
-      // "cyclicDependencyProjects": [ // "my-toolchain" ],
-      // "skipRushCheck": false,
-      // "publishFolder": "temp/publish", // If specified, the "publishFolder" is the relative path to a subfolder of the project folder. The "rush publish" command will publish the subfolder instead of the project folder.  The subfolder must contain its own package.json file, which is typically a build output.
-      // "versionPolicyName": "",
-      // "tags": ["apps", "web"]
-      "packageName": "@rhombus-toolkit/async-timers",
-      "projectFolder": "libraries/async-timers",
-      "reviewCategory": "production",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@rhombus-toolkit/audio-context",
-      "projectFolder": "libraries/audio-context",
-      "reviewCategory": "production",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@rhombus-toolkit/case-converter",
-      "projectFolder": "libraries/case-converter",
-      "reviewCategory": "production",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@rhombus-toolkit/defer",
-      "projectFolder": "libraries/defer",
-      "reviewCategory": "production",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@rhombus-toolkit/fetch",
-      "projectFolder": "libraries/fetch",
-      "reviewCategory": "production",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@rhombus-toolkit/func",
-      "projectFolder": "libraries/func",
-      "reviewCategory": "production",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@rhombus-toolkit/kinda-weak-map",
-      "projectFolder": "libraries/kinda-weak-map",
-      "reviewCategory": "production",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@rhombus-toolkit/logger",
-      "projectFolder": "libraries/logger",
-      "reviewCategory": "production",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@rhombus-toolkit/proxy-base",
-      "projectFolder": "libraries/proxy-base",
-      "reviewCategory": "production",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@rhombus-toolkit/set-immediate",
-      "projectFolder": "libraries/set-immediate",
-      "reviewCategory": "production",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@rhombus-toolkit/singleton",
-      "projectFolder": "libraries/singleton",
-      "reviewCategory": "production",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@rhombus-toolkit/type-guards",
-      "projectFolder": "libraries/type-guards",
-      "reviewCategory": "production",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@rhombus-toolkit/type-helpers",
-      "projectFolder": "libraries/type-helpers",
-      "reviewCategory": "production",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@rhombus-toolkit/typed-pluralizer",
-      "projectFolder": "libraries/typed-pluralizer",
-      "reviewCategory": "production",
-      "shouldPublish": false
-    },
-    {
-      "packageName": "@rhombus-toolkit/heft-web-rig",
-      "projectFolder": "rigs/heft-web-rig",
-      "reviewCategory": "production",
-      "shouldPublish": true
-    },
-    {
-      "packageName": "@rhombus-toolkit/tests",
-      "projectFolder": "tests",
-      "reviewCategory": "test",
-      "shouldPublish": false
-    }
-  ]
 }

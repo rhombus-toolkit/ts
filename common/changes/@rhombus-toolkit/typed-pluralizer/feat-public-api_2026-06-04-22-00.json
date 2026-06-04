@@ -1,0 +1,11 @@
+{
+  "changes": [
+    {
+      "comment": "Initial release: type-level English pluralization (Pluralize/Singularize), verb conjugation and word conversion built from template-literal types, faithful to blakeembrey/pluralize v8.0.0",
+      "type": "major",
+      "packageName": "@rhombus-toolkit/typed-pluralizer"
+    }
+  ],
+  "packageName": "@rhombus-toolkit/typed-pluralizer",
+  "email": "2511516+fnrhombus@users.noreply.github.com"
+}

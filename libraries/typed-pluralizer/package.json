@@ -1,0 +1,25 @@
+{
+  "name": "@rhombus-toolkit/typed-pluralizer",
+  "version": "1.0.0",
+  "description": "Type-level English pluralization and verb conjugation built from template-literal types",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rhombus-toolkit/ts.git",
+    "directory": "libraries/typed-pluralizer"
+  },
+  "main": "lib/index.js",
+  "types": "src/index.ts",
+  "sideEffects": false,
+  "scripts": {
+    "test": "heft test --clean",
+    "build": "heft build --clean",
+    "build:watch": "heft build"
+  },
+  "keywords": [],
+  "author": "Thomas Butler",
+  "devDependencies": {
+    "@rhombus-toolkit/heft-web-rig": "workspace:*",
+    "@rushstack/heft": "~1.2.17",
+    "typescript": "~5.8.2"
+  }
+}

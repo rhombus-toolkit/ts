@@ -61,12 +61,10 @@ function createHandler(self: ProxyBase, proto: object): ProxyHandler<object> {
 
 /**
  * A base class that gives subclasses Proxy semantics without the usual
- * restriction that a `Proxy` cannot be subclassed with `extends`.
- *
- * The class is `abstract`: it carries no behavior of its own beyond the
- * Reflect-delegating defaults and is only useful when extended. Construct a
+ * restriction that a `Proxy` cannot be subclassed with `extends`. Construct a
  * subclass, not `ProxyBase` directly.
  *
+ * @remarks
  * A `Proxy` is an exotic object: you cannot write `class Foo extends Proxy`,
  * because the constructed instance is the proxy, not a normal object whose
  * prototype chain you control. `ProxyBase` works around this by attaching the
@@ -81,7 +79,8 @@ function createHandler(self: ProxyBase, proto: object): ProxyHandler<object> {
  * whose handler dispatches to this instance's hook methods, and sets that
  * proxy as the instance's `[[Prototype]]`. Because the proxy's target is the
  * real prototype, every inherited method and the whole `instanceof` chain
- * remain intact.
+ * remain intact. It carries no behavior beyond the Reflect-delegating defaults
+ * and is only useful when extended.
  *
  * ## Which hooks fire, and when
  *
@@ -136,6 +135,10 @@ function createHandler(self: ProxyBase, proto: object): ProxyHandler<object> {
  * f.anything; // 'missing:anything'
  * f instanceof Fallback; // true
  * ```
+ *
+ * @see {@link IndexAccessed} — the narrower indexer-only sibling.
+ *
+ * @abstract
  */
 export abstract class ProxyBase {
     /**
@@ -152,127 +155,156 @@ export abstract class ProxyBase {
     }
 
     /**
-     * Fallback for the `get` trap. `protected` and intended to be overridden
-     * by subclasses.
+     * Fallback for the `get` trap.
      *
-     * @virtual
-     *
+     * @remarks
      * Corresponds to the proxy `get` trap. Because `get` participates in the
      * prototype-chain walk, it fires for any property read that misses the
      * instance's own properties and the entire real prototype chain. Default
      * behavior delegates to `Reflect.get` against the real prototype; overrides
      * can fall back to it with `super._get(...)`.
+     *
+     * @param property - The property key being read.
+     * @param receiver - The original receiver of the get operation.
+     * @returns The value for the property, or `undefined` by default delegation.
+     *
+     * @protected
+     * @virtual
      */
     protected _get(property: PropertyKey, receiver: unknown): unknown {
         return Reflect.get(this.#prototype, property, receiver);
     }
 
     /**
-     * Fallback for the `set` trap. `protected` and intended to be overridden
-     * by subclasses.
+     * Fallback for the `set` trap.
      *
-     * @virtual
-     *
+     * @remarks
      * Corresponds to the proxy `set` trap. Because `set` participates in the
      * prototype-chain walk, it fires only on the *first* assignment of a
      * property that does not yet exist on the instance or the real prototype
      * chain. Default behavior delegates to `Reflect.set` against the real
      * prototype, which creates the own property — so subsequent assignments hit
      * and no longer trap. Overrides can fall back to it with `super._set(...)`.
+     *
+     * @param property - The property key being written.
+     * @param value - The value being assigned.
+     * @param receiver - The original receiver of the set operation.
+     * @returns `true` if the assignment succeeded, `false` otherwise.
+     *
+     * @protected
+     * @virtual
      */
     protected _set(property: PropertyKey, value: unknown, receiver: unknown): boolean {
         return Reflect.set(this.#prototype, property, value, receiver);
     }
 
     /**
-     * Fallback for the `has` trap. `protected` and intended to be overridden
-     * by subclasses.
+     * Fallback for the `has` trap.
      *
-     * @virtual
-     *
+     * @remarks
      * Corresponds to the proxy `has` trap (the `in` operator). Because `has`
      * participates in the prototype-chain walk, it fires only for keys that
      * are absent from the instance's own properties and the entire real
      * prototype chain. Default behavior delegates to `Reflect.has` against the
      * real prototype; overrides can fall back to it with `super._has(...)`.
+     *
+     * @param property - The property key being tested.
+     * @returns `true` if the property should be considered present, `false` otherwise.
+     *
+     * @protected
+     * @virtual
      */
     protected _has(property: PropertyKey): boolean {
         return Reflect.has(this.#prototype, property);
     }
 
     /**
-     * Fallback for the `deleteProperty` trap. `protected` and intended to be
-     * overridden by subclasses.
+     * Fallback for the `deleteProperty` trap.
      *
-     * @virtual
-     *
+     * @remarks
      * Corresponds to the proxy `deleteProperty` trap (`delete`). This trap
      * does not walk the prototype chain; it fires only when `delete` is
      * applied directly to the attached proxy
      * (`Object.getPrototypeOf(instance)`). Default behavior delegates to
      * `Reflect.deleteProperty` against the real prototype; overrides can fall
      * back to it with `super._deleteProperty(...)`.
+     *
+     * @param property - The property key being deleted.
+     * @returns `true` if the deletion succeeded, `false` otherwise.
+     *
+     * @protected
+     * @virtual
      */
     protected _deleteProperty(property: PropertyKey): boolean {
         return Reflect.deleteProperty(this.#prototype, property);
     }
 
     /**
-     * Fallback for the `ownKeys` trap. `protected` and intended to be
-     * overridden by subclasses.
+     * Fallback for the `ownKeys` trap.
      *
-     * @virtual
-     *
+     * @remarks
      * Corresponds to the proxy `ownKeys` trap. This trap does not walk the
      * prototype chain; it fires when the attached proxy itself is enumerated —
      * e.g. during a `for…in` chain walk, or via
      * `Reflect.ownKeys(Object.getPrototypeOf(instance))`. Default behavior
      * delegates to `Reflect.ownKeys` against the real prototype; overrides can
      * fall back to it with `super._ownKeys()`.
+     *
+     * @returns An array-like of the own keys to report.
+     *
+     * @protected
+     * @virtual
      */
     protected _ownKeys(): ArrayLike<string | symbol> {
         return Reflect.ownKeys(this.#prototype);
     }
 
     /**
-     * Fallback for the `getOwnPropertyDescriptor` trap. `protected` and
-     * intended to be overridden by subclasses.
+     * Fallback for the `getOwnPropertyDescriptor` trap.
      *
-     * @virtual
-     *
+     * @remarks
      * Corresponds to the proxy `getOwnPropertyDescriptor` trap. This trap does
      * not walk the prototype chain; it fires for descriptor queries against
      * the attached proxy itself (including the descriptor lookups a `for…in`
      * chain walk performs). Default behavior delegates to
      * `Reflect.getOwnPropertyDescriptor` against the real prototype; overrides
      * can fall back to it with `super._getOwnPropertyDescriptor(...)`.
+     *
+     * @param property - The property key whose descriptor is being queried.
+     * @returns The property descriptor, or `undefined` if the property does not exist.
+     *
+     * @protected
+     * @virtual
      */
     protected _getOwnPropertyDescriptor(property: PropertyKey): PropertyDescriptor | undefined {
         return Reflect.getOwnPropertyDescriptor(this.#prototype, property);
     }
 
     /**
-     * Fallback for the `defineProperty` trap. `protected` and intended to be
-     * overridden by subclasses.
+     * Fallback for the `defineProperty` trap.
      *
-     * @virtual
-     *
+     * @remarks
      * Corresponds to the proxy `defineProperty` trap
      * (`Object.defineProperty`). This trap does not walk the prototype chain;
      * it fires only when a property is defined directly on the attached proxy.
      * Default behavior delegates to `Reflect.defineProperty` against the real
      * prototype; overrides can fall back to it with `super._defineProperty(...)`.
+     *
+     * @param property - The property key being defined.
+     * @param attributes - The property descriptor to apply.
+     * @returns `true` if the definition succeeded, `false` otherwise.
+     *
+     * @protected
+     * @virtual
      */
     protected _defineProperty(property: PropertyKey, attributes: PropertyDescriptor): boolean {
         return Reflect.defineProperty(this.#prototype, property, attributes);
     }
 
     /**
-     * Fallback for the `getPrototypeOf` trap. `protected` and intended to be
-     * overridden by subclasses.
+     * Fallback for the `getPrototypeOf` trap.
      *
-     * @virtual
-     *
+     * @remarks
      * Corresponds to the proxy `getPrototypeOf` trap. Fires during the
      * prototype-chain walk that `instanceof` performs, and for
      * `Object.getPrototypeOf(Object.getPrototypeOf(instance))`.
@@ -284,54 +316,69 @@ export abstract class ProxyBase {
      * that is what makes `instance instanceof Subclass` continue to work.
      * Overriders that change this return value break `instanceof`; to keep it,
      * fall back with `super._getPrototypeOf()`.
+     *
+     * @returns The real prototype object, or `null`.
+     *
+     * @protected
+     * @virtual
      */
     protected _getPrototypeOf(): object | null {
         return this.#prototype;
     }
 
     /**
-     * Fallback for the `setPrototypeOf` trap. `protected` and intended to be
-     * overridden by subclasses.
+     * Fallback for the `setPrototypeOf` trap.
      *
-     * @virtual
-     *
+     * @remarks
      * Corresponds to the proxy `setPrototypeOf` trap. This trap does not walk
      * the prototype chain; it fires only when the prototype of the attached
      * proxy is reassigned directly. Default behavior delegates to
      * `Reflect.setPrototypeOf` against the real prototype; overrides can fall
      * back to it with `super._setPrototypeOf(...)`.
+     *
+     * @param prototype - The new prototype to set, or `null`.
+     * @returns `true` if the prototype was successfully set, `false` otherwise.
+     *
+     * @protected
+     * @virtual
      */
     protected _setPrototypeOf(prototype: object | null): boolean {
         return Reflect.setPrototypeOf(this.#prototype, prototype);
     }
 
     /**
-     * Fallback for the `isExtensible` trap. `protected` and intended to be
-     * overridden by subclasses.
+     * Fallback for the `isExtensible` trap.
      *
-     * @virtual
-     *
+     * @remarks
      * Corresponds to the proxy `isExtensible` trap. This trap does not walk
      * the prototype chain; it fires for extensibility queries against the
      * attached proxy itself. Default behavior delegates to
      * `Reflect.isExtensible` against the real prototype; overrides can fall back
      * to it with `super._isExtensible()`.
+     *
+     * @returns `true` if the object is extensible, `false` otherwise.
+     *
+     * @protected
+     * @virtual
      */
     protected _isExtensible(): boolean {
         return Reflect.isExtensible(this.#prototype);
     }
 
     /**
-     * Fallback for the `preventExtensions` trap. `protected` and intended to
-     * be overridden by subclasses.
+     * Fallback for the `preventExtensions` trap.
      *
-     * @virtual
-     *
+     * @remarks
      * Corresponds to the proxy `preventExtensions` trap. This trap does not
      * walk the prototype chain; it fires only when extensions are prevented on
      * the attached proxy directly. Default behavior delegates to
      * `Reflect.preventExtensions` against the real prototype; overrides can fall
      * back to it with `super._preventExtensions()`.
+     *
+     * @returns `true` if extensions were successfully prevented, `false` otherwise.
+     *
+     * @protected
+     * @virtual
      */
     protected _preventExtensions(): boolean {
         return Reflect.preventExtensions(this.#prototype);

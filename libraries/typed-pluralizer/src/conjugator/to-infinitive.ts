@@ -32,12 +32,19 @@ type _ToInfinitive<T> =
     ) ?
         ReplaceEnding<T, 'ed', ''>
     : // (..[^aeiou])ed => '$1e'
-    T extends `${string}${string}${Consonant}ed` ? ReplaceEnding<T, 'ed', ''>
+    // $1 captures everything up to and including the consonant (not the 'ed');
+    // the replacement strips 'ed' and APPENDS 'e' (curved -> curve), it does not
+    // simply drop the trailing 'e'.
+    T extends `${string}${string}${Consonant}ed` ? ReplaceEnding<T, 'ed', 'e'>
     : // ied => 'y'
     T extends `${string}ied` ? ReplaceEnding<T, 'ied', 'y'>
     : // (.o)ed => '$1o'
     T extends `${string}oed` ? ReplaceEnding<T, 'ed', 'o'>
-    : // (.i)ed => '$1''
+    : // (.i)ed => '$1'
+    // DEAD ARM: unreachable. Every '...ied' input is already consumed by the
+    // earlier `ied => 'y'` arm above, so control never reaches here. Kept in
+    // place to mirror upstream's rule order (this arm is index #12 upstream,
+    // likewise shadowed by `ied -> y` at index #10).
     T extends `${string}ied` ? ReplaceEnding<T, 'ed', ''>
     : // ([rl])ew => '$1ow'
     T extends `${string}${AnyOf<'rl'>}ew` ? ReplaceEnding<T, 'ew', 'ow'>

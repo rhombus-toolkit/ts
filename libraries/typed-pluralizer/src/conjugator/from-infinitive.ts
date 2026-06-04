@@ -1,5 +1,5 @@
 // http://compromise.cool/website/browse/from_infinitive.html
-import { AnyOf, ReplaceEnding, Vowel } from '../util';
+import { AnyOf, Letter, ReplaceEnding, Vowel } from '../util';
 import { FromInfinitive as IrregularVerbs } from './irregular-verbs';
 
 // Matching is case-insensitive (input is folded to lowercase first); output is
@@ -24,9 +24,13 @@ type _FromInfinitive<T> =
     : // (a[tg]|i[zn]|ur|nc|gl|is)e$ => $1ed
     T extends `${string}${`a${AnyOf<'tg'>}` | `i${AnyOf<'zn'>}` | `ur` | `nc` | `gl` | `is`}e` ? `${T}d`
     : // ([i|f|rr])y$ => $1ied
-    T extends `${string}${'i' | 'f' | 'rr'}y` ? ReplaceEnding<T, 'y', 'ied'>
+    // The regex char class [i|f|rr] matches a SINGLE char (i, |, f, or r);
+    // 'rr' would never match a single-r word like 'try', so the union member is 'r'.
+    T extends `${string}${'i' | 'f' | 'r'}y` ? ReplaceEnding<T, 'y', 'ied'>
     : // ([td]er)$ => $1ed
-    T extends `${string}${'t' | 'd'}er` ? ReplaceEnding<T, 'r', 'd'>
+    // $1 captures the whole '[td]er'; the replacement APPENDS 'ed'
+    // (water -> watered, ponder -> pondered), it does not rewrite the ending.
+    T extends `${string}${'t' | 'd'}er` ? `${T}ed`
     : // ([bd]l)e$ => $1ed
     T extends `${string}${AnyOf<'bd'>}le` ? `${T}d`
     : // (ish|tch|ess)$ => $1ed
@@ -42,5 +46,8 @@ type _FromInfinitive<T> =
     : // (en)$ => $1ed
     T extends `${infer X}en` ? `${X}ened`
     : // (..)(ow)$ => $1ew
-    T extends `${infer X}${infer Y}ow` ? `${X}${Y}ew`
+    // The regex requires at least TWO chars before the final 'ow'
+    // (know -> knew, throw -> threw); a single-char prefix like 'tow' must fall
+    // through past this arm. Gate on two leading letters, then swap 'ow' -> 'ew'.
+    T extends `${string}${Letter}${Letter}ow` ? ReplaceEnding<T, 'ow', 'ew'>
     : T;

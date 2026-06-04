@@ -207,6 +207,18 @@ importers:
         specifier: ~5.8.2
         version: 5.8.3
 
+  ../../libraries/typed-pluralizer:
+    devDependencies:
+      '@rhombus-toolkit/heft-web-rig':
+        specifier: workspace:*
+        version: link:../../rigs/heft-web-rig
+      '@rushstack/heft':
+        specifier: ~1.2.17
+        version: 1.2.17(@types/node@25.9.1)
+      typescript:
+        specifier: ~5.8.2
+        version: 5.8.3
+
   ../../rigs/heft-web-rig:
     dependencies:
       '@rushstack/heft':

@@ -59,8 +59,7 @@ function createHandler(self: object, proto: object): ProxyHandler<object> {
  * {@link IndexAccessed._setIndex} may still be invoked with keys outside `Key` —
  * well-known-symbol probes, arbitrary strings written through an `unknown` cast,
  * and the like. Narrowing `Key` documents intent and tightens the call site for
- * statically-typed access, but implementations must still handle unrecognized
- * keys defensively (typically returning `undefined`, cast to `Value` as needed).
+ * statically-typed access; it does not change what arrives at runtime.
  *
  * ## Narrowing `Key` past real members
  *
@@ -77,7 +76,7 @@ function createHandler(self: object, proto: object): ProxyHandler<object> {
  *     // refresh is a real member, so it shadows the indexer and is excluded
  *     // from Key above.
  *     refresh(): void {}
- *     protected _getIndex(key: 'PATH' | 'HOME'): string { return undefined as unknown as string; }
+ *     protected _getIndex(key: 'PATH' | 'HOME'): string { throw new Error(String(key)); }
  *     protected _setIndex(_key: 'PATH' | 'HOME', value: string): string { return value; }
  * }
  * ```
@@ -112,10 +111,8 @@ function createHandler(self: object, proto: object): ProxyHandler<object> {
  * - **Keys are `PropertyKey`.** Well-known-symbol probes against an
  *   instance — `Symbol.toStringTag`, `Symbol.iterator`, Node's
  *   `util.inspect.custom` symbol, and the like — are property reads that miss
- *   undeclared, so they also reach {@link IndexAccessed._getIndex}.
- *   Implementations should return `undefined` (cast to `Value` as needed) for
- *   any key they don't recognize; otherwise iteration, logging, and string
- *   coercion may misbehave.
+ *   undeclared, so they also reach {@link IndexAccessed._getIndex}. Iteration,
+ *   logging, and string coercion all probe this way.
  * - **Constructor-body assignments to undeclared properties route through
  *   {@link IndexAccessed._setIndex}.** A plain `this.foo = …` in a subclass
  *   constructor is a `[[Set]]` and, if `foo` isn't otherwise defined, traps as
@@ -132,7 +129,11 @@ function createHandler(self: object, proto: object): ProxyHandler<object> {
  *     readonly #store = new Map<PropertyKey, string>();
  *
  *     protected _getIndex(key: PropertyKey): string {
- *         return this.#store.get(key) ?? (undefined as unknown as string);
+ *         const value = this.#store.get(key);
+ *         if (value === undefined) {
+ *             throw new Error(`Env: no such variable '${String(key)}'`);
+ *         }
+ *         return value;
  *     }
  *
  *     protected _setIndex(key: PropertyKey, value: string): string {
@@ -165,8 +166,7 @@ export abstract class IndexAccessed<Value, Key extends PropertyKey = PropertyKey
      * instance's own properties and the entire real prototype chain — including
      * well-known-symbol probes (see the class-level hazards). The `key`
      * parameter is typed `Key`, but that is a compile-time contract only — at
-     * runtime keys outside `Key` can still arrive, so return `undefined` (cast
-     * to `Value`) for keys you don't recognize.
+     * runtime keys outside `Key` can still arrive.
      */
     protected abstract _getIndex(key: Key): Value;
 

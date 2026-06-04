@@ -45,3 +45,13 @@ export type AnyOf<T> =
 export type NoneOf<T> = Exclude<Letter, AnyOf<T>>;
 
 export type Not<T extends string, U> = T extends U ? never : T;
+
+// The final single character of a string literal. Recurses to peel the head
+// until one char remains. `${infer X}${Not<infer Y, Letter>}` cannot do this —
+// `Y` binds the whole tail after the first char, not a single trailing char.
+export type LastChar<T extends string> =
+    T extends `${infer Head}${infer Rest}` ?
+        Rest extends '' ?
+            T
+        :   LastChar<Rest>
+    :   never;

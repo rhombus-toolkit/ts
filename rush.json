@@ -112,6 +112,12 @@
       "shouldPublish": true
     },
     {
+      "packageName": "@rhombus-toolkit/proxy-base",
+      "projectFolder": "libraries/proxy-base",
+      "reviewCategory": "production",
+      "shouldPublish": true
+    },
+    {
       "packageName": "@rhombus-toolkit/set-immediate",
       "projectFolder": "libraries/set-immediate",
       "reviewCategory": "production",

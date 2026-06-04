@@ -20,6 +20,7 @@
     "@rhombus-toolkit/heft-web-rig": "workspace:*",
     "@rhombus-toolkit/kinda-weak-map": "workspace:*",
     "@rhombus-toolkit/logger": "workspace:*",
+    "@rhombus-toolkit/proxy-base": "workspace:*",
     "@rhombus-toolkit/set-immediate": "workspace:*",
     "@rhombus-toolkit/singleton": "workspace:*",
     "@rhombus-toolkit/type-guards": "workspace:*",

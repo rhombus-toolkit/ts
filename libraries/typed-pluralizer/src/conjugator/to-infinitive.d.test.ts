@@ -88,6 +88,27 @@ namespace scoffed {
     isAssignable<ToInfinitive<'scoffed'>, 'scoffe'>;
 }
 
+// VCed-MINIMAL boundary (4-letter VCed words): upstream's `..` requires THREE
+// chars before 'ed', so these single-leading-char words DON'T match the arm and
+// fall through unchanged (used -> used, not 'use'). Regression pin for the gate
+// tightening that requires two `${Letter}`s before the consonant.
+namespace used {
+    // @ts-expect-no-error
+    isAssignable<ToInfinitive<'used'>, 'used'>;
+}
+namespace aged {
+    // @ts-expect-no-error
+    isAssignable<ToInfinitive<'aged'>, 'aged'>;
+}
+namespace aped {
+    // @ts-expect-no-error
+    isAssignable<ToInfinitive<'aped'>, 'aped'>;
+}
+namespace aced {
+    // @ts-expect-no-error
+    isAssignable<ToInfinitive<'aced'>, 'aced'>;
+}
+
 // (sh|ch)ed => $1
 namespace washed {
     // @ts-expect-no-error

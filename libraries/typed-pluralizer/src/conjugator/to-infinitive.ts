@@ -35,7 +35,13 @@ type _ToInfinitive<T> =
     // $1 captures everything up to and including the consonant (not the 'ed');
     // the replacement strips 'ed' and APPENDS 'e' (curved -> curve), it does not
     // simply drop the trailing 'e'.
-    T extends `${string}${string}${Consonant}ed` ? ReplaceEnding<T, 'ed', 'e'>
+    // Upstream's `..` requires TWO chars before the pre-'ed' consonant, so the
+    // minimum match is THREE chars before 'ed' (e.g. curv|ed matches, us|ed does
+    // not). The two `${Letter}`s supply that `..`, `${Consonant}` is the
+    // `[^aeiou]`, and the leading `${string}` absorbs any longer prefix. Without
+    // both `${Letter}`s a 4-letter VCed word (used, aged, aped) would wrongly
+    // match here; upstream leaves those unchanged.
+    T extends `${string}${Letter}${Letter}${Consonant}ed` ? ReplaceEnding<T, 'ed', 'e'>
     : // ied => 'y'
     T extends `${string}ied` ? ReplaceEnding<T, 'ied', 'y'>
     : // (.o)ed => '$1o'

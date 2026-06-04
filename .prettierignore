@@ -1,0 +1,13 @@
+# Rush machinery — generated configs, scripts, and change files
+common/
+
+# Build outputs
+lib/
+dist/
+temp/
+coverage/
+
+# Generated
+CHANGELOG.md
+CHANGELOG.json
+pnpm-lock.yaml

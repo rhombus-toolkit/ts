@@ -16,6 +16,8 @@
 //     2. replaceMap.hasOwnProperty(token) -> restoreCase(word, replaceMap[token])
 //     3. sanitizeWord(token, word, rules):
 //          a. !token.length                       -> word                       [identity]
+//             (the empty-string gate — implemented as the `T extends '' ? ''`
+//             gate at the top of both _Pluralize and _Singularize below.)
 //          b. uncountables.hasOwnProperty(token)  -> word                       [identity]
 //          c. rules iterated BOTTOM-UP (while (len--)); first regex whose
 //             test(word) passes -> replace(word, rule); else word.              [identity]
@@ -85,7 +87,15 @@ import { IsUncountable } from './uncountables';
 export type Pluralize<T extends string> = _Pluralize<T>;
 
 type _Pluralize<T extends string> =
-    // 1. keepMap (irregularPlurals) hit -> identity (word is already an irregular plural).
+    // 0. sanitizeWord step 3a: `if (!token.length) return word` — the empty string
+    //    short-circuits to identity BEFORE any rule runs. The keep/replace maps and
+    //    the uncountable Set/regexes never contain '' (all keys are non-empty), so
+    //    hoisting this gate above them is equivalent to upstream's in-sanitizeWord
+    //    placement. Without it, '' falls into PluralizationRules<''>, whose final
+    //    guard takes the _SFallback branch (LastChar<''> = never, never extends
+    //    Letter) and yields 's' — a divergence from upstream's identity ''.
+    T extends '' ? ''
+    : // 1. keepMap (irregularPlurals) hit -> identity (word is already an irregular plural).
     [SingularizeIrregular<T>] extends [never] ?
         // 2. replaceMap (irregularSingles) hit -> the irregular plural.
         [PluralizeIrregular<T>] extends [never] ?
@@ -106,7 +116,13 @@ type _Pluralize<T extends string> =
 export type Singularize<T extends string> = _Singularize<T>;
 
 type _Singularize<T extends string> =
-    // 1. keepMap (irregularSingles) hit -> identity (word is already an irregular singular).
+    // 0. sanitizeWord step 3a: `if (!token.length) return word` — the empty string
+    //    short-circuits to identity BEFORE any rule runs (see _Pluralize note).
+    //    Singularize<''> already resolved to '' by accident via the
+    //    `[SingularizationRules<''>] extends [never]` fall-through, but pin it
+    //    explicitly so the gate is symmetric with Pluralize and intent is clear.
+    T extends '' ? ''
+    : // 1. keepMap (irregularSingles) hit -> identity (word is already an irregular singular).
     [PluralizeIrregular<T>] extends [never] ?
         // 2. replaceMap (irregularPlurals) hit -> the irregular singular.
         [SingularizeIrregular<T>] extends [never] ?

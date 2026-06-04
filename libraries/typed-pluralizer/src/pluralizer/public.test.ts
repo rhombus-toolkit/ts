@@ -390,6 +390,22 @@ namespace documentedDivergences {
 }
 
 // ---------------------------------------------------------------------------
+// Empty-string edge case — sanitizeWord step 3a (`!token.length -> word`).
+// Upstream short-circuits the empty string to identity before any rule runs:
+//   p.plural('') === '' && p.singular('') === ''  (verified against the oracle).
+// Without the explicit `T extends '' ? ''` gate, Pluralize<''> fell into
+// PluralizationRules<''> and resolved to 's' (LastChar<''> = never, never
+// extends Letter, _SFallback<''> = 's') — a divergence outside both accepted
+// classes (a)/(b). Pin both directions.
+// ---------------------------------------------------------------------------
+namespace emptyString {
+    // @ts-expect-no-error
+    isAssignable<Pluralize<''>, ''>;
+    // @ts-expect-no-error
+    isAssignable<Singularize<''>, ''>;
+}
+
+// ---------------------------------------------------------------------------
 // (a) Case-insensitive matching, always-lowercase output.
 // ---------------------------------------------------------------------------
 namespace caseFolding {

@@ -44,22 +44,12 @@ function createHandler(self: object, proto: object): ProxyHandler<object> {
  * An `abstract` base class that gives subclasses indexer-style property access —
  * the TypeScript/JavaScript analogue of a C# indexer (`this[key]`).
  *
+ * @remarks
  * Reads and writes of properties that do **not** exist anywhere on the instance
  * or its real prototype chain route to {@link IndexAccessed._getIndex} and
  * {@link IndexAccessed._setIndex}. Real members — own properties, declared
  * fields, and inherited methods — always win; the indexer is a *miss-only*
  * fallback, never consulted for keys that already resolve.
- *
- * Generic over the indexed `Value` type — the value the indexer reads and
- * writes — and over `Key`, the key type the indexer accepts (defaulting to
- * `PropertyKey`).
- *
- * `Key` is a **compile-time contract only.** The proxy cannot restrict which
- * keys actually arrive at runtime, so {@link IndexAccessed._getIndex} and
- * {@link IndexAccessed._setIndex} may still be invoked with keys outside `Key` —
- * well-known-symbol probes, arbitrary strings written through an `unknown` cast,
- * and the like. Narrowing `Key` documents intent and tightens the call site for
- * statically-typed access; it does not change what arrives at runtime.
  *
  * ## Narrowing `Key` past real members
  *
@@ -123,6 +113,14 @@ function createHandler(self: object, proto: object): ProxyHandler<object> {
  * - **`Object.getPrototypeOf(instance)` returns the attached proxy**, not the
  *   real prototype.
  *
+ * @typeParam Value - The type of values the indexer reads and writes.
+ * @typeParam Key - The key type the indexer accepts; defaults to `PropertyKey`.
+ * This is a compile-time contract only — the proxy cannot restrict which keys
+ * arrive at runtime, so {@link IndexAccessed._getIndex} and
+ * {@link IndexAccessed._setIndex} may still be invoked with keys outside `Key`.
+ * Narrowing `Key` documents intent and tightens the call site for
+ * statically-typed access; it does not change what arrives at runtime.
+ *
  * @example
  * ```ts
  * class Env extends IndexAccessed<string> {
@@ -148,6 +146,10 @@ function createHandler(self: object, proto: object): ProxyHandler<object> {
  * indexable['HOME']; // '/home/tom'
  * env instanceof Env; // true
  * ```
+ *
+ * @see {@link ProxyBase} — the full-hook-surface sibling.
+ *
+ * @abstract
  */
 export abstract class IndexAccessed<Value, Key extends PropertyKey = PropertyKey> {
     constructor() {
@@ -156,26 +158,28 @@ export abstract class IndexAccessed<Value, Key extends PropertyKey = PropertyKey
     }
 
     /**
-     * Indexer read hook. `protected` and abstract: subclasses **must**
-     * implement it.
+     * Indexer read hook.
      *
-     * @virtual
-     *
+     * @remarks
      * Corresponds to the proxy `get` trap. Because `get` participates in the
      * prototype-chain walk, it fires for any property read that misses the
      * instance's own properties and the entire real prototype chain — including
      * well-known-symbol probes (see the class-level hazards). The `key`
      * parameter is typed `Key`, but that is a compile-time contract only — at
      * runtime keys outside `Key` can still arrive.
+     *
+     * @param key - The property key being read.
+     * @returns The indexed value for the given key.
+     *
+     * @protected
+     * @abstract
      */
     protected abstract _getIndex(key: Key): Value;
 
     /**
-     * Indexer write hook. `protected` and abstract: subclasses **must**
-     * implement it.
+     * Indexer write hook.
      *
-     * @virtual
-     *
+     * @remarks
      * Corresponds to the proxy `set` trap. Because `set` participates in the
      * prototype-chain walk, it fires on assignment to a property that does not
      * exist on the instance or the real prototype chain.
@@ -187,6 +191,13 @@ export abstract class IndexAccessed<Value, Key extends PropertyKey = PropertyKey
      * The return value is **not** consumed by the proxy machinery — assignments
      * always report success regardless of what is returned. It exists purely for
      * subclass ergonomics (e.g. returning the stored value for chaining).
+     *
+     * @param key - The property key being written.
+     * @param value - The value being assigned.
+     * @returns A value for subclass ergonomics; not consumed by the proxy.
+     *
+     * @protected
+     * @abstract
      */
     protected abstract _setIndex(key: Key, value: Value): Value;
 }

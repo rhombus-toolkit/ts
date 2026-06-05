@@ -142,7 +142,7 @@
             "packageName": "@rhombus-toolkit/typed-pluralizer",
             "projectFolder": "libraries/typed-pluralizer",
             "reviewCategory": "production",
-            "shouldPublish": true
+            "shouldPublish": false
         },
         {
             "packageName": "@rhombus-toolkit/heft-web-rig",

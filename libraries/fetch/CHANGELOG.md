@@ -1,6 +1,11 @@
 # Change Log - @rhombus-toolkit/fetch
 
-This log was last generated on Sun, 31 May 2026 05:39:43 GMT and should not be manually modified.
+This log was last generated on Sat, 06 Jun 2026 01:31:01 GMT and should not be manually modified.
+
+## 1.3.9
+Sat, 06 Jun 2026 01:31:01 GMT
+
+_Version update only_
 
 ## 1.3.8
 Sun, 31 May 2026 05:39:43 GMT

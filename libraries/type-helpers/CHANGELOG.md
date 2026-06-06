@@ -1,6 +1,18 @@
 # Change Log - @rhombus-toolkit/type-helpers
 
-This log was last generated on Sun, 31 May 2026 05:39:43 GMT and should not be manually modified.
+This log was last generated on Sat, 06 Jun 2026 01:31:01 GMT and should not be manually modified.
+
+## 1.10.0
+Sat, 06 Jun 2026 01:31:01 GMT
+
+### Minor changes
+
+- Export flattenMap (type + runtime): flatten a DeepDictionary<Func> into a dot-keyed flat record
+- Export UnionToTuple<T>
+
+### Patches
+
+- Deprecate Cast<V, T>; use an intersection (e.g. `string & T`) instead
 
 ## 1.9.0
 Sun, 31 May 2026 05:39:43 GMT

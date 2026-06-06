@@ -4,6 +4,11 @@
       "comment": "Export UnionToTuple<T>",
       "type": "minor",
       "packageName": "@rhombus-toolkit/type-helpers"
+    },
+    {
+      "comment": "Deprecate Cast<V, T>; use an intersection (e.g. `string & T`) instead",
+      "type": "patch",
+      "packageName": "@rhombus-toolkit/type-helpers"
     }
   ],
   "packageName": "@rhombus-toolkit/type-helpers",

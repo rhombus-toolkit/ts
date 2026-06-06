@@ -12,9 +12,10 @@ export * from './opaque';
 export * as obj from './obj';
 export * from './range';
 export * from './restify';
-export type {Stringable, Str, Join, ClearEmpties, Split} from './string';
+export type { Stringable, Str, Join, ClearEmpties, Split } from './string';
 
 export * from './truthy';
 // export * from './tuple';
-export type {UnionToIntersection} from './union-to-intersection';
+export type { UnionToIntersection } from './union-to-intersection';
+export type { UnionToTuple } from './union-to-tuple';
 export * from './utility-types';

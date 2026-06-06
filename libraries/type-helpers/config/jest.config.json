@@ -1,0 +1,9 @@
+{
+    "extends": "@rushstack/heft-jest-plugin/includes/jest-web.config.json",
+
+    // The *.test.ts files in this package are type-level assertion suites compiled
+    // by `heft build`; their emitted JS contains bare `isAssignable;` expression
+    // statements that would throw ReferenceError under Jest. Runtime suites use the
+    // `.spec.ts` suffix so the two never collide.
+    "testMatch": ["<rootDir>/lib-commonjs/**/*.spec.js"]
+}

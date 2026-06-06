@@ -6,3 +6,11 @@
 *.test.js.map
 *.test.d.ts
 *.test.d.ts.map
+
+# Runtime Jest suites (*.spec.ts) and the Jest config are dev-only too.
+*.spec.ts
+*.spec.js
+*.spec.js.map
+*.spec.d.ts
+*.spec.d.ts.map
+config/jest.config.json

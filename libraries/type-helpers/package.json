@@ -1,7 +1,8 @@
 {
   "name": "@rhombus-toolkit/type-helpers",
-  "version": "2.0.0",
-  "description": "",
+  "version": "3.0.0",
+  "description": "DEPRECATED -- split into @rhombus-toolkit/types, @rhombus-toolkit/obj and @rhombus-toolkit/restify. Kept as a re-export shim.",
+  "deprecated": "Split into @rhombus-toolkit/types (the types), @rhombus-toolkit/obj (obj + flattenMap) and @rhombus-toolkit/restify (restify/unrestify). This version re-exports all three; CheapRingBuffer, range, nodeCallbackToAsync, tuple and identity are gone.",
   "repository": {
     "type": "git",
     "url": "https://github.com/rhombus-toolkit/ts.git",
@@ -30,9 +31,9 @@
   "keywords": [],
   "author": "Thomas Butler",
   "dependencies": {
-    "@rhombus-toolkit/func": "workspace:*",
     "@rhombus-toolkit/obj": "workspace:*",
-    "@rhombus-toolkit/restify": "workspace:*"
+    "@rhombus-toolkit/restify": "workspace:*",
+    "@rhombus-toolkit/types": "workspace:*"
   },
   "publishConfig": {
     "access": "public",

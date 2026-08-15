@@ -103,11 +103,11 @@
     },
     "libraries/type-helpers": {
       "name": "@rhombus-toolkit/type-helpers",
-      "version": "2.0.0",
+      "version": "3.0.0",
       "dependencies": {
-        "@rhombus-toolkit/func": "workspace:*",
         "@rhombus-toolkit/obj": "workspace:*",
         "@rhombus-toolkit/restify": "workspace:*",
+        "@rhombus-toolkit/types": "workspace:*",
       },
     },
     "libraries/typed-pluralizer": {

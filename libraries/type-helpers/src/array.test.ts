@@ -6,13 +6,13 @@ declare function isAssignable<TExpected>(actual?: TExpected): void;
 type Five = [0, 1, 2, 3, 4];
 
 namespace splitArrayTest {
-    type Subject = SplitArray<Five, 2>;
-    type Expected = [[0, 1], [2, 3, 4]];
+  type Subject = SplitArray<Five, 2>;
+  type Expected = [[0, 1], [2, 3, 4]];
 
-    // @ts-expect-no-error
-    isAssignable<Subject, Expected>;
-    // @ts-expect-no-error
-    isAssignable<Expected, Subject>;
+  // @ts-expect-no-error
+  isAssignable<Subject, Expected>;
+  // @ts-expect-no-error
+  isAssignable<Expected, Subject>;
 }
 
 /**
@@ -21,60 +21,60 @@ namespace splitArrayTest {
  * whole input came back.
  */
 namespace takeTest {
-    type Subject = Take<2, Five>;
+  type Subject = Take<2, Five>;
 
-    // @ts-expect-no-error
-    isAssignable<Subject, [0, 1]>;
-    // @ts-expect-no-error
-    isAssignable<[0, 1], Subject>;
+  // @ts-expect-no-error
+  isAssignable<Subject, [0, 1]>;
+  // @ts-expect-no-error
+  isAssignable<[0, 1], Subject>;
 
-    // the old broken behaviour: the entire input array
-    // @ts-expect-error
-    isAssignable<Subject, Five>;
+  // the old broken behaviour: the entire input array
+  // @ts-expect-error
+  isAssignable<Subject, Five>;
 }
 
 namespace takeEdgesTest {
-    // @ts-expect-no-error
-    isAssignable<Take<0, Five>, []>;
-    // @ts-expect-no-error
-    isAssignable<[], Take<0, Five>>;
-    // @ts-expect-no-error
-    isAssignable<Take<5, Five>, Five>;
-    // @ts-expect-no-error
-    isAssignable<Five, Take<5, Five>>;
+  // @ts-expect-no-error
+  isAssignable<Take<0, Five>, []>;
+  // @ts-expect-no-error
+  isAssignable<[], Take<0, Five>>;
+  // @ts-expect-no-error
+  isAssignable<Take<5, Five>, Five>;
+  // @ts-expect-no-error
+  isAssignable<Five, Take<5, Five>>;
 }
 
 namespace skipTest {
-    type Subject = Skip<2, Five>;
+  type Subject = Skip<2, Five>;
 
-    // @ts-expect-no-error
-    isAssignable<Subject, [2, 3, 4]>;
-    // @ts-expect-no-error
-    isAssignable<[2, 3, 4], Subject>;
+  // @ts-expect-no-error
+  isAssignable<Subject, [2, 3, 4]>;
+  // @ts-expect-no-error
+  isAssignable<[2, 3, 4], Subject>;
 
-    // the old broken behaviour
-    // @ts-expect-error
-    isAssignable<Subject, Five>;
+  // the old broken behaviour
+  // @ts-expect-error
+  isAssignable<Subject, Five>;
 }
 
 namespace skipEdgesTest {
-    // @ts-expect-no-error
-    isAssignable<Skip<0, Five>, Five>;
-    // @ts-expect-no-error
-    isAssignable<Five, Skip<0, Five>>;
-    // @ts-expect-no-error
-    isAssignable<Skip<5, Five>, []>;
-    // @ts-expect-no-error
-    isAssignable<[], Skip<5, Five>>;
+  // @ts-expect-no-error
+  isAssignable<Skip<0, Five>, Five>;
+  // @ts-expect-no-error
+  isAssignable<Five, Skip<0, Five>>;
+  // @ts-expect-no-error
+  isAssignable<Skip<5, Five>, []>;
+  // @ts-expect-no-error
+  isAssignable<[], Skip<5, Five>>;
 }
 
 namespace sliceTest {
-    type Subject = Slice<Five, 1, 3>;
+  type Subject = Slice<Five, 1, 3>;
 
-    // @ts-expect-no-error
-    isAssignable<Subject, [1, 2, 3]>;
-    // @ts-expect-no-error
-    isAssignable<[1, 2, 3], Subject>;
+  // @ts-expect-no-error
+  isAssignable<Subject, [1, 2, 3]>;
+  // @ts-expect-no-error
+  isAssignable<[1, 2, 3], Subject>;
 }
 
 /**
@@ -82,26 +82,26 @@ namespace sliceTest {
  * are parameters -- that is what the `Cast` is for, and what `Curry` relies on.
  */
 namespace stillSatisfiesArrayConstraintTest {
-    type NeedsArray<T extends any[]> = T;
+  type NeedsArray<T extends any[]> = T;
 
-    type TakeStaysAnArray<N extends number, T extends any[]> = NeedsArray<Take<N, T>>;
-    type SkipStaysAnArray<N extends number, T extends any[]> = NeedsArray<Skip<N, T>>;
+  type TakeStaysAnArray<N extends number, T extends any[]> = NeedsArray<Take<N, T>>;
+  type SkipStaysAnArray<N extends number, T extends any[]> = NeedsArray<Skip<N, T>>;
 
-    // @ts-expect-no-error
-    isAssignable<TakeStaysAnArray<2, Five>, [0, 1]>;
-    // @ts-expect-no-error
-    isAssignable<SkipStaysAnArray<2, Five>, [2, 3, 4]>;
+  // @ts-expect-no-error
+  isAssignable<TakeStaysAnArray<2, Five>, [0, 1]>;
+  // @ts-expect-no-error
+  isAssignable<SkipStaysAnArray<2, Five>, [2, 3, 4]>;
 }
 
 namespace headTailBodyLastTest {
-    // @ts-expect-no-error
-    isAssignable<Head<Five>, 0>;
-    // @ts-expect-no-error
-    isAssignable<Last<Five>, 4>;
-    // @ts-expect-no-error
-    isAssignable<Tail<Five>, [1, 2, 3, 4]>;
-    // @ts-expect-no-error
-    isAssignable<Body<Five>, [0, 1, 2, 3]>;
-    // @ts-expect-no-error
-    isAssignable<Length<Five>, 5>;
+  // @ts-expect-no-error
+  isAssignable<Head<Five>, 0>;
+  // @ts-expect-no-error
+  isAssignable<Last<Five>, 4>;
+  // @ts-expect-no-error
+  isAssignable<Tail<Five>, [1, 2, 3, 4]>;
+  // @ts-expect-no-error
+  isAssignable<Body<Five>, [0, 1, 2, 3]>;
+  // @ts-expect-no-error
+  isAssignable<Length<Five>, 5>;
 }

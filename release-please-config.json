@@ -49,9 +49,9 @@
       "package-name": "@rhombus-toolkit/set-immediate",
       "changelog-path": "CHANGELOG.md"
     },
-    "libraries/singleton": {
+    "libraries/once": {
       "release-type": "node",
-      "package-name": "@rhombus-toolkit/singleton",
+      "package-name": "@rhombus-toolkit/once",
       "changelog-path": "CHANGELOG.md"
     },
     "libraries/type-guards": {

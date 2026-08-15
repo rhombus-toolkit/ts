@@ -1,4 +1,4 @@
-// Rolls the public type surface of @rhombus-toolkit/singleton into a single
+// Rolls the public type surface of @rhombus-toolkit/once into a single
 // dist/bundle/index.d.ts. `respectExternal: true` keeps the cross-package
 // @rhombus-toolkit/types import as a real import in the rolled output rather
 // than inlining it.

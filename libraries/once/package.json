@@ -1,11 +1,11 @@
 {
-  "name": "@rhombus-toolkit/singleton",
-  "version": "1.3.4",
-  "description": "",
+  "name": "@rhombus-toolkit/once",
+  "version": "1.0.0",
+  "description": "The create-once family: Lazy (keyed by nothing), Singleton (keyed by class), memo (keyed by WeakKey).",
   "repository": {
     "type": "git",
     "url": "https://github.com/rhombus-toolkit/ts.git",
-    "directory": "libraries/singleton"
+    "directory": "libraries/once"
   },
   "type": "module",
   "sideEffects": [

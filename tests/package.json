@@ -16,7 +16,7 @@
     "@rhombus-toolkit/kinda-weak-map": "workspace:*",
     "@rhombus-toolkit/proxy-base": "workspace:*",
     "@rhombus-toolkit/set-immediate": "workspace:*",
-    "@rhombus-toolkit/singleton": "workspace:*",
+    "@rhombus-toolkit/once": "workspace:*",
     "@rhombus-toolkit/type-guards": "workspace:*",
     "@rhombus-toolkit/types": "workspace:*"
   }

@@ -32,8 +32,8 @@
     "libraries/defer": {
       "name": "@rhombus-toolkit/defer",
       "version": "1.4.2",
-      "devDependencies": {
-        "@types/node": "^24.0.0",
+      "dependencies": {
+        "@rhombus-toolkit/platform": "workspace:*",
       },
     },
     "libraries/fetch": {

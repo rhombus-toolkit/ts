@@ -1,3 +1,6 @@
+import { AbortController } from '@rhombus-toolkit/platform';
+import type { AbortSignal } from '@rhombus-toolkit/platform';
+
 import { defer } from './defer';
 
 enum State {

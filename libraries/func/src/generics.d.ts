@@ -9,7 +9,12 @@ type Replace<T, R> = T extends $ ? R
   : T extends PromiseLike<infer X> ? PromiseLike<Replace<X, R>>
   : T extends Generator<infer X> ? Generator<Replace<X, R>>
   : T extends AsyncGenerator<infer X> ? AsyncGenerator<Replace<X, R>>
-  : T extends MessageEvent<infer X> ? MessageEvent<Replace<X, R>>
+  // Parked, not deleted: MessageEvent is a DOM type, and this is otherwise a
+  // pure, zero-ambient-lib types package (no consumer of func's `.` entry --
+  // the only subpath std imports -- reaches this branch either). If a
+  // MessageEvent-shaped generic placeholder is ever wanted, `platform` (P4)
+  // can own a structural MessageEventLike<T> for it instead of pulling in DOM.
+  // : T extends MessageEvent<infer X> ? MessageEvent<Replace<X, R>>
   : T extends Map<infer X, infer Y> ? Map<Replace<X, R>, Replace<Y, R>>
   : T extends Set<infer X> ? Set<Replace<X, R>>
   : T extends WeakMap<infer X, infer Y> ? WeakMap<Replace<X, R> & WeakKey, Replace<Y, R>>

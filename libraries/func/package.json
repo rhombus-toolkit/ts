@@ -1,33 +1,34 @@
 {
-    "name": "@rhombus-toolkit/func",
-    "version": "3.6.0",
-    "description": "",
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/rhombus-toolkit/ts.git",
-        "directory": "libraries/func"
+  "name": "@rhombus-toolkit/func",
+  "version": "3.6.0",
+  "description": "",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rhombus-toolkit/ts.git",
+    "directory": "libraries/func"
+  },
+  "type": "module",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts"
     },
-    "type": "module",
-    "exports": {
-        ".": {
-            "types": "./src/index.d.ts"
-        },
-        "./generic": {
-            "types": "./src/generics.d.ts"
-        }
-    },
-    "sideEffects": false,
-    "scripts": {
-        "test": "",
-        "build": "",
-        "build:watch": ""
-    },
-    "keywords": [],
-    "author": "Thomas Butler",
-    "dependencies": {},
-    "devDependencies": {
-        "@rhombus-toolkit/heft-web-rig": "workspace:*",
-        "@rushstack/heft": "~1.2.17",
-        "typescript": "~5.8.2"
+    "./generic": {
+      "types": "./src/generics.d.ts"
     }
+  },
+  "sideEffects": false,
+  "scripts": {
+    "test": "",
+    "build": "",
+    "build:watch": ""
+  },
+  "keywords": [],
+  "author": "Thomas Butler",
+  "dependencies": {
+  },
+  "devDependencies": {
+    "@rhombus-toolkit/heft-web-rig": "workspace:*",
+    "@rushstack/heft": "~1.2.17",
+    "typescript": "~5.8.2"
+  }
 }

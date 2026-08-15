@@ -19,7 +19,7 @@
       "version": "1.4.4",
       "dependencies": {
         "@rhombus-toolkit/func": "workspace:*",
-        "@rhombus-toolkit/set-immediate": "workspace:*",
+        "@rhombus-toolkit/platform": "workspace:*",
       },
     },
     "libraries/case-converter": {
@@ -48,6 +48,13 @@
     "libraries/kinda-weak-map": {
       "name": "@rhombus-toolkit/kinda-weak-map",
       "version": "1.4.2",
+    },
+    "libraries/platform": {
+      "name": "@rhombus-toolkit/platform",
+      "version": "0.1.0",
+      "dependencies": {
+        "@rhombus-toolkit/func": "workspace:*",
+      },
     },
     "libraries/proxy-base": {
       "name": "@rhombus-toolkit/proxy-base",
@@ -198,6 +205,8 @@
     "@rhombus-toolkit/func": ["@rhombus-toolkit/func@workspace:libraries/func"],
 
     "@rhombus-toolkit/kinda-weak-map": ["@rhombus-toolkit/kinda-weak-map@workspace:libraries/kinda-weak-map"],
+
+    "@rhombus-toolkit/platform": ["@rhombus-toolkit/platform@workspace:libraries/platform"],
 
     "@rhombus-toolkit/proxy-base": ["@rhombus-toolkit/proxy-base@workspace:libraries/proxy-base"],
 

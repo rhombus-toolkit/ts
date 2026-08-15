@@ -1,22 +1,4 @@
 {
-    "extends": "@rhombus-toolkit/heft-web-rig/profiles/library/tsconfig-base.json",
-    "compilerOptions": {
-        "outDir": "lib",
-        // ES2018 is the floor this package actually needs, and it needs nothing else.
-        // The async family (AsyncGenerator, AsyncIterableIterator, AsyncIteratorObject,
-        // Symbol.asyncIterator) lands in ES2018; ES2017 fails on all of it. IteratorObject
-        // is declared in lib.es2015.iterable, so no ESNext sliver is required -- only its
-        // helper methods live in lib.esnext.iterator, and this package never names those.
-        // DOM is deliberately absent: `URL` was the one identifier that needed it, and
-        // isUrl is parked in src/is.ts rather than pay a whole lib for one guard.
-        "lib": ["ES2018"]
-    },
-    // *.spec.ts are RUNTIME tests executed by `bun test`, not part of the library
-    // program. They import `bun:test`, whose types live in @types/bun -- an ambient
-    // types package that would re-loosen the lib floor above through its own
-    // `/// <reference lib=...>` directives, defeating the point of pinning it.
-    // They get their own program (with bun's types, and whatever lib their
-    // assertions need) when the test runner is wired up; until then they are
-    // excluded here and run only via `bun test`.
-    "exclude": ["src/**/*.spec.ts"]
+  "extends": "../../tsconfig.editor.json",
+  "include": ["../*/src/**/*"]
 }

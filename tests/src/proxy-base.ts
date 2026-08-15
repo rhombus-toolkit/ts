@@ -1,21 +1,21 @@
-import { IndexAccessed, ProxyBase } from "@rhombus-toolkit/proxy-base";
+import { IndexAccessed, ProxyBase } from '@rhombus-toolkit/proxy-base';
 
 class Fallback extends ProxyBase {
-    realMethod(): string {
-        return 'real';
-    }
+  realMethod(): string {
+    return 'real';
+  }
 
-    protected override _get(property: PropertyKey, _receiver: unknown): unknown {
-        return `missing:${String(property)}`;
-    }
+  protected override _get(property: PropertyKey, _receiver: unknown): unknown {
+    return `missing:${String(property)}`;
+  }
 
-    protected override _set(_property: PropertyKey, _value: unknown, _receiver: unknown): boolean {
-        return true;
-    }
+  protected override _set(_property: PropertyKey, _value: unknown, _receiver: unknown): boolean {
+    return true;
+  }
 
-    protected override _has(_property: PropertyKey): boolean {
-        return false;
-    }
+  protected override _has(_property: PropertyKey): boolean {
+    return false;
+  }
 }
 
 const f = new Fallback();
@@ -26,16 +26,16 @@ const b: boolean = f instanceof ProxyBase;
 const m: string = f.realMethod();
 
 class Env extends IndexAccessed<string> {
-    readonly #store = new Map<PropertyKey, string>();
+  readonly #store = new Map<PropertyKey, string>();
 
-    protected _getIndex(key: PropertyKey): string {
-        return this.#store.get(key) ?? (undefined as unknown as string);
-    }
+  protected _getIndex(key: PropertyKey): string {
+    return this.#store.get(key) ?? (undefined as unknown as string);
+  }
 
-    protected _setIndex(key: PropertyKey, value: string): string {
-        this.#store.set(key, value);
-        return value;
-    }
+  protected _setIndex(key: PropertyKey, value: string): string {
+    this.#store.set(key, value);
+    return value;
+  }
 }
 
 const env = new Env();
@@ -51,24 +51,24 @@ const isIndexAccessed: boolean = env instanceof IndexAccessed;
 // member names are subtracted from the indexed Key union.
 type NarrowedKeys = 'PATH' | 'HOME' | 'refresh';
 interface NarrowedApi {
-    refresh(): void;
+  refresh(): void;
 }
 
 class NarrowedEnv extends IndexAccessed<string, Exclude<NarrowedKeys, keyof NarrowedApi>> implements NarrowedApi {
-    readonly #store = new Map<PropertyKey, string>();
+  readonly #store = new Map<PropertyKey, string>();
 
-    refresh(): void {
-        this.#store.clear();
-    }
+  refresh(): void {
+    this.#store.clear();
+  }
 
-    protected _getIndex(key: 'PATH' | 'HOME'): string {
-        return this.#store.get(key) ?? (undefined as unknown as string);
-    }
+  protected _getIndex(key: 'PATH' | 'HOME'): string {
+    return this.#store.get(key) ?? (undefined as unknown as string);
+  }
 
-    protected _setIndex(key: 'PATH' | 'HOME', value: string): string {
-        this.#store.set(key, value);
-        return value;
-    }
+  protected _setIndex(key: 'PATH' | 'HOME', value: string): string {
+    this.#store.set(key, value);
+    return value;
+  }
 }
 
 const narrowed = new NarrowedEnv();

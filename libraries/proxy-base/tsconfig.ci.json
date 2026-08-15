@@ -1,0 +1,8 @@
+{
+  "//": "lib: [\"ES2015\"] is the floor this package actually needs. Proxy, Reflect (get/set/has/deleteProperty/...), and Object.setPrototypeOf (ProxyBase.ts, IndexAccessed.ts) all land in ES2015 -- verified ES5 fails on all three (TS2304/TS2583/TS2550), each of which also cascades into implicit-any parameter errors once the handler signatures can't be inferred. Nothing here needs more, so no DOM/types entries.",
+  "extends": "../../tsconfig.lib.json",
+  "compilerOptions": {
+    "lib": ["ES2015"]
+  },
+  "include": ["src/**/*"]
+}

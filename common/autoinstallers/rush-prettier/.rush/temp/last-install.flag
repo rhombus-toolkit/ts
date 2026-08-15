@@ -1,0 +1,15 @@
+{
+  "node": "24.16.0",
+  "packageManager": "pnpm",
+  "packageManagerVersion": "9.15.9",
+  "packageJson": {
+    "name": "rush-prettier",
+    "version": "1.0.0",
+    "private": true,
+    "dependencies": {
+      "prettier": "~3.8.3",
+      "pretty-quick": "~4.2.2"
+    }
+  },
+  "rushJsonFolder": "/home/tom/src/ts@rhombus-toolkit+fix-type-guards-iterator-protocol"
+}

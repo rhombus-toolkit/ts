@@ -87,25 +87,22 @@ import { IsUncountable } from './uncountables';
 export type Pluralize<T extends string> = _Pluralize<T>;
 
 type _Pluralize<T extends string> =
-    // 0. sanitizeWord step 3a: `if (!token.length) return word` — the empty string
-    //    short-circuits to identity BEFORE any rule runs. The keep/replace maps and
-    //    the uncountable Set/regexes never contain '' (all keys are non-empty), so
-    //    hoisting this gate above them is equivalent to upstream's in-sanitizeWord
-    //    placement. Without it, '' falls into PluralizationRules<''>, whose final
-    //    guard takes the _SFallback branch (LastChar<''> = never, never extends
-    //    Letter) and yields 's' — a divergence from upstream's identity ''.
-    T extends '' ? ''
-    : // 1. keepMap (irregularPlurals) hit -> identity (word is already an irregular plural).
-    [SingularizeIrregular<T>] extends [never] ?
-        // 2. replaceMap (irregularSingles) hit -> the irregular plural.
-        [PluralizeIrregular<T>] extends [never] ?
-            // 3. merged uncountable gate (string map OR uncountable regexes) -> identity.
-            IsUncountable<T> extends true ?
-                Lowercase<T>
-            :   // 4. pluralization rules (bottom-up, regex-uncountables already hoisted into the gate above).
-                PluralizationRules<T>
-        :   PluralizeIrregular<T>
-    :   Lowercase<T>;
+  // 0. sanitizeWord step 3a: `if (!token.length) return word` — the empty string
+  //    short-circuits to identity BEFORE any rule runs. The keep/replace maps and
+  //    the uncountable Set/regexes never contain '' (all keys are non-empty), so
+  //    hoisting this gate above them is equivalent to upstream's in-sanitizeWord
+  //    placement. Without it, '' falls into PluralizationRules<''>, whose final
+  //    guard takes the _SFallback branch (LastChar<''> = never, never extends
+  //    Letter) and yields 's' — a divergence from upstream's identity ''.
+  T extends '' ? ''
+    // 1. keepMap (irregularPlurals) hit -> identity (word is already an irregular plural).
+    : [SingularizeIrregular<T>] extends [never] // 2. replaceMap (irregularSingles) hit -> the irregular plural.
+      ? [PluralizeIrregular<T>] extends [never] // 3. merged uncountable gate (string map OR uncountable regexes) -> identity.
+        ? IsUncountable<T> extends true ? Lowercase<T>
+          // 4. pluralization rules (bottom-up, regex-uncountables already hoisted into the gate above).
+        : PluralizationRules<T>
+      : PluralizeIrregular<T>
+    : Lowercase<T>;
 
 // Singularize a plural English word.
 //
@@ -116,22 +113,20 @@ type _Pluralize<T extends string> =
 export type Singularize<T extends string> = _Singularize<T>;
 
 type _Singularize<T extends string> =
-    // 0. sanitizeWord step 3a: `if (!token.length) return word` — the empty string
-    //    short-circuits to identity BEFORE any rule runs (see _Pluralize note).
-    //    Singularize<''> already resolved to '' by accident via the
-    //    `[SingularizationRules<''>] extends [never]` fall-through, but pin it
-    //    explicitly so the gate is symmetric with Pluralize and intent is clear.
-    T extends '' ? ''
-    : // 1. keepMap (irregularSingles) hit -> identity (word is already an irregular singular).
-    [PluralizeIrregular<T>] extends [never] ?
-        // 2. replaceMap (irregularPlurals) hit -> the irregular singular.
-        [SingularizeIrregular<T>] extends [never] ?
-            // 3. merged uncountable gate (string map OR uncountable regexes) -> identity.
-            IsUncountable<T> extends true ? Lowercase<T>
-            : // 4. singularization rules. Unmatched input resolves to `never` in
-            // `SingularizationRules`; surface the lowercased input instead, matching
-            // upstream's `return word` fall-through at the end of `sanitizeWord`.
-            [SingularizationRules<T>] extends [never] ? Lowercase<T>
-            : SingularizationRules<T>
-        :   SingularizeIrregular<T>
-    :   Lowercase<T>;
+  // 0. sanitizeWord step 3a: `if (!token.length) return word` — the empty string
+  //    short-circuits to identity BEFORE any rule runs (see _Pluralize note).
+  //    Singularize<''> already resolved to '' by accident via the
+  //    `[SingularizationRules<''>] extends [never]` fall-through, but pin it
+  //    explicitly so the gate is symmetric with Pluralize and intent is clear.
+  T extends '' ? ''
+    // 1. keepMap (irregularSingles) hit -> identity (word is already an irregular singular).
+    : [PluralizeIrregular<T>] extends [never] // 2. replaceMap (irregularPlurals) hit -> the irregular singular.
+      ? [SingularizeIrregular<T>] extends [never] // 3. merged uncountable gate (string map OR uncountable regexes) -> identity.
+        ? IsUncountable<T> extends true ? Lowercase<T>
+          // 4. singularization rules. Unmatched input resolves to `never` in
+          // `SingularizationRules`; surface the lowercased input instead, matching
+          // upstream's `return word` fall-through at the end of `sanitizeWord`.
+        : [SingularizationRules<T>] extends [never] ? Lowercase<T>
+        : SingularizationRules<T>
+      : SingularizeIrregular<T>
+    : Lowercase<T>;

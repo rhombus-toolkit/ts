@@ -1,0 +1,10 @@
+{
+  "//": "ES2018 is the floor this package needs, and it needs nothing else. The async family (AsyncGenerator, AsyncGeneratorFunctionConstructor, AsyncIterable, AsyncIterableIterator, AsyncIteratorObject, Symbol.asyncIterator) lands in ES2018; ES2017 fails on all of it (TS2318/TS2583/TS2552/TS2339). IteratorObject needs no ESNext sliver -- it is declared in lib.es2015.iterable, and only its ES2025 helper METHODS live in lib.esnext.iterator, which nothing here names. types: [] and no DOM: `URL` was the single identifier pulling an ambient platform lib in, and isUrl is parked in src/is.ts rather than pay a whole lib for one guard. It returns once @rhombus-toolkit/platform ships a structural Url. *.spec.ts is excluded because it imports `bun:test`, whose types live in @types/bun -- an ambient package whose own /// <reference lib=...> directives would re-loosen this floor. Specs are runtime tests, run by `bun test`.",
+  "extends": "../../tsconfig.lib.json",
+  "compilerOptions": {
+    "lib": ["ES2018"],
+    "types": []
+  },
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.spec.ts"]
+}

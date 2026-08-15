@@ -1,5 +1,4 @@
-
-type Mutable<T> = { -readonly [P in keyof T]: T[P] };
+type Mutable<T> = { -readonly [P in keyof T]: T[P]; };
 
 export interface defer<T = void> {
   readonly [Symbol.toStringTag]: 'defer';
@@ -8,9 +7,7 @@ export interface defer<T = void> {
   readonly promise: Promise<T>;
 }
 export function defer<T = void>(): defer<T> {
-  const result = {
-    [Symbol.toStringTag]: 'defer'
-  } as Mutable<defer<T>>;
+  const result = { [Symbol.toStringTag]: 'defer' } as Mutable<defer<T>>;
 
   result.promise = new Promise<T>((resolve, reject) => {
     result.resolve = (value: T | PromiseLike<T>): Promise<T> => {
@@ -25,7 +22,6 @@ export function defer<T = void>(): defer<T> {
 
   return Object.freeze(result);
 }
-
 
 export namespace defer {
   export function resolve(): defer<void>;

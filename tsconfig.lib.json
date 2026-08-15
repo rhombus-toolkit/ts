@@ -1,0 +1,12 @@
+{
+  "//": "The library typecheck profile: every libraries/* tsconfig.json extends this. Libraries never emit through tsc (publish artifacts come from scripts/build-lib.ts -- bun build + rollup-plugin-dts), so the emit-shaped base options are switched off here once instead of per package. `include` stays leaf-side: relative include globs resolve against the file that declares them, so hoisting it would anchor at the repo root. `types: []` pins a program with NO auto-discovered ambient @types package: without it, tsc walks every node_modules/@types up from the package (the root @types/bun, notably) and silently compiles a LOOSER program than the declared `lib` array implies -- verified: @types/bun's ambient globals resolved DOM-shaped identifiers (MessageEvent, AsyncGenerator) through a package's `lib: ['ES2015']` override with zero errors, until this flag was added. A package that genuinely needs an ambient @types package (jest, setimmediate) opts back in per-package.",
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "noEmit": true,
+    "composite": false,
+    "declaration": false,
+    "declarationMap": false,
+    "sourceMap": false,
+    "types": []
+  }
+}

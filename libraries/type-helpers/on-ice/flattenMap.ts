@@ -28,24 +28,23 @@ import { Falsy } from '../src/truthy';
 // }
 
 function join<S1 extends string, S2 extends string>(a: S1, b: S2) {
-  return [a, b].filter(Boolean).join(".") as join<S1, S2>;
+  return [a, b].filter(Boolean).join('.') as join<S1, S2>;
 }
-type join<A extends string, B extends PropertyKey> =
-  A extends Falsy ? B :
-  B extends Falsy ? A :
-  `${A}.${Cast<B, string>}`;
+type join<A extends string, B extends PropertyKey> = A extends Falsy ? B
+  : B extends Falsy ? A : `${A}.${Cast<B, string>}`;
 
+export type flattenMap<T extends DeepDictionary<any>, TLeaf, MaxDepth extends number = 5> = fromEntries<
+  _flattenMap<T, TLeaf, '', MaxDepth>
+>;
+type _flattenMap<T extends DeepDictionary<any>, Leaf, prefix extends string, MaxDepth extends number> = MaxDepth extends
+  0 ? never
+  : T extends Leaf ? [prefix, T]
+  : T extends Record<any, any> ? { [K in keyof T]: _flattenMap<T[K], Leaf, join<prefix, K>, Dec<MaxDepth>>; }[keyof T]
+  : never;
 
-export type flattenMap<T extends DeepDictionary<any>, TLeaf, MaxDepth extends number = 5> = fromEntries<_flattenMap<T, TLeaf, '', MaxDepth>>;
-type _flattenMap<T extends DeepDictionary<any>, Leaf, prefix extends string, MaxDepth extends number> =
-  MaxDepth extends 0 ? never :
-  T extends Leaf ? [prefix, T] :
-  T extends Record<any, any> ? {
-    [K in keyof T]: _flattenMap<T[K], Leaf, join<prefix, K>, Dec<MaxDepth>>
-  }[keyof T] :
-  never;
-
-export function flattenMap<T extends DeepDictionary<Leaf>, Leaf>(map: T, leafPredicate: (p: any) => p is Leaf): flattenMap<T, Leaf> {
+export function flattenMap<T extends DeepDictionary<Leaf>, Leaf>(map: T,
+  leafPredicate: (p: any) => p is Leaf): flattenMap<T, Leaf>
+{
   const result: (readonly [string, Leaf])[] = [];
   const stack = Object.entries(map);
   while (stack.length) {

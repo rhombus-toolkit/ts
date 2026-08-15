@@ -47,33 +47,8 @@ type SymbolChar3 = '[' | '\\' | ']' | '^' | '_' | '`';
  * ASCII: 97 - 122
  * regex: [a-z]
  */
-type LowerCaseChar =
-  | 'a'
-  | 'b'
-  | 'c'
-  | 'd'
-  | 'e'
-  | 'f'
-  | 'g'
-  | 'h'
-  | 'i'
-  | 'j'
-  | 'k'
-  | 'l'
-  | 'm'
-  | 'n'
-  | 'o'
-  | 'p'
-  | 'q'
-  | 'r'
-  | 's'
-  | 't'
-  | 'u'
-  | 'v'
-  | 'w'
-  | 'x'
-  | 'y'
-  | 'z';
+type LowerCaseChar = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j' | 'k' | 'l' | 'm' | 'n' | 'o' | 'p' | 'q'
+  | 'r' | 's' | 't' | 'u' | 'v' | 'w' | 'x' | 'y' | 'z';
 
 /**
  * ASCII: 123 - 126
@@ -98,7 +73,9 @@ type WordChar = LetterChar | DigitChar | '_';
  */
 type NonWordChar = Exclude<AnyChar, WordChar>;
 
-type Replace<T, P extends string, R extends string> = T extends `${infer X}${P}${infer Y}` ? `${X}${R}${Replace<Y, P, R>}` : T;
+type Replace<T, P extends string, R extends string> = T extends `${infer X}${P}${infer Y}`
+  ? `${X}${R}${Replace<Y, P, R>}`
+  : T;
 
 // type Upper<T extends string> =
 //     T extends `${infer X}a${infer Y}` ? `${Upper<X>}A${Upper<Y>}` :
@@ -165,11 +142,9 @@ type Replace<T, P extends string, R extends string> = T extends `${infer X}${P}$
 // type Stringable = string | number | bigint | boolean | null | undefined;
 
 // eslint-disable-next-line prettier/prettier
-type J<T extends unknown[]> =
-  T extends [] ? '' :
-  T extends [any] ? `${T[0]}` :
-  T extends [any, ...infer Y] ? `${T[0]}${J<Y>}` :
-  never;
+type J<T extends unknown[]> = T extends [] ? ''
+  : T extends [any] ? `${T[0]}` : T extends [any, ...infer Y] ? `${T[0]}${J<Y>}`
+  : never;
 
 // type D2<T> = J<[T, T]>;
 // type D3<T> = J<[T, D2<T>]>;
@@ -201,19 +176,14 @@ type J<T extends unknown[]> =
 // type Caboose<T> = Train<T> extends [any, infer X] ? X : '';
 
 type ToCharArray<T> = T extends '' ? [] : T extends J<[infer X, infer Y]> ? [X, ...ToCharArray<Y>] : never;
-type FromCharArray<T extends unknown[]> = T extends []
-  ? ''
-  : T extends [string]
-  ? T[0]
-  : T extends [string, ...infer Y]
-  ? J<[T[0], FromCharArray<Y>]>
+type FromCharArray<T extends unknown[]> = T extends [] ? ''
+  : T extends [string] ? T[0] : T extends [string, ...infer Y] ? J<[T[0], FromCharArray<Y>]>
   : never;
 
 type Reverse<T> = T extends '' ? '' : T extends J<[infer X, infer Y]> ? J<[Reverse<Y>, X]> : never;
 
 type InsertBefore<TInput, TSearch, TInsert> = TInput extends J<[infer X, infer Y, infer Z]>
-  ? Y extends TSearch
-  ? J<[X, TInsert, Y, InsertBefore<Z, TSearch, TInsert>]>
+  ? Y extends TSearch ? J<[X, TInsert, Y, InsertBefore<Z, TSearch, TInsert>]>
   : J<[X, InsertBefore<J<[Y, Z]>, TSearch, TInsert>]>
   : TInput;
 
@@ -231,5 +201,3 @@ export type SnakeCase<T extends string> = Uppercase<InsertBefore<T, UpperCaseCha
 export type DashCase<T extends string> = Lowercase<InsertBefore<T, UpperCaseChar, '-'>>;
 type pdpd = SnakeCase<'ProperID4Form'>;
 type spdpd = DashCase<'Pro5per1ID4Form'>;
-
-

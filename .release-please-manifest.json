@@ -8,6 +8,6 @@
   "libraries/restify": "1.0.0",
   "libraries/set-immediate": "1.3.2",
   "libraries/once": "1.0.0",
-  "libraries/type-guards": "1.3.4",
+  "libraries/type-guards": "2.0.0",
   "libraries/types": "1.0.0"
 }

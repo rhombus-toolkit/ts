@@ -1,4 +1,9 @@
 {
+  "//": "lib: [\"ES2018\", \"DOM\"] is the floor this package actually needs. AsyncGenerator/AsyncIterable (generics.d.ts's Replace<T,R>) land in ES2018; verified ES2017 fails on both (TS2583). MessageEvent (same file) is DOM-only -- there is no ES-numbered lib for it. skipLibCheck is flipped to false here (overriding the repo default) because func's src is entirely .d.ts: skipLibCheck:true skips type-checking declaration files outright, which made this package's own lint gate a no-op before this override -- verified by deliberately breaking an identifier and watching skipLibCheck:true swallow it silently. Confirmed clean at this floor with real checking on.",
   "extends": "../../tsconfig.lib.json",
+  "compilerOptions": {
+    "lib": ["ES2018", "DOM"],
+    "skipLibCheck": false
+  },
   "include": ["src/**/*"]
 }

@@ -29,6 +29,9 @@
   },
   "keywords": [],
   "author": "Thomas Butler",
+  "devDependencies": {
+    "@types/node": "^24.0.0"
+  },
   "publishConfig": {
     "access": "public",
     "provenance": true,

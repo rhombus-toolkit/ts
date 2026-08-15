@@ -1,4 +1,8 @@
 {
+  "//": "lib: [\"ES2015\", \"DOM\"] is the floor this package actually needs. Promise lands in ES2015; verified ES5+DOM fails on it (TS2468/TS2705). DOM supplies Response/Headers/ReadableStream/EventTarget/ProgressEvent/AddEventListenerOptions -- the whole point of this package, so DOM is unambiguously required here (one of the two packages named for it).",
   "extends": "../../tsconfig.lib.json",
+  "compilerOptions": {
+    "lib": ["ES2015", "DOM"]
+  },
   "include": ["src/**/*"]
 }

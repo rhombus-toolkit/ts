@@ -1,4 +1,9 @@
 {
+  "//": "lib: [\"ES2015\"] is the floor this package actually needs -- Promise (defer.ts, FnPromise.ts) lands in ES2015; verified ES5 fails on it (TS2468/TS2705/TS2585). DOM is deliberately absent -- AbortController/AbortSignal (FnPromise.ts) is the one pair that would otherwise need it, resolved instead through types: [\"node\"] (Node's ambient AbortController/AbortSignal).",
   "extends": "../../tsconfig.lib.json",
+  "compilerOptions": {
+    "lib": ["ES2015"],
+    "types": ["node"]
+  },
   "include": ["src/**/*"]
 }

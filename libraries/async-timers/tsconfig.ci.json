@@ -1,4 +1,8 @@
 {
+  "//": "lib: [\"ES2015\", \"DOM\"] is the floor this package actually needs. Promise lands in ES2015; verified ES5+DOM fails on it (TS2585). DOM supplies AbortSignal/EventTarget/AddEventListenerOptions/Event (listenEventAsync.ts) and the browser-flavored setTimeout/clearTimeout (setTimeoutAsync.ts) -- setImmediate/clearImmediate come from the workspace @rhombus-toolkit/set-immediate package, not an ambient global, so no Node types are needed here.",
   "extends": "../../tsconfig.lib.json",
+  "compilerOptions": {
+    "lib": ["ES2015", "DOM"]
+  },
   "include": ["src/**/*"]
 }

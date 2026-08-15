@@ -17,7 +17,45 @@
 // step 1 is skipped and only the d.ts roll runs.
 
 import { spawnSync } from 'node:child_process';
-import { existsSync, mkdirSync, rmSync } from 'node:fs';
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+
+/**
+ * Runs `fn` with this package's own `sideEffects` manifest field temporarily
+ * removed from disk, then restores the original file byte-for-byte (even on
+ * throw).
+ *
+ * `sideEffects: false`/an array is correct PUBLISHED metadata -- a hint to a
+ * DOWNSTREAM consumer's bundler that importing this package for its side
+ * effects is safe to elide. The bug: `bun build` also reads it from THIS
+ * package's own package.json and applies it to the package's OWN internal
+ * re-export graph, dropping a re-exported class/function body while its name
+ * survives in the `export {}` list -- a bundle that throws `ReferenceError`
+ * on import. Verified: without this, proxy-base's dist/bundle/index.js was 5
+ * lines (an export statement, no declarations).
+ *
+ * `ignoreDCEAnnotations: true` (Bun's own documented escape hatch for exactly
+ * this -- "package.json sideEffects fields... temporary workaround for
+ * incorrect annotations") was tried FIRST and verified NOT to fix it (bun
+ * 1.3.14, both the JS API option and the `--ignore-dce-annotations` CLI
+ * flag): reproduced in isolation, `sideEffects: false` still drops the body
+ * with the flag set either way. Only removing the field from the manifest
+ * bun actually reads at build time works, hence this temporary strip.
+ */
+function withoutSideEffectsField<T>(dir: string, fn: () => T): T {
+  const manifestPath = `${dir}/package.json`;
+  const original = readFileSync(manifestPath, 'utf8');
+  const manifest = JSON.parse(original) as Record<string, unknown>;
+  if (!('sideEffects' in manifest)) {
+    return fn();
+  }
+  const { sideEffects: _sideEffects, ...stripped } = manifest;
+  writeFileSync(manifestPath, JSON.stringify(stripped, null, 2) + '\n');
+  try {
+    return fn();
+  } finally {
+    writeFileSync(manifestPath, original);
+  }
+}
 
 export interface BuildPackageOptions {
   /** The package root (pass `import.meta.dir`). */
@@ -48,13 +86,32 @@ export async function buildPackage(options: BuildPackageOptions): Promise<void> 
 
   if (emitJs) {
     const jsEntrypoints = entrypoints.map((entry) => `${dir}/${entry}`);
-    const js = await Bun.build({ entrypoints: jsEntrypoints, outdir: bundleDir, target: 'node', format: 'esm',
-      external: [...external] });
-    if (!js.success) {
-      for (const log of js.logs) {
-        console.error(log);
-      }
+    // Shells out to the `bun build` CLI rather than calling the in-process
+    // `Bun.build()` JS API: verified the JS API does NOT see the sideEffects
+    // strip above within the same process (its resolver/manifest cache is
+    // stale for the just-written file even though a byte-identical write from
+    // a fresh `bun build` CLI invocation picks it up correctly) -- reproduced
+    // directly, so this is a real bun 1.3.14 in-process-API caching gap, not
+    // a guess.
+    const buildArgs = ['build', ...jsEntrypoints, '--outdir', bundleDir, '--target', 'node', '--format', 'esm'];
+    for (const specifier of external) {
+      buildArgs.push('--external', specifier);
+    }
+    const js = withoutSideEffectsField(dir, () => spawnSync('bun', buildArgs, { cwd: dir, stdio: 'inherit' }));
+    if (js.status !== 0) {
       throw new Error(`${name}: bun build failed`);
+    }
+    // Load smoke: a green `bun build` only means bundling didn't throw, not
+    // that the emitted module is importable (the DCE bug above exited 0 with
+    // no errors for a bundle that threw on import). Every JS entrypoint gets
+    // a real `import()` here so this class of failure can't report green again.
+    for (const entry of entrypoints) {
+      const outFile = `${bundleDir}/${entry.replace(/^src\//, '').replace(/\.ts$/, '.js')}`;
+      try {
+        await import(outFile);
+      } catch (error) {
+        throw new Error(`${name}: built bundle ${outFile} failed to load -- ${String(error)}`);
+      }
     }
   }
 

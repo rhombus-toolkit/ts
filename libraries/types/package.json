@@ -1,0 +1,70 @@
+{
+  "name": "@rhombus-toolkit/types",
+  "version": "1.0.0",
+  "description": "Type-level utilities: the Func family, arrays, string literals, counters and brands. No runtime.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rhombus-toolkit/ts.git",
+    "directory": "libraries/types"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "types": "./dist/bundle/index.d.ts",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "types": "./dist/bundle/index.d.ts",
+      "default": "./dist/bundle/index.d.ts"
+    },
+    "./array": {
+      "source": "./src/array.ts",
+      "types": "./dist/bundle/array.d.ts",
+      "default": "./dist/bundle/array.d.ts"
+    },
+    "./generic": {
+      "source": "./src/generics.ts",
+      "types": "./dist/bundle/generics.d.ts",
+      "default": "./dist/bundle/generics.d.ts"
+    },
+    "./string": {
+      "source": "./src/string.ts",
+      "types": "./dist/bundle/string.d.ts",
+      "default": "./dist/bundle/string.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "bun ../../scripts/build-lib.ts",
+    "lint": "bun x tsc --noEmit -p tsconfig.ci.json"
+  },
+  "keywords": [],
+  "author": "Thomas Butler",
+  "rhombusBuild": {
+    "typesOnly": true
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true,
+    "types": "./dist/bundle/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/bundle/index.d.ts",
+        "default": "./dist/bundle/index.d.ts"
+      },
+      "./array": {
+        "types": "./dist/bundle/array.d.ts",
+        "default": "./dist/bundle/array.d.ts"
+      },
+      "./generic": {
+        "types": "./dist/bundle/generics.d.ts",
+        "default": "./dist/bundle/generics.d.ts"
+      },
+      "./string": {
+        "types": "./dist/bundle/string.d.ts",
+        "default": "./dist/bundle/string.d.ts"
+      }
+    }
+  }
+}

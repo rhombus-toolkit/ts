@@ -70,28 +70,35 @@ export function wrapResponse(response: Response) {
     }
     // }();
   } });
-  const result = new Response(stream, response);
-  result.progress = emitter;
-  result.cancel = () => {
+  // Object.assign onto a fresh Response rather than mutating the stock type in
+  // place -- the mutation only type-checked because of the `declare global`
+  // Response augmentation below, which is parked. This builds the same
+  // progress/cancel surface as a local intersection instead.
+  return Object.assign(new Response(stream, response), { progress: emitter, cancel: () => {
     cancelled = true;
     emitter.dispatchEvent(new ProgressEvent('cancelled', { lengthComputable, loaded, total }));
     return reader?.cancel() ?? Promise.resolve();
-  };
-  return result;
+  } });
   // return obj.assignDeep(new Response(stream, response), emitter);
 }
 
-declare global {
-  interface Response /*extends ProgressEventTarget*/ {
-    progress: ProgressEventTarget;
-    cancel(): Promise<void>;
-  }
-}
+// PARKED, not deleted (owner-approved): both the ambient `Response`
+// augmentation and the `globalThis.fetch` monkey-patch below reach outside
+// this module's own exports to rewrite a global. wrapResponse/nativeFetch
+// are the intended public surface -- restoring this pair would silently
+// change every consumer's `fetch` again, so don't restore it by
+// pattern-matching on the surrounding code.
+// declare global {
+//   interface Response /*extends ProgressEventTarget*/ {
+//     progress: ProgressEventTarget;
+//     cancel(): Promise<void>;
+//   }
+// }
 export const nativeFetch = globalThis.fetch;
 // `as typeof fetch`: newer lib.dom.d.ts adds static members to the `fetch`
 // function type (e.g. `preconnect`) that this wrapper doesn't implement --
 // this cast preserves the prior (pre-toolchain-swap) compile behavior without
 // reshaping the monkey-patch.
-globalThis.fetch = function(this: typeof globalThis, ...args: Parameters<typeof fetch>) {
-  return nativeFetch.apply(this, args).then(wrapResponse);
-} as typeof fetch;
+// globalThis.fetch = function(this: typeof globalThis, ...args: Parameters<typeof fetch>) {
+//   return nativeFetch.apply(this, args).then(wrapResponse);
+// } as typeof fetch;

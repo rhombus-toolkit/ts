@@ -1,18 +1,50 @@
 {
-  // Use IntelliSense to learn about possible attributes.
-  // Hover to view descriptions of existing attributes.
-  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  // Debugging runs through bun, so these need the `oven.bun-vscode` extension
+  // (it supplies the "bun" debug type). Without it VS Code reports the type as
+  // unknown; the tasks in tasks.json still work regardless.
   "version": "0.2.0",
   "configurations": [
     {
-      "type": "node",
+      "type": "bun",
       "request": "launch",
-      "name": "Launch Program",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "name": "Test: everything",
+      "program": "test",
+      "cwd": "${workspaceFolder}",
+      "runtime": "bun",
+      "internalConsoleOptions": "neverOpen",
+      "stopOnEntry": false
+    },
+    {
+      "type": "bun",
+      "request": "launch",
+      "name": "Test: this file",
+      "program": "test",
+      "args": ["${relativeFile}"],
+      "cwd": "${workspaceFolder}",
+      "runtime": "bun",
+      "internalConsoleOptions": "neverOpen",
+      "stopOnEntry": false
+    },
+    {
+      "type": "bun",
+      "request": "launch",
+      "name": "Test: this package",
+      "program": "test",
+      "cwd": "${fileDirname}/..",
+      "runtime": "bun",
+      "internalConsoleOptions": "neverOpen",
+      "stopOnEntry": false
+    },
+    {
+      "type": "bun",
+      "request": "launch",
+      "name": "Run: this file",
       "program": "${file}",
-      ""
+      "cwd": "${workspaceFolder}",
+      "runtime": "bun",
+      "internalConsoleOptions": "neverOpen",
+      "stopOnEntry": false
     }
-  ]
+  ],
+  "compounds": []
 }

@@ -1,11 +1,11 @@
 {
-  "name": "@rhombus-toolkit/async-timers",
-  "version": "1.4.4",
-  "description": "",
+  "name": "@rhombus-toolkit/platform",
+  "version": "0.1.0",
+  "description": "Structural typings for host-platform globals (AbortController, process, ReadableStream, timers, URL), each a typed globalThis lookup rather than an ambient declaration.",
   "repository": {
     "type": "git",
     "url": "https://github.com/rhombus-toolkit/ts.git",
-    "directory": "libraries/async-timers"
+    "directory": "libraries/platform"
   },
   "type": "module",
   "sideEffects": false,
@@ -25,14 +25,12 @@
   ],
   "scripts": {
     "build": "bun ../../scripts/build-lib.ts",
-    "lint": "bun x tsc --noEmit -p tsconfig.ci.json",
-    "test": "bun test --pass-with-no-tests"
+    "lint": "bun x tsc --noEmit -p tsconfig.ci.json && bun x tsc --noEmit -p tsconfig.compat.json"
   },
   "keywords": [],
   "author": "Thomas Butler",
   "dependencies": {
-    "@rhombus-toolkit/func": "workspace:*",
-    "@rhombus-toolkit/platform": "workspace:*"
+    "@rhombus-toolkit/func": "workspace:*"
   },
   "publishConfig": {
     "access": "public",

@@ -7,5 +7,5 @@
  * @packageDocumentation
  */
 
-export { IndexAccessed } from './IndexAccessed';
+export { IndexAccessed, type Indexed } from './IndexAccessed';
 export { default, ProxyBase } from './ProxyBase';

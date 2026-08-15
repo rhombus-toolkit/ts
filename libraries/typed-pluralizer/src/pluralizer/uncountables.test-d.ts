@@ -5,15 +5,12 @@ import { IsUncountable } from './uncountables';
 // types read back via the tsc sentinel-assignment probe — 143 cases, 0
 // divergences from the oracle, modulo the accepted lowercase fold).
 //
-// CAVEAT — these assertions DO NOT currently gate the build. A `.d.test.ts`
-// file is parsed by TypeScript as an ambient declaration (`.d.` prefix), so
-// the call-expression assertions and `@ts-expect-*` directives below are inert
-// under `heft build` (verified empirically: a deliberately-wrong assertion and
-// an unsatisfied `@ts-expect-error` both leave the project build green). They
-// are kept in the established repo style for when the test harness is wired to
-// type-check these as non-ambient modules (e.g. via tsd / a dedicated test
-// tsconfig). Until then the real regression gate is the scripted oracle-vs-tsc
-// probe used to generate this file. See the PR body for the full write-up.
+// This file is `.test-d.ts`, the repo's type-level test convention: the
+// package's tsconfig.ci.json includes it in the type-check program run by
+// `bun run lint`, so a deliberately-wrong assertion or an unsatisfied
+// `@ts-expect-error` below fails the build. (Formerly gated only by a
+// scripted oracle-vs-tsc probe, back when this lived under heft as a
+// `.d.test.ts` file parsed as an inert ambient declaration.)
 
 declare function isAssignable<TActual extends TExpected, TExpected>(actual?: TActual, expected?: TExpected): void;
 declare function isAssignable<TExpected>(actual?: TExpected): void;

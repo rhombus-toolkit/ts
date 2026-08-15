@@ -25,16 +25,15 @@
   ],
   "scripts": {
     "build": "bun ../../scripts/build-lib.ts",
-    "lint": "bun x tsc --noEmit -p tsconfig.ci.json"
+    "lint": "bun x tsc --noEmit -p tsconfig.ci.json",
+    "test": "bun test --pass-with-no-tests"
   },
   "keywords": [],
   "author": "Thomas Butler",
   "dependencies": {
     "@rhombus-toolkit/func": "workspace:*"
   },
-  "devDependencies": {
-    "@types/node": "^24.0.0"
-  },
+  "devDependencies": {},
   "publishConfig": {
     "access": "public",
     "provenance": true,

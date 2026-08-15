@@ -1,0 +1,19 @@
+{
+  "//": "Shared compiler options for every package in this monorepo. Standardized on module: esnext / moduleResolution: bundler for extensionless relative imports (the source-libs pattern). lib carries DOM (fetch/proxy-base's Response/ReadableStream/EventTarget surface, plus the WeakRef/Iterator-helpers surface several libraries already use) rather than the zero-ambient policy std targets -- this repo has no `platform` package yet (planned P4), so ambient globals are the pragmatic default for now. No rootDir/outDir/include here -- those are per-package concerns.",
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "lib": ["ESNext", "DOM"],
+    "strict": true,
+    "useUnknownInCatchVariables": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true
+  }
+}

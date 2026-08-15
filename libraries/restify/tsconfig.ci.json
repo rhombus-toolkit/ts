@@ -1,0 +1,9 @@
+{
+  "//": "lib: [\"ES2015\"] is the floor this package actually needs, set by the marker: `Symbol('⚡')` as a value and the `Reflect.defineProperty` that hangs it off the target -- verified ES5 fails on exactly those two (TS2585 and TS2583, both naming es2015). Array.isArray and the rest are lib.es5. No DOM, no ESNext sliver, and nothing here reaches the ES2018 floor of @rhombus-toolkit/types, whose only role is the AssertNeverError type. exclude: *.spec.ts runtime tests belong to `bun test`, not to the library program, so no ambient @types package can loosen this floor.",
+  "extends": "../../tsconfig.lib.json",
+  "compilerOptions": {
+    "lib": ["ES2015"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.spec.ts"]
+}

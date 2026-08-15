@@ -1,12 +1,11 @@
 {
-  "name": "@rhombus-toolkit/type-helpers",
-  "version": "3.0.0",
-  "description": "DEPRECATED -- split into @rhombus-toolkit/types, @rhombus-toolkit/obj and @rhombus-toolkit/restify. Kept as a re-export shim.",
-  "deprecated": "Split into @rhombus-toolkit/types (the types), @rhombus-toolkit/obj (obj + flattenMap) and @rhombus-toolkit/restify (restify/unrestify). This version re-exports all three; CheapRingBuffer, range, nodeCallbackToAsync, tuple and identity are gone.",
+  "name": "@rhombus-toolkit/obj",
+  "version": "1.0.0",
+  "description": "Typed counterparts of the Object.* statics, plus flattenMap.",
   "repository": {
     "type": "git",
     "url": "https://github.com/rhombus-toolkit/ts.git",
-    "directory": "libraries/type-helpers"
+    "directory": "libraries/obj"
   },
   "type": "module",
   "sideEffects": false,
@@ -26,13 +25,13 @@
   ],
   "scripts": {
     "build": "bun ../../scripts/build-lib.ts",
-    "lint": "bun x tsc --noEmit -p tsconfig.ci.json"
+    "lint": "bun x tsc --noEmit -p tsconfig.ci.json",
+    "test": "bun test"
   },
   "keywords": [],
   "author": "Thomas Butler",
   "dependencies": {
-    "@rhombus-toolkit/obj": "workspace:*",
-    "@rhombus-toolkit/restify": "workspace:*",
+    "@rhombus-toolkit/type-guards": "workspace:*",
     "@rhombus-toolkit/types": "workspace:*"
   },
   "publishConfig": {

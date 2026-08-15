@@ -26,10 +26,6 @@
     "**/CHANGELOG.md",
     // Pre-existing malformed JSON (a stray unterminated string), unrelated to
     // this toolchain swap -- not this task's to fix.
-    ".vscode/launch.json",
-    // dprint's TypeScript plugin bails with "formatting not stable" on this
-    // file's conditional-type layout (verified: dprint 0.96.1). Left
-    // hand-formatted rather than worked around.
-    "libraries/type-helpers/src/utility-types.d.ts"
+    ".vscode/launch.json"
   ]
 }

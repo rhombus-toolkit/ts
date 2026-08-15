@@ -3,9 +3,7 @@
 // call to it — import `obj` and call `obj.keys(x)` where the stock `Object.keys`
 // typing is too loose. Nothing here augments the global `ObjectConstructor`.
 
-import type { Dec } from './counter';
-import type { UnionToTuple } from './union-to-tuple';
-import type { Flatten } from './utility-types';
+import type { Flatten, Store, UnionToTuple } from '@rhombus-toolkit/types';
 
 export type Entry<Key extends PropertyKey = PropertyKey, Value = any> = readonly [Key, Value];
 
@@ -114,12 +112,22 @@ type ShallowMerge<A, B> = A extends readonly any[] ? B extends readonly any[] ? 
 /**
  * `B` overlaid on `A` index-wise, walking one position at a time and stopping once both are spent.
  * The result is as long as the longer of the two, which is what leaves a short overlay's tail alone.
+ *
+ * @remarks
+ * The walk's budget is a tuple peeled one cell per step rather than a number run down through
+ * `Dec`. `Dec<N>` is `Length<Tail<Counter<N>>>` and `Counter` recurses without a bound while its
+ * argument is still a parameter, so relating `Dec<TTL>` back to a `TTL extends number` constraint
+ * fails at this declaration with "Excessive stack depth" — the same reason `counter`'s own
+ * `Subtract` peels tuples instead of routing through `Skip`. It only compiled before because the
+ * `Dec` in scope was a generated lookup table, which this package's move onto
+ * `@rhombus-toolkit/types` retires.
  */
-type MergeArrays<A extends readonly any[], B extends readonly any[]> = _MergeArrays<15, A, B, [], []>;
-type _MergeArrays<TTL extends number, A extends readonly any[], B extends readonly any[], I extends readonly any[],
-  Acc extends readonly any[]> = TTL extends 0 ? never
-    : Spent<A, B, I> extends true ? Acc
-    : _MergeArrays<Dec<TTL>, A, B, [...I, any], [...Acc, MergeValue<A, B, I['length']>]>;
+type MergeArrays<A extends readonly any[], B extends readonly any[]> = _MergeArrays<Store<15>, A, B, [], []>;
+type _MergeArrays<TTL extends readonly any[], A extends readonly any[], B extends readonly any[],
+  I extends readonly any[], Acc extends readonly any[]> = TTL extends readonly [any, ...infer TTLRest]
+    ? Spent<A, B, I> extends true ? Acc
+    : _MergeArrays<TTLRest, A, B, [...I, any], [...Acc, MergeValue<A, B, I['length']>]>
+    : never;
 
 /**
  * `B`'s element at this index, falling back to `A`'s where `B` has none.

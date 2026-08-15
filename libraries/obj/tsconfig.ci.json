@@ -1,0 +1,9 @@
+{
+  "//": "lib: [\"ES2019\"] is the floor this package actually needs, set by a single identifier: Object.fromEntries (obj.ts, and flattenMap.ts through it) -- verified ES2018 and ES2017 fail on exactly that one (TS2550, 'try changing lib to es2019 or later'), and ES2015 additionally fails on Object.values/Object.entries (ES2017). Nothing else here reaches past lib.es5; @rhombus-toolkit/types is the source of every type imported and its own floor is ES2018, which this clears. No DOM: nothing here names a DOM identifier. types: [] is inherited from tsconfig.lib.json and stays -- the runtime spec below is excluded rather than given @types/bun, so no ambient package can quietly loosen this floor. exclude: the *.spec.ts runtime tests belong to `bun test`, not to the library program.",
+  "extends": "../../tsconfig.lib.json",
+  "compilerOptions": {
+    "lib": ["ES2019"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.spec.ts"]
+}

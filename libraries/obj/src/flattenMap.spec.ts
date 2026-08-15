@@ -1,3 +1,4 @@
+import { describe, expect, it } from 'bun:test';
 import { flattenMap } from './flattenMap';
 
 describe('flattenMap (runtime)', () => {

@@ -11,14 +11,11 @@ declare function isAssignable<TExpected>(actual?: TExpected): void;
 // null / no-conversion maps to `never`. Word lists for the irregular map and
 // dont list are generated from the upstream data, not hand-typed.
 //
-// NOTE on enforcement: the heft-web-rig build treats `*.d.test.ts` as a `.d.ts`
-// declaration file and runs with `skipLibCheck: true`, so these assertion bodies
-// are NOT type-checked during `heft build` (the same is true of the existing
-// conjugator/from-infinitive.d.test.ts). To run them as a real gate, type-check
-// this file as a normal module, e.g.:
-//   tsc --noEmit --strict --module ESNext --moduleResolution Bundler \
-//       <copy-of-this-file>.ts
-// All assertions here pass that check with zero errors.
+// NOTE on enforcement: this file is `.test-d.ts`, the repo's type-level test
+// convention -- the package's tsconfig.ci.json includes it in the type-check
+// program run by `bun run lint`, so these assertion bodies genuinely gate the
+// build. (Formerly inert under heft, which treated `*.d.test.ts` as a
+// skipLibCheck'd `.d.ts` declaration file.)
 
 namespace irregularMap {
   // full membership of the irregular adjective->adverb map

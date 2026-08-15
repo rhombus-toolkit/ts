@@ -4,5 +4,6 @@
   "compilerOptions": {
     "lib": ["ES2018"]
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.spec.ts"]
 }

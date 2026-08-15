@@ -11,28 +11,30 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+
+      - uses: oven-sh/setup-bun@v2
         with:
-          fetch-depth: 0
+          bun-version: latest
 
-      - uses: actions/setup-node@v4
-        with:
-          node-version-file: '.node-version'
+      - name: Install dependencies
+        run: bun install
 
-      - name: Configure git identity
-        # Rush gitPolicy (rush.json allowedEmailRegExps) requires a @users.noreply.github.com email,
-        # otherwise `rush install` aborts on the runner.
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      # Every library resolves its workspace siblings' types through the
+      # `types` export condition -- `./dist/bundle/index.d.ts` -- under the
+      # non-editor tsconfig, so build must run before typecheck/lint can see a
+      # dependent package's upstream types.
+      - name: Build
+        run: bun run build
 
-      - name: Install
-        run: node common/scripts/install-run-rush.js install
+      - name: Typecheck
+        run: bun run typecheck
 
-      - name: Rebuild
-        run: node common/scripts/install-run-rush.js rebuild --verbose
-        # No separate test step — command-line.json defines no custom "test" command.
-        # The rebuild serves as the CI gate.
+      - name: Lint
+        run: bun run lint
+
+      - name: Format
+        run: bun run format:check

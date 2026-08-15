@@ -1,0 +1,76 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "include-component-in-tag": true,
+  "include-v-in-tag": true,
+  "separate-pull-requests": true,
+  "packages": {
+    "libraries/async-timers": {
+      "release-type": "node",
+      "package-name": "@rhombus-toolkit/async-timers",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "libraries/case-converter": {
+      "release-type": "node",
+      "package-name": "@rhombus-toolkit/case-converter",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "libraries/defer": {
+      "release-type": "node",
+      "package-name": "@rhombus-toolkit/defer",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "libraries/fetch": {
+      "release-type": "node",
+      "package-name": "@rhombus-toolkit/fetch",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "libraries/func": {
+      "release-type": "node",
+      "package-name": "@rhombus-toolkit/func",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "libraries/kinda-weak-map": {
+      "release-type": "node",
+      "package-name": "@rhombus-toolkit/kinda-weak-map",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "libraries/proxy-base": {
+      "release-type": "node",
+      "package-name": "@rhombus-toolkit/proxy-base",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "libraries/set-immediate": {
+      "release-type": "node",
+      "package-name": "@rhombus-toolkit/set-immediate",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "libraries/singleton": {
+      "release-type": "node",
+      "package-name": "@rhombus-toolkit/singleton",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "libraries/type-guards": {
+      "release-type": "node",
+      "package-name": "@rhombus-toolkit/type-guards",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "libraries/type-helpers": {
+      "release-type": "node",
+      "package-name": "@rhombus-toolkit/type-helpers",
+      "changelog-path": "CHANGELOG.md"
+    }
+  },
+  "changelog-sections": [
+    { "type": "feat", "section": "Features" },
+    { "type": "fix", "section": "Bug Fixes" },
+    { "type": "perf", "section": "Performance" },
+    { "type": "revert", "section": "Reverts" },
+    { "type": "docs", "section": "Documentation", "hidden": true },
+    { "type": "refactor", "section": "Refactoring", "hidden": true },
+    { "type": "build", "section": "Build", "hidden": true },
+    { "type": "ci", "section": "CI", "hidden": true },
+    { "type": "chore", "section": "Chores", "hidden": true },
+    { "type": "test", "section": "Tests", "hidden": true },
+    { "type": "style", "section": "Style", "hidden": true }
+  ]
+}

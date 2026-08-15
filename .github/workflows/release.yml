@@ -1,0 +1,117 @@
+# Publish pipeline: release-please (independent per-package versioning) ->
+# pnpm pack -> npm staged publish (OIDC trusted publishing).
+#
+# WIRED BUT INERT. All 11 publishable packages' npm Trusted Publisher points at
+# THIS file by name -- npm allows exactly one trusted publisher per package, so
+# renaming this workflow means redoing 11 packages by hand, each behind a
+# security-key tap. Never rename it.
+#
+# Two independent gates sit between a merge to main and a live npm release:
+#
+#   1. The `publish` job only runs once the `PUBLISHING_ENABLED` repository
+#      variable is the string "true". It does not exist yet, so `publish`
+#      cannot run even though its trigger is otherwise live -- this is
+#      deliberate: the pipeline is fully wired, publishing is not switched on.
+#   2. Even once enabled, this workflow only STAGES each release (`npm stage
+#      publish`), never publishes it directly. A staged package sits pending
+#      until a human runs `npm stage approve <id>`, which requires 2FA -- OIDC
+#      trust tokens can stage but cannot approve (verified against npm's
+#      staged-publish docs, npm/cli#9201). That is what makes an 11-package
+#      release atomic: a mid-sequence failure here leaves everything staged so
+#      far merely pending, never live, so there is no partial release to undo.
+#
+# The `release-please` job itself is NOT gated behind `PUBLISHING_ENABLED` --
+# opening/updating a release PR touches no registry and is safe to run from
+# day one, so the version/changelog proposals are reviewable before publishing
+# is ever switched on.
+
+name: Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  # Opens/updates one release PR per package (independent versions --
+  # `separate-pull-requests: true` in release-please-config.json, unlike a
+  # lockstep monorepo's single combined PR). When a release PR is merged, this
+  # step instead tags the release and reports it via `releases_created`.
+  release-please:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      releases-created: ${{ steps.release.outputs.releases_created }}
+    steps:
+      # release-please's own PRs need a PAT, not GITHUB_TOKEN: PRs opened with
+      # the default token don't trigger downstream workflow runs (GitHub
+      # suppresses that to prevent recursive workflow triggering), which would
+      # leave every release PR stuck waiting on a `verify` run that never
+      # starts. Until the secret is set, no-op cleanly instead of failing CI.
+      - name: Detect release automation token
+        id: token_check
+        env:
+          AUTOMERGE_PAT: ${{ secrets.AUTOMERGE_PAT }}
+        run: |
+          if [ -n "$AUTOMERGE_PAT" ]; then
+            echo "present=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "present=false" >> "$GITHUB_OUTPUT"
+            echo "::notice::AUTOMERGE_PAT not set -- skipping release-please. Set the secret to enable release PRs."
+          fi
+
+      - uses: googleapis/release-please-action@v4
+        id: release
+        if: steps.token_check.outputs.present == 'true'
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
+          token: ${{ secrets.AUTOMERGE_PAT }}
+
+  # Fires only once a release-please PR has actually merged (releases-created)
+  # AND publishing is deliberately switched on. Builds every package, then
+  # walks scripts/publish-libraries.ts's topological order staging each one.
+  publish:
+    needs: release-please
+    if: needs.release-please.outputs.releases-created == 'true' && vars.PUBLISHING_ENABLED == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      # Installs bun + pnpm at the versions mise.toml pins -- unlike std/ioc,
+      # this repo's mise.toml already pins pnpm (10.34.4), so no separate
+      # `npm install -g pnpm` step is needed here.
+      - uses: jdx/mise-action@v2
+
+      # For the OIDC-aware `.npmrc` `registry-url` writes -- this is the actual
+      # mechanism trusted publishing authenticates through, not just a node
+      # runtime. mise.toml also pins node 24; this is about the npm CLI + auth
+      # wiring, not the runtime.
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          registry-url: https://registry.npmjs.org
+
+      # `npm stage` needs a newer npm than plain OIDC provenance does: verified
+      # against npm/cli#9201 (merged 2026-05-20), first shipped in npm 11.16.0.
+      - name: Upgrade npm (staged publishing needs npm >= 11.16.0)
+        run: npm install -g npm@latest
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Build
+        run: bun run build
+
+      - name: Stage-publish released packages
+        run: bun scripts/publish-libraries.ts --publish

@@ -1,0 +1,8 @@
+{
+  "//": "The no-conflict-when-real-libs-ARE-present program: everything platform's own tsconfig.ci.json keeps out (DOM) is turned back on here, and compat/**/* probes that a real lib.dom AbortSignal/AbortController/ReadableStream/URL assigns to the owned structural type and, where claimed, back again. types: [] (inherited from tsconfig.lib.json) stays -- this is about lib.dom specifically, not about admitting @types/node/bun-types too. Not run for `process`/`ImmediateHandle`: `process` has no lib.dom counterpart at all (it's an @types/node-only global), and `setImmediate` is deliberately absent from lib.dom -- there is nothing to cross-check either belongs to this program.",
+  "extends": "../../tsconfig.lib.json",
+  "compilerOptions": {
+    "lib": ["ES2022", "DOM"]
+  },
+  "include": ["compat/**/*"]
+}

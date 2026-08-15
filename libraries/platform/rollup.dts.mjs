@@ -1,0 +1,14 @@
+// Rolls the public type surface of @rhombus-toolkit/platform into a single
+// dist/bundle/index.d.ts. `respectExternal: true` keeps the cross-package
+// @rhombus-toolkit/func import as a real import in the rolled output rather
+// than inlining it.
+
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import { dts } from 'rollup-plugin-dts';
+
+const PKG_ROOT = dirname(fileURLToPath(import.meta.url));
+
+export default { input: join(PKG_ROOT, 'src', 'index.ts'),
+  output: { file: join(PKG_ROOT, 'dist', 'bundle', 'index.d.ts'), format: 'es' },
+  plugins: [dts({ tsconfig: join(PKG_ROOT, 'tsconfig.json'), respectExternal: true })] };

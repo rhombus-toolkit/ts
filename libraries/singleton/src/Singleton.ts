@@ -1,6 +1,3 @@
-/// <reference lib="es2015.iterable" />
-/// <reference lib="es2021.weakref" />
-
 import { Ctor } from '@rhombus-toolkit/func';
 
 export function Singleton<T extends Ctor>(ctor: T): T {

@@ -22,13 +22,6 @@
         "@rhombus-toolkit/types": "workspace:*",
       },
     },
-    "libraries/defer": {
-      "name": "@rhombus-toolkit/defer",
-      "version": "1.4.2",
-      "dependencies": {
-        "@rhombus-toolkit/platform": "workspace:*",
-      },
-    },
     "libraries/fetch": {
       "name": "@rhombus-toolkit/fetch",
       "version": "1.3.9",
@@ -44,10 +37,6 @@
         "@rhombus-toolkit/type-guards": "workspace:*",
         "@rhombus-toolkit/types": "workspace:*",
       },
-    },
-    "libraries/on-ice": {
-      "name": "@rhombus-toolkit/on-ice",
-      "version": "0.0.0",
     },
     "libraries/platform": {
       "name": "@rhombus-toolkit/platform",
@@ -104,7 +93,6 @@
       "version": "1.0.4",
       "dependencies": {
         "@rhombus-toolkit/async-timers": "workspace:*",
-        "@rhombus-toolkit/defer": "workspace:*",
         "@rhombus-toolkit/fetch": "workspace:*",
         "@rhombus-toolkit/kinda-weak-map": "workspace:*",
         "@rhombus-toolkit/proxy-base": "workspace:*",
@@ -180,15 +168,11 @@
 
     "@rhombus-toolkit/async-timers": ["@rhombus-toolkit/async-timers@workspace:libraries/async-timers"],
 
-    "@rhombus-toolkit/defer": ["@rhombus-toolkit/defer@workspace:libraries/defer"],
-
     "@rhombus-toolkit/fetch": ["@rhombus-toolkit/fetch@workspace:libraries/fetch"],
 
     "@rhombus-toolkit/kinda-weak-map": ["@rhombus-toolkit/kinda-weak-map@workspace:libraries/kinda-weak-map"],
 
     "@rhombus-toolkit/obj": ["@rhombus-toolkit/obj@workspace:libraries/obj"],
-
-    "@rhombus-toolkit/on-ice": ["@rhombus-toolkit/on-ice@workspace:libraries/on-ice"],
 
     "@rhombus-toolkit/platform": ["@rhombus-toolkit/platform@workspace:libraries/platform"],
 

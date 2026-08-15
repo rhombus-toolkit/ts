@@ -1,4 +1,4 @@
-import { clearImmediate, setImmediate } from '@rhombus-toolkit/set-immediate';
+import { clearImmediate, setImmediate } from '@rhombus-toolkit/platform';
 
 export function setImmediateAsync(): Promise<void>;
 export function setImmediateAsync(signal: AbortSignal): Promise<void>;

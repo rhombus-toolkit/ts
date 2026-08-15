@@ -19,7 +19,7 @@
       "version": "1.4.4",
       "dependencies": {
         "@rhombus-toolkit/func": "workspace:*",
-        "@rhombus-toolkit/set-immediate": "workspace:*",
+        "@rhombus-toolkit/platform": "workspace:*",
       },
     },
     "libraries/case-converter": {

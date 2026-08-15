@@ -1,8 +1,10 @@
 {
   "//": "lib: [\"ES2021\"] is the floor this package actually needs. WeakRef (Singleton.ts) lands in ES2021 (lib.es2021.weakref.d.ts); verified ES2020 fails on it (TS2304). Nothing here needs more, so no DOM/types entries. (Singleton.ts also carries its own `/// <reference lib=\"es2021.weakref\" />` triple-slash directive predating this tsconfig -- left as-is; it's now redundant with this override, not load-bearing.)",
+  "//exclude": "*.spec.ts is the bun:test runtime suite -- excluded from this library program rather than pulled in with types: [\"bun\"], so @types/bun never re-loosens this package's ES2021 lib floor. bun test transpiles and runs it directly; nothing here type-checks it.",
   "extends": "../../tsconfig.lib.json",
   "compilerOptions": {
     "lib": ["ES2021"]
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.spec.ts"]
 }

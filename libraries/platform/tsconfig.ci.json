@@ -1,0 +1,5 @@
+{
+  "//": "lib: [\"ES5\"] -- inherited from the base as-is; every type here is a locally-declared interface plus `Record` (lib.es5.d.ts), so nothing pulls in anything higher. ES5 is also TS's lowest `lib` entry -- there is no rung below it to verify a failure against. DOM stays absent: every platform global is reached by casting `globalThis` through an owned structural type, never by naming a DOM type, and types: [] (from tsconfig.lib.json) keeps @types/node and bun-types out too. See tsconfig.compat.json for the companion no-conflict-with-real-libs program.",
+  "extends": "../../tsconfig.lib.json",
+  "include": ["src/**/*"]
+}

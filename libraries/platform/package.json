@@ -1,0 +1,48 @@
+{
+  "name": "@rhombus-toolkit/platform",
+  "version": "0.1.0",
+  "description": "Structural typings for host-platform globals (AbortController, process, ReadableStream, timers, URL), each a typed globalThis lookup rather than an ambient declaration.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rhombus-toolkit/ts.git",
+    "directory": "libraries/platform"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/bundle/index.js",
+  "types": "./dist/bundle/index.d.ts",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "bun": "./dist/bundle/index.js",
+      "types": "./dist/bundle/index.d.ts",
+      "import": "./dist/bundle/index.js",
+      "default": "./dist/bundle/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "bun ../../scripts/build-lib.ts",
+    "lint": "bun x tsc --noEmit -p tsconfig.ci.json && bun x tsc --noEmit -p tsconfig.compat.json"
+  },
+  "keywords": [],
+  "author": "Thomas Butler",
+  "dependencies": {
+    "@rhombus-toolkit/func": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true,
+    "main": "./dist/bundle/index.js",
+    "types": "./dist/bundle/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/bundle/index.d.ts",
+        "import": "./dist/bundle/index.js",
+        "default": "./dist/bundle/index.js"
+      }
+    }
+  }
+}

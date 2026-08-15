@@ -1,4 +1,4 @@
-import { AssertNeverError } from './Error';
+import type { AssertNeverError } from '@rhombus-toolkit/types';
 const Ξ: unique symbol = Symbol('⚡');
 type mark<T extends object> = T & { readonly [Ξ]: true; };
 function mark<T extends object>(target: T): mark<T> {
@@ -45,9 +45,16 @@ export function restify(arg: any) {
  * The Ξ markers are there to clarify whether payloads composed of a single
  * array-typed value are intended to be spread on the reducer or are actually
  * a single array parameter.
+ *
+ * @remarks
+ * The one-element arm used to be spelled `Δ extends [infer φ] | [infer Θ] ? φ | Θ`, with
+ * `Δ extends [infer φ] ? φ` behind it. The second was dead: a union of two identical one-tuple
+ * patterns matches exactly what one of them matches, and both slots infer the same element, so the
+ * first arm answered every call the second was there for and `φ | Θ` was only ever `φ`. Collapsed to
+ * the single arm, which is what it computed.
  */
 export type unrestify<Ω extends any[]> = Ω extends mark<infer Δ>
-  ? (Δ extends [infer φ] | [infer Θ] ? φ | Θ : Δ extends [infer φ] ? φ : Δ extends [] ? void : Δ extends any[] ? Δ // InvalidTypeArg<`unrestify<T>`, [T: Ω, U: Δ], `Encountered a plain ol' array where a tuple should be specified. Somewhere along the way this type has beed widened and the type information lost.` > :
+  ? (Δ extends [infer φ] ? φ : Δ extends [] ? void : Δ extends any[] ? Δ // InvalidTypeArg<`unrestify<T>`, [T: Ω, U: Δ], `Encountered a plain ol' array where a tuple should be specified. Somewhere along the way this type has beed widened and the type information lost.` >
   : AssertNeverError<`unrestify<T>`, [T: Ω],
     `The 'Ξ' marker should only be dropped on arrays, and I'm pretty sure that I've already exhaustively checked for that. How the hell did you land here?`>)
   : Ω;

@@ -7,10 +7,10 @@ export { flattenMap, obj } from '@rhombus-toolkit/obj';
 export type * from './deep-record';
 export * from './identity';
 // export * from './Lazy';
+export { restify, unrestify } from '@rhombus-toolkit/restify';
 export * from './node-callback-to-async';
 export type * from './opaque';
 export * from './range';
-export * from './restify';
 export type { ClearEmpties, Join, Split, Str, Stringable } from './string';
 
 export type * from './truthy';

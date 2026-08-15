@@ -1,18 +1,9 @@
 {
-  "files.exclude": {
-    "**/.git": true,
-    "**/.svn": true,
-    "**/.hg": true,
-    "**/CVS": true,
-    "**/.DS_Store": true,
-    "**/Thumbs.db": true,
-    "libraries/*/dist/": true,
-    "libraries/*/CHANGELOG.*": true,
-    "LICENSE": true,
-    "**/*.md": true,
-    "**/.*": true,
-    "**/node_modules": true
-  },
   "explorer.excludeGitIgnore": false,
-  "explorerExclude.backup": {}
+  "explorerExclude.backup": {},
+  "files.exclude": {
+    "libraries/*/rollup.dts.mjs": true,
+    "libraries/*/dist": true,
+    "libraries/*/node_modules": true
+  }
 }

@@ -1,9 +1,14 @@
-export class KindaWeakMap<K, V extends object> implements Map<K, V> {
+export class KindaWeakMap<K, V extends object> /*implements Map<K, V>*/ {
   readonly #map = new Map<K, WeakRef<V>>();
   readonly #registry = new FinalizationRegistry((key: K) => {
-    this.#map.delete(key);
+    if (this.#map.get(key)?.deref() === undefined) {
+      this.#map.delete(key);
+    }
   });
   set(key: K, value: V): this {
+    if (this.has(key)) {
+      this.delete(key);
+    }
     this.#registry.register(value, key, value);
     this.#map.set(key, new WeakRef(value));
     return this;
@@ -23,12 +28,10 @@ export class KindaWeakMap<K, V extends object> implements Map<K, V> {
     return this.#map.has(key);
   }
   clear(): void {
-    for (const value of this.values()) {
-      this.#registry.unregister(value);
-    }
+    this.values().filter(Boolean).forEach(p => this.#registry.unregister(p!));
     this.#map.clear();
   }
-  forEach(callbackfn: (value: V, key: K, map: Map<K, V>) => void, thisArg?: any): void {
+  forEach(callbackfn: (value: V, key: K, map: this) => void, thisArg?: any): void {
     for (const [key, value] of this) {
       callbackfn.call(thisArg, value, key, this);
     }
@@ -42,8 +45,8 @@ export class KindaWeakMap<K, V extends object> implements Map<K, V> {
   keys(): MapIterator<K> {
     return this.#map.keys();
   }
-  values(): MapIterator<V> {
-    return this.#map.values().map((ref) => ref.deref() as V);
+  values(): MapIterator<V | undefined> {
+    return this.#map.values().map((ref) => ref.deref());
   }
   [Symbol.iterator](): MapIterator<[K, V]> {
     return this.entries();

@@ -1,9 +1,8 @@
 {
-  "//": "lib: [\"ES2018\"] is the floor this package actually needs. AsyncGenerator/AsyncIterable (generics.d.ts's Replace<T,R>) land in ES2018; verified ES2017 fails on both (TS2583). DOM is deliberately absent: MessageEvent was the one identifier that needed it (same Replace<T,R>), and that arm is now parked (commented out, not deleted -- see generics.d.ts) rather than paying for a whole platform lib for one dead branch. skipLibCheck is flipped to false here (overriding the repo default) because func's src is entirely .d.ts: skipLibCheck:true skips type-checking declaration files outright, which made this package's own lint gate a no-op before this override -- verified by deliberately breaking an identifier and watching skipLibCheck:true swallow it silently. Confirmed clean at this floor with real checking on.",
+  "//": "lib: [\"ES2018\"] carried over from when this package held the types themselves; the shim re-exports @rhombus-toolkit/types, whose own floor is ES2018 (AsyncGenerator/AsyncIterable in the generics entry), so nothing here can compile below it. The old skipLibCheck: false override is gone with the .d.ts sources it existed for -- there are no declaration files left in this package to be skipped.",
   "extends": "../../tsconfig.lib.json",
   "compilerOptions": {
-    "lib": ["ES2018"],
-    "skipLibCheck": false
+    "lib": ["ES2018"]
   },
   "include": ["src/**/*"]
 }

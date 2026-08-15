@@ -10,7 +10,7 @@
   "scripts": {
     "build": "bun scripts/build-all.ts",
     "test": "bun --filter '*' test",
-    "lint": "bun --filter '*' lint",
+    "lint": "bun --filter '*' lint && bun scripts/derive-publish-config.ts --check",
     "format": "dprint fmt",
     "format:check": "dprint check",
     "knip": "knip --tsConfig tsconfig.knip.json --no-exit-code",

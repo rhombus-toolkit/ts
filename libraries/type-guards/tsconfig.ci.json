@@ -1,9 +1,4 @@
 {
-  "//": "lib: [\"ES2018\"] is the floor this package actually needs, and it needs nothing else. The async family (AsyncGenerator, AsyncGeneratorFunction, AsyncIterable, AsyncIterableIterator, Symbol.asyncIterator) lands in ES2018; verified ES2017 fails on all of it (TS2318/TS2583/TS2749). DOM is deliberately absent -- `URL` (is.ts's isUrl) is the one identifier that would otherwise need it, resolved instead through types: [\"node\"] (Node's ambient URL) so the rest of the package doesn't inherit the full DOM surface for one type.",
   "extends": "../../tsconfig.lib.json",
-  "compilerOptions": {
-    "lib": ["ES2018"],
-    "types": ["node"]
-  },
   "include": ["src/**/*"]
 }

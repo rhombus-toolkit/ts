@@ -1,6 +1,6 @@
 // Rolls the public type surface of @rhombus-toolkit/async-timers into a single
 // dist/bundle/index.d.ts. `respectExternal: true` keeps the cross-package
-// @rhombus-toolkit/func and @rhombus-toolkit/set-immediate imports as real
+// @rhombus-toolkit/types and @rhombus-toolkit/set-immediate imports as real
 // imports in the rolled output rather than inlining them.
 
 import { dirname, join } from 'node:path';

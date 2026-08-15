@@ -18,14 +18,7 @@
       "name": "@rhombus-toolkit/async-timers",
       "version": "1.4.4",
       "dependencies": {
-        "@rhombus-toolkit/func": "workspace:*",
         "@rhombus-toolkit/platform": "workspace:*",
-      },
-    },
-    "libraries/case-converter": {
-      "name": "@rhombus-toolkit/case-converter",
-      "version": "2.0.0",
-      "dependencies": {
         "@rhombus-toolkit/types": "workspace:*",
       },
     },
@@ -39,16 +32,6 @@
     "libraries/fetch": {
       "name": "@rhombus-toolkit/fetch",
       "version": "1.3.9",
-      "dependencies": {
-        "@rhombus-toolkit/func": "workspace:*",
-      },
-    },
-    "libraries/func": {
-      "name": "@rhombus-toolkit/func",
-      "version": "4.0.0",
-      "dependencies": {
-        "@rhombus-toolkit/types": "workspace:*",
-      },
     },
     "libraries/kinda-weak-map": {
       "name": "@rhombus-toolkit/kinda-weak-map",
@@ -70,7 +53,7 @@
       "name": "@rhombus-toolkit/platform",
       "version": "0.1.0",
       "dependencies": {
-        "@rhombus-toolkit/func": "workspace:*",
+        "@rhombus-toolkit/types": "workspace:*",
       },
     },
     "libraries/proxy-base": {
@@ -98,14 +81,14 @@
       "name": "@rhombus-toolkit/singleton",
       "version": "1.3.4",
       "dependencies": {
-        "@rhombus-toolkit/func": "workspace:*",
+        "@rhombus-toolkit/types": "workspace:*",
       },
     },
     "libraries/type-guards": {
       "name": "@rhombus-toolkit/type-guards",
       "version": "1.3.4",
       "dependencies": {
-        "@rhombus-toolkit/func": "workspace:*",
+        "@rhombus-toolkit/types": "workspace:*",
       },
     },
     "libraries/typed-pluralizer": {
@@ -121,15 +104,14 @@
       "version": "1.0.4",
       "dependencies": {
         "@rhombus-toolkit/async-timers": "workspace:*",
-        "@rhombus-toolkit/case-converter": "workspace:*",
         "@rhombus-toolkit/defer": "workspace:*",
         "@rhombus-toolkit/fetch": "workspace:*",
-        "@rhombus-toolkit/func": "workspace:*",
         "@rhombus-toolkit/kinda-weak-map": "workspace:*",
         "@rhombus-toolkit/proxy-base": "workspace:*",
         "@rhombus-toolkit/set-immediate": "workspace:*",
         "@rhombus-toolkit/singleton": "workspace:*",
         "@rhombus-toolkit/type-guards": "workspace:*",
+        "@rhombus-toolkit/types": "workspace:*",
       },
     },
   },
@@ -198,13 +180,9 @@
 
     "@rhombus-toolkit/async-timers": ["@rhombus-toolkit/async-timers@workspace:libraries/async-timers"],
 
-    "@rhombus-toolkit/case-converter": ["@rhombus-toolkit/case-converter@workspace:libraries/case-converter"],
-
     "@rhombus-toolkit/defer": ["@rhombus-toolkit/defer@workspace:libraries/defer"],
 
     "@rhombus-toolkit/fetch": ["@rhombus-toolkit/fetch@workspace:libraries/fetch"],
-
-    "@rhombus-toolkit/func": ["@rhombus-toolkit/func@workspace:libraries/func"],
 
     "@rhombus-toolkit/kinda-weak-map": ["@rhombus-toolkit/kinda-weak-map@workspace:libraries/kinda-weak-map"],
 

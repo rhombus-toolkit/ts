@@ -1,4 +1,4 @@
-import { Func } from '@rhombus-toolkit/func';
+import { Func } from '@rhombus-toolkit/types';
 
 type NotNull<T> = Exclude<T, null>;
 type Cast<T, R> = T extends R ? T : R;

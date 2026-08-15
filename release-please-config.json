@@ -9,11 +9,6 @@
       "package-name": "@rhombus-toolkit/async-timers",
       "changelog-path": "CHANGELOG.md"
     },
-    "libraries/case-converter": {
-      "release-type": "node",
-      "package-name": "@rhombus-toolkit/case-converter",
-      "changelog-path": "CHANGELOG.md"
-    },
     "libraries/defer": {
       "release-type": "node",
       "package-name": "@rhombus-toolkit/defer",
@@ -22,11 +17,6 @@
     "libraries/fetch": {
       "release-type": "node",
       "package-name": "@rhombus-toolkit/fetch",
-      "changelog-path": "CHANGELOG.md"
-    },
-    "libraries/func": {
-      "release-type": "node",
-      "package-name": "@rhombus-toolkit/func",
       "changelog-path": "CHANGELOG.md"
     },
     "libraries/kinda-weak-map": {

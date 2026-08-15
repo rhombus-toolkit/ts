@@ -1,7 +1,7 @@
 // Rolls the public type surface of @rhombus-toolkit/fetch into a single
-// dist/bundle/index.d.ts. `respectExternal: true` keeps the cross-package
-// @rhombus-toolkit/func import as a real import in the rolled output rather
-// than inlining it.
+// dist/bundle/index.d.ts. No cross-package imports today, but
+// `respectExternal: true` keeps any that show up as real imports in the
+// rolled output rather than inlining them.
 
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';

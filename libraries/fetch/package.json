@@ -32,9 +32,6 @@
   },
   "keywords": [],
   "author": "Thomas Butler",
-  "dependencies": {
-    "@rhombus-toolkit/func": "workspace:*"
-  },
   "publishConfig": {
     "access": "public",
     "provenance": true,

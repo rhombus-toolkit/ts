@@ -3,7 +3,7 @@
 // @types/node would supply. `ProcessLike` covers only the members this repo
 // calls — extend it when a consumer needs another.
 
-import { Func } from '@rhombus-toolkit/func';
+import { Func } from '@rhombus-toolkit/types';
 
 export interface ProcessLike {
   readonly env: Record<string, string | undefined>;

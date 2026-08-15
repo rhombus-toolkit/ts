@@ -3,8 +3,12 @@
   "libraries/defer": "1.4.2",
   "libraries/fetch": "1.3.9",
   "libraries/kinda-weak-map": "1.4.2",
+  "libraries/obj": "1.0.0",
+  "libraries/platform": "0.1.0",
   "libraries/proxy-base": "1.0.0",
+  "libraries/restify": "1.0.0",
   "libraries/set-immediate": "1.3.2",
   "libraries/singleton": "1.3.4",
-  "libraries/type-guards": "1.3.4"
+  "libraries/type-guards": "1.3.4",
+  "libraries/types": "1.0.0"
 }

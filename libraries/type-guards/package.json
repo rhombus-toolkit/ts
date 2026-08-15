@@ -32,9 +32,7 @@
   "dependencies": {
     "@rhombus-toolkit/func": "workspace:*"
   },
-  "devDependencies": {
-    "@types/node": "^24.0.0"
-  },
+  "devDependencies": {},
   "publishConfig": {
     "access": "public",
     "provenance": true,

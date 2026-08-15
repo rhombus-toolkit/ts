@@ -1,6 +1,14 @@
 {
-  "extends": "@rhombus-toolkit/heft-web-rig/profiles/library/tsconfig-base.json",
-  "compilerOptions": {
-    "outDir": "lib"
-  }
+    "extends": "@rhombus-toolkit/heft-web-rig/profiles/library/tsconfig-base.json",
+    "compilerOptions": {
+        "outDir": "lib",
+        // ES2018 is the floor this package actually needs, and it needs nothing else.
+        // The async family (AsyncGenerator, AsyncIterableIterator, AsyncIteratorObject,
+        // Symbol.asyncIterator) lands in ES2018; ES2017 fails on all of it. IteratorObject
+        // is declared in lib.es2015.iterable, so no ESNext sliver is required -- only its
+        // helper methods live in lib.esnext.iterator, and this package never names those.
+        // DOM is deliberately absent: `URL` was the one identifier that needed it, and
+        // isUrl is parked in src/is.ts rather than pay a whole lib for one guard.
+        "lib": ["ES2018"]
+    }
 }

@@ -112,9 +112,15 @@ export function isPromise(value: any): value is Promise<any> {
     return value instanceof Promise;
 }
 
-export function isUrl(url: any): url is URL {
-    return url instanceof URL;
-}
+// `URL` is the single identifier in this file that lives in lib.dom, and naming
+// it forced the entire DOM lib onto this package and onto anything type-checking
+// its declarations. One guard is not worth that, so it is parked rather than
+// deleted. It belongs in `platform`, where a structural `Url` type plus a typed
+// `globalThis.URL` lookup gives it back without the lib.
+//
+// export function isUrl(url: any): url is URL {
+//     return url instanceof URL;
+// }
 
 /** CONTRACT. Whether `value` has a `next`. Sync and async iterators are indistinguishable by shape — use {@link isAsyncIteratorObject} or {@link isAsyncIterable} to tell them apart. */
 export function isIterator(value: any): value is Iterator<any> {

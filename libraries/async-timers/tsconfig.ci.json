@@ -4,5 +4,6 @@
   "compilerOptions": {
     "lib": ["ES2015", "DOM"]
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.spec.ts"]
 }

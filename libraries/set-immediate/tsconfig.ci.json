@@ -4,5 +4,6 @@
   "compilerOptions": {
     "types": ["setimmediate"]
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.spec.ts"]
 }

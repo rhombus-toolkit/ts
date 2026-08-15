@@ -8,10 +8,11 @@ export type Head<T extends any[]> = T extends [infer R, ...any] ? R : never;
 /**
  * all but the first element
  */
-export type Tail<T extends any[]> = T extends [any, ...infer R] ? R : never; /**
+export type Tail<T extends any[]> = T extends [any, ...infer R] ? R : never;
+
+/**
  * all but the last element
  */
-
 export type Body<T extends any[]> = T extends [...infer R, any] ? R : never;
 /**
  * the last element
@@ -46,13 +47,24 @@ export type Slice<array extends any[], start extends number = 0, length extends 
 
 /**
  * Take<2, [0,1,2,3,4]> => [0,1]
+ *
+ * @remarks
+ * The fallback is `any[]`, not `T`. `Cast<V, F>` yields `F` whenever `V` is not
+ * assignable to it, and a prefix is never assignable to the array it came from
+ * once arity is fixed -- so a fallback of `T` fired on every call and handed
+ * back the whole input. The cast is here to state array-ness for a conditional
+ * the checker cannot evaluate while `N` and `T` are parameters; `any[]` is what
+ * that assertion actually means, and it should be unreachable.
  */
-export type Take<N extends number, T extends any[]> = Cast<SplitArray<T, N>[0], T>;
+export type Take<N extends number, T extends any[]> = Cast<SplitArray<T, N>[0], any[]>;
 
 /**
  * Skip<2, [0,1,2,3,4]> => [2,3,4]
+ *
+ * @remarks
+ * Same fallback correction as {@link Take}.
  */
-export type Skip<N extends number, T extends any[]> = Cast<SplitArray<T, N>[1], T>;
+export type Skip<N extends number, T extends any[]> = Cast<SplitArray<T, N>[1], any[]>;
 
 /**
  * PartialList<[0,1,2,3]> => [0,1,2,3] | [0,1,2] | [0,1] | [0] | []

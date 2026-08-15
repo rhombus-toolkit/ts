@@ -10,5 +10,13 @@
         // DOM is deliberately absent: `URL` was the one identifier that needed it, and
         // isUrl is parked in src/is.ts rather than pay a whole lib for one guard.
         "lib": ["ES2018"]
-    }
+    },
+    // *.spec.ts are RUNTIME tests executed by `bun test`, not part of the library
+    // program. They import `bun:test`, whose types live in @types/bun -- an ambient
+    // types package that would re-loosen the lib floor above through its own
+    // `/// <reference lib=...>` directives, defeating the point of pinning it.
+    // They get their own program (with bun's types, and whatever lib their
+    // assertions need) when the test runner is wired up; until then they are
+    // excluded here and run only via `bun test`.
+    "exclude": ["src/**/*.spec.ts"]
 }

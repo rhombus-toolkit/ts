@@ -156,9 +156,12 @@ describe('prototype guards', () => {
     });
 
     test('an IteratorObject carries the ES2025 iterator helpers', () => {
-        const iterator = [1, 2, 3].values();
+        // Read through a cast: the helper methods are only on `IteratorObject`
+        // from lib.esnext.iterator, and this package pins ES2018 deliberately.
+        // The assertion is about runtime presence, not about naming the type.
+        const iterator: unknown = [1, 2, 3].values();
         expect(isIteratorObject(iterator)).toBe(true);
-        expect(typeof iterator.map).toBe('function');
+        expect(typeof (iterator as { map?: unknown }).map).toBe('function');
         expect(typeof (handRolledIterator as { map?: unknown }).map).toBe('undefined');
     });
 

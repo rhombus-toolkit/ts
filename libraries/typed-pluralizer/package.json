@@ -29,17 +29,5 @@
   },
   "keywords": [],
   "author": "Thomas Butler",
-  "publishConfig": {
-    "access": "public",
-    "provenance": true,
-    "main": "./dist/bundle/index.js",
-    "types": "./dist/bundle/index.d.ts",
-    "exports": {
-      ".": {
-        "types": "./dist/bundle/index.d.ts",
-        "import": "./dist/bundle/index.js",
-        "default": "./dist/bundle/index.js"
-      }
-    }
-  }
+  "//publish": "No publishConfig, deliberately: mirrors rush.json's shouldPublish: false for this package at HEAD (set in #272). A real workspace member, just never published -- the P2 publish-libraries.ts discovery script keys off publishConfig presence, not a private flag, so don't add this back by pattern-matching the other manifests."
 }

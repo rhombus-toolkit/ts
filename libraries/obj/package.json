@@ -1,11 +1,11 @@
 {
-  "name": "@rhombus-toolkit/type-helpers",
-  "version": "2.0.0",
-  "description": "",
+  "name": "@rhombus-toolkit/obj",
+  "version": "1.0.0",
+  "description": "Typed counterparts of the Object.* statics, plus flattenMap.",
   "repository": {
     "type": "git",
     "url": "https://github.com/rhombus-toolkit/ts.git",
-    "directory": "libraries/type-helpers"
+    "directory": "libraries/obj"
   },
   "type": "module",
   "sideEffects": false,
@@ -25,13 +25,14 @@
   ],
   "scripts": {
     "build": "bun ../../scripts/build-lib.ts",
-    "lint": "bun x tsc --noEmit -p tsconfig.ci.json"
+    "lint": "bun x tsc --noEmit -p tsconfig.ci.json",
+    "test": "bun test"
   },
   "keywords": [],
   "author": "Thomas Butler",
   "dependencies": {
-    "@rhombus-toolkit/func": "workspace:*",
-    "@rhombus-toolkit/obj": "workspace:*"
+    "@rhombus-toolkit/type-guards": "workspace:*",
+    "@rhombus-toolkit/types": "workspace:*"
   },
   "publishConfig": {
     "access": "public",

@@ -1,9 +1,8 @@
 {
-  "//": "lib: [\"ES2019\"] is the floor this package actually needs. Object.entries/values (flattenMap.ts, obj.ts) land in ES2017, Object.fromEntries (obj.ts) in ES2019 -- verified ES2018 fails on fromEntries alone (TS2550), ES2015 fails on all three. DOM is absent: nothing here names a DOM type. types: [\"jest\"] resolves flattenMap.spec.ts's describe/it/expect (type-level only -- see the package.json note on the actual runner). skipLibCheck is flipped to false (overriding the repo default): this package's many .d.ts files (array.d.ts, counter.d.ts, union-to-tuple.d.ts, etc.) get skipped entirely under skipLibCheck:true, same failure mode as func -- verified clean with real checking on at this floor, so nothing here was silently relying on the exemption.",
+  "//": "lib floor PLACEHOLDER -- replaced once verified.",
   "extends": "../../tsconfig.lib.json",
   "compilerOptions": {
     "lib": ["ES2019"],
-    "types": ["jest"],
     "skipLibCheck": false
   },
   "include": ["src/**/*"]

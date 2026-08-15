@@ -1,4 +1,4 @@
-import { Func } from '@rhombus-toolkit/func';
+import { Func } from '@rhombus-toolkit/types';
 import { flattenMap } from './index';
 
 declare function isAssignable<TActual extends TExpected, TExpected>(actual?: TActual, expected?: TExpected): void;

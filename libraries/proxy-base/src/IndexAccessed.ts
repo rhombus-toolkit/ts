@@ -143,13 +143,13 @@ function createHandler(self: object, proto: object): ProxyHandler<object> {
  *     }
  * }
  *
- * const env = new Env();
- * const indexable = env as unknown as Record<string, string>;
- * indexable['HOME'] = '/home/tom';
- * indexable['HOME']; // '/home/tom'
- * env instanceof Env; // true
+ * const env = new Env() as Indexed<Env, string>;
+ * env['HOME'] = '/home/tom';
+ * env['HOME']; // '/home/tom'
+ * env instanceof Env; // true — `Indexed` keeps `Env`'s real members
  * ```
  *
+ * @see {@link Indexed} — the type that surfaces the index surface at the value site.
  * @see {@link ProxyBase} — the full-hook-surface sibling.
  *
  * @abstract
@@ -204,5 +204,48 @@ export abstract class IndexAccessed<Value, Key extends PropertyKey = PropertyKey
    */
   protected abstract _setIndex(key: Key, value: Value): Value;
 }
+
+/**
+ * The index-accessible view of an {@link IndexAccessed} subclass instance: the
+ * instance's real members intersected with the `Key`→`Value` index surface the
+ * proxy serves at runtime.
+ *
+ * @remarks
+ * The class itself cannot carry this index surface. TypeScript requires every
+ * named member of a type to be assignable to that type's index signature, and
+ * the {@link IndexAccessed._getIndex} / {@link IndexAccessed._setIndex} hooks —
+ * being methods, not `Value`s — never are. Declaring `[key: Key]: Value` on the
+ * class (or on anything it inherits, which would push the same error onto every
+ * subclass's hooks) is therefore a compile error. The indexer is a runtime-only
+ * construct, so its type is applied at the value site instead, via a cast:
+ *
+ * ```ts
+ * class Env extends IndexAccessed<string, 'HOME' | 'PATH'> {
+ *     protected _getIndex(key: 'HOME' | 'PATH'): string { throw new Error(key); }
+ *     protected _setIndex(_key: 'HOME' | 'PATH', value: string): string { return value; }
+ * }
+ *
+ * const env = new Env() as Indexed<Env, string, 'HOME' | 'PATH'>;
+ * env['HOME'];            // string
+ * env['PATH'] = '/bin';   // ok
+ * ```
+ *
+ * Unlike an `as unknown as Record<Key, Value>` cast — which throws the instance's
+ * real members away — `Indexed` intersects rather than replaces, so `env` above
+ * is still an `Env`: its declared methods and `instanceof` keep type-checking.
+ * Narrow `Key` (as here) to keep index access typed and to exclude real member
+ * names per the class-level "Narrowing `Key`" guidance; with the default
+ * `Key = PropertyKey`, `Indexed` yields the broad `string | number | symbol`
+ * index surface.
+ *
+ * @typeParam T - The subclass instance type being viewed.
+ * @typeParam Value - The value type the indexer reads and writes; matches the
+ * `Value` the subclass passed to {@link IndexAccessed}.
+ * @typeParam Key - The key type the index surface accepts; matches the `Key` the
+ * subclass passed to {@link IndexAccessed}. Defaults to `PropertyKey`.
+ */
+export type Indexed<T extends IndexAccessed<Value, Key>, Value, Key extends PropertyKey = PropertyKey> = T & {
+  [P in Key]: Value;
+};
 
 export default IndexAccessed;

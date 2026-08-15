@@ -6,7 +6,7 @@
   "libraries/platform": "0.1.0",
   "libraries/proxy-base": "1.0.0",
   "libraries/restify": "1.0.0",
-  "libraries/set-immediate": "1.3.2",
+  "libraries/set-immediate": "1.3.3",
   "libraries/once": "1.0.0",
   "libraries/type-guards": "1.3.4",
   "libraries/types": "1.0.0"

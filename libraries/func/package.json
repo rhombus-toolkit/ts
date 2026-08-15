@@ -8,27 +8,45 @@
     "directory": "libraries/func"
   },
   "type": "module",
+  "sideEffects": false,
+  "types": "./dist/bundle/index.d.ts",
   "exports": {
     ".": {
-      "types": "./src/index.d.ts"
+      "source": "./src/index.d.ts",
+      "types": "./dist/bundle/index.d.ts",
+      "default": "./dist/bundle/index.d.ts"
     },
     "./generic": {
-      "types": "./src/generics.d.ts"
+      "source": "./src/generics.d.ts",
+      "types": "./dist/bundle/generics.d.ts",
+      "default": "./dist/bundle/generics.d.ts"
     }
   },
-  "sideEffects": false,
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "",
-    "build": "",
-    "build:watch": ""
+    "build": "bun ../../scripts/build-lib.ts",
+    "lint": "bun x tsc --noEmit -p tsconfig.ci.json"
   },
   "keywords": [],
   "author": "Thomas Butler",
-  "dependencies": {
+  "rhombusBuild": {
+    "typesOnly": true
   },
-  "devDependencies": {
-    "@rhombus-toolkit/heft-web-rig": "workspace:*",
-    "@rushstack/heft": "~1.2.17",
-    "typescript": "~5.8.2"
+  "publishConfig": {
+    "access": "public",
+    "provenance": true,
+    "types": "./dist/bundle/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/bundle/index.d.ts",
+        "default": "./dist/bundle/index.d.ts"
+      },
+      "./generic": {
+        "types": "./dist/bundle/generics.d.ts",
+        "default": "./dist/bundle/generics.d.ts"
+      }
+    }
   }
 }

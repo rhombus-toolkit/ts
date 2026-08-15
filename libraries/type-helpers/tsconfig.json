@@ -1,8 +1,7 @@
 {
-    "extends": "@rhombus-toolkit/heft-web-rig/profiles/library/tsconfig-base.json",
-    "compilerOptions": {
-        "outDir": "lib",
-        "types": ["jest"]
-    },
-    "exclude": ["on-ice"]
+  "extends": "../../tsconfig.editor.json",
+  "compilerOptions": {
+    "types": ["jest"]
+  },
+  "include": ["../*/src/**/*"]
 }

@@ -29,11 +29,8 @@ export type UnionToTuple<T> = _UnionToTuple<T, T, readonly []>;
  * `Members` is the full union, held fixed while `T` is eaten one member at a time, so the growing
  * `Result` keeps a bound the shrinking `T` can no longer state.
  */
-type _UnionToTuple<
-    Members,
-    T extends Members,
-    Result extends readonly Members[],
-    Last extends Members = LastInUnion<T>,
-> = [T] extends [never] ? Result : _UnionToTuple<Members, Exclude<T, Last>, readonly [Last, ...Result]>;
+type _UnionToTuple<Members, T extends Members, Result extends readonly Members[],
+  Last extends Members = LastInUnion<T>> = [T] extends [never] ? Result
+    : _UnionToTuple<Members, Exclude<T, Last>, readonly [Last, ...Result]>;
 
 export type TupleToUnion<T extends readonly unknown[]> = T[number];

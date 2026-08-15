@@ -1,0 +1,13 @@
+[tools]
+bun = "latest"
+node = "24"
+# The dead-code scanner behind `bun run knip` (config: knip.jsonc). Pinned to an
+# exact version, not "latest", so the tool doesn't drift silently underfoot.
+"npm:knip" = "6.29.0"
+pnpm = "10.34.4"
+
+# Points git at .githooks/ on directory entry so the pre-commit format check is
+# auto-installed. Idempotent, and silently skipped when mise isn't active — non-mise
+# users just run `git config core.hooksPath .githooks` once by hand.
+[hooks]
+enter = "git config core.hooksPath .githooks"

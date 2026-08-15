@@ -43,101 +43,16 @@ import { AnyOf, NoneOf } from '../util';
 // The exact-word entries (string members of the upstream list), verbatim and
 // lowercased. GENERATED from pluralize.js — do not hand-edit; regenerate from
 // source if the upstream list changes.
-export type UncountableWord =
-    | 'adulthood'
-    | 'advice'
-    | 'agenda'
-    | 'aid'
-    | 'aircraft'
-    | 'alcohol'
-    | 'ammo'
-    | 'analytics'
-    | 'anime'
-    | 'athletics'
-    | 'audio'
-    | 'bison'
-    | 'blood'
-    | 'bream'
-    | 'buffalo'
-    | 'butter'
-    | 'carp'
-    | 'cash'
-    | 'chassis'
-    | 'chess'
-    | 'clothing'
-    | 'cod'
-    | 'commerce'
-    | 'cooperation'
-    | 'corps'
-    | 'debris'
-    | 'diabetes'
-    | 'digestion'
-    | 'elk'
-    | 'energy'
-    | 'equipment'
-    | 'excretion'
-    | 'expertise'
-    | 'firmware'
-    | 'flounder'
-    | 'fun'
-    | 'gallows'
-    | 'garbage'
-    | 'graffiti'
-    | 'hardware'
-    | 'headquarters'
-    | 'health'
-    | 'herpes'
-    | 'highjinks'
-    | 'homework'
-    | 'housework'
-    | 'information'
-    | 'jeans'
-    | 'justice'
-    | 'kudos'
-    | 'labour'
-    | 'literature'
-    | 'machinery'
-    | 'mackerel'
-    | 'mail'
-    | 'media'
-    | 'mews'
-    | 'moose'
-    | 'music'
-    | 'mud'
-    | 'manga'
-    | 'news'
-    | 'only'
-    | 'personnel'
-    | 'pike'
-    | 'plankton'
-    | 'pliers'
-    | 'police'
-    | 'pollution'
-    | 'premises'
-    | 'rain'
-    | 'research'
-    | 'rice'
-    | 'salmon'
-    | 'scissors'
-    | 'series'
-    | 'sewage'
-    | 'shambles'
-    | 'shrimp'
-    | 'software'
-    | 'species'
-    | 'staff'
-    | 'swine'
-    | 'tennis'
-    | 'traffic'
-    | 'transportation'
-    | 'trout'
-    | 'tuna'
-    | 'wealth'
-    | 'welfare'
-    | 'whiting'
-    | 'wildebeest'
-    | 'wildlife'
-    | 'you';
+export type UncountableWord = 'adulthood' | 'advice' | 'agenda' | 'aid' | 'aircraft' | 'alcohol' | 'ammo' | 'analytics'
+  | 'anime' | 'athletics' | 'audio' | 'bison' | 'blood' | 'bream' | 'buffalo' | 'butter' | 'carp' | 'cash' | 'chassis'
+  | 'chess' | 'clothing' | 'cod' | 'commerce' | 'cooperation' | 'corps' | 'debris' | 'diabetes' | 'digestion' | 'elk'
+  | 'energy' | 'equipment' | 'excretion' | 'expertise' | 'firmware' | 'flounder' | 'fun' | 'gallows' | 'garbage'
+  | 'graffiti' | 'hardware' | 'headquarters' | 'health' | 'herpes' | 'highjinks' | 'homework' | 'housework'
+  | 'information' | 'jeans' | 'justice' | 'kudos' | 'labour' | 'literature' | 'machinery' | 'mackerel' | 'mail'
+  | 'media' | 'mews' | 'moose' | 'music' | 'mud' | 'manga' | 'news' | 'only' | 'personnel' | 'pike' | 'plankton'
+  | 'pliers' | 'police' | 'pollution' | 'premises' | 'rain' | 'research' | 'rice' | 'salmon' | 'scissors' | 'series'
+  | 'sewage' | 'shambles' | 'shrimp' | 'software' | 'species' | 'staff' | 'swine' | 'tennis' | 'traffic'
+  | 'transportation' | 'trout' | 'tuna' | 'wealth' | 'welfare' | 'whiting' | 'wildebeest' | 'wildlife' | 'you';
 
 // Matching is case-insensitive: the public type folds input through
 // `Lowercase<T>` before delegating to the internal chain, so the pattern arms
@@ -158,22 +73,22 @@ export type UncountableWord =
 export type IsUncountable<T extends string> = _IsUncountable<Lowercase<T>>;
 
 type _IsUncountable<T> =
-    // Exact-word membership in the upstream `uncountables` map.
-    T extends UncountableWord ? true
-    : // /pok[eé]mon$/i  — [eé] spelled inline; 'é' is outside the Letter domain.
-    T extends `${string}pok${'e' | 'é'}mon` ? true
-    : // /[^aeiou]ese$/i  — "chinese", "japanese". [^aeiou] narrowed to non-vowel Letters.
-    T extends `${string}${NoneOf<'aeiou'>}ese` ? true
-    : // /deer$/i  — "deer", "reindeer".
-    T extends `${string}deer` ? true
-    : // /fish$/i  — "fish", "blowfish", "angelfish".
-    T extends `${string}fish` ? true
-    : // /measles$/i
-    T extends `${string}measles` ? true
-    : // /o[iu]s$/i  — "carnivorous".
-    T extends `${string}o${AnyOf<'iu'>}s` ? true
-    : // /pox$/i  — "chickpox", "smallpox".
-    T extends `${string}pox` ? true
-    : // /sheep$/i
-    T extends `${string}sheep` ? true
+  // Exact-word membership in the upstream `uncountables` map.
+  T extends UncountableWord ? true
+    // /pok[eé]mon$/i  — [eé] spelled inline; 'é' is outside the Letter domain.
+    : T extends `${string}pok${'e' | 'é'}mon` ? true
+    // /[^aeiou]ese$/i  — "chinese", "japanese". [^aeiou] narrowed to non-vowel Letters.
+    : T extends `${string}${NoneOf<'aeiou'>}ese` ? true
+    // /deer$/i  — "deer", "reindeer".
+    : T extends `${string}deer` ? true
+    // /fish$/i  — "fish", "blowfish", "angelfish".
+    : T extends `${string}fish` ? true
+    // /measles$/i
+    : T extends `${string}measles` ? true
+    // /o[iu]s$/i  — "carnivorous".
+    : T extends `${string}o${AnyOf<'iu'>}s` ? true
+    // /pox$/i  — "chickpox", "smallpox".
+    : T extends `${string}pox` ? true
+    // /sheep$/i
+    : T extends `${string}sheep` ? true
     : false;

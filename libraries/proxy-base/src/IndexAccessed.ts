@@ -6,38 +6,41 @@
  * view of the same method set so it can dispatch through them.
  */
 interface Indexer {
-    _getIndex(key: PropertyKey): unknown;
-    _setIndex(key: PropertyKey, value: unknown): unknown;
+  _getIndex(key: PropertyKey): unknown;
+  _setIndex(key: PropertyKey, value: unknown): unknown;
 }
 
 function createHandler(self: object, proto: object): ProxyHandler<object> {
-    // Look the indexer methods up through the REAL prototype chain (never
-    // through the attached proxy) so dispatch cannot recurse into the traps.
-    // Resolves subclass overrides because `proto` IS the subclass prototype.
-    const indexer = <K extends keyof Indexer>(name: K): Indexer[K] =>
-        Reflect.get(proto, name, self) as Indexer[K];
+  // Look the indexer methods up through the REAL prototype chain (never
+  // through the attached proxy) so dispatch cannot recurse into the traps.
+  // Resolves subclass overrides because `proto` IS the subclass prototype.
+  const indexer = <K extends keyof Indexer>(name: K): Indexer[K] => Reflect.get(proto, name, self) as Indexer[K];
 
-    return {
-        // get/set walk the prototype chain, so they fire here whenever a lookup
-        // misses the instance's own properties and the entire real chain. The
-        // miss-check restores ordinary behavior for real members, so the
-        // indexer only ever sees true misses.
-        get(target, property, receiver) {
-            if (Reflect.has(target, property)) return Reflect.get(target, property, receiver);
-            return indexer('_getIndex').call(self, property);
-        },
-        set(target, property, value, receiver) {
-            if (Reflect.has(target, property)) return Reflect.set(target, property, value, receiver);
-            indexer('_setIndex').call(self, property, value);
-            return true;
-        },
-        getPrototypeOf() {
-            // The attached proxy stands in front of the real prototype in the
-            // instance's chain; returning the real prototype keeps it visible
-            // to prototype walks so `instance instanceof Subclass` works.
-            return proto;
-        },
-    };
+  return {
+    // get/set walk the prototype chain, so they fire here whenever a lookup
+    // misses the instance's own properties and the entire real chain. The
+    // miss-check restores ordinary behavior for real members, so the
+    // indexer only ever sees true misses.
+    get(target, property, receiver) {
+      if (Reflect.has(target, property)) {
+        return Reflect.get(target, property, receiver);
+      }
+      return indexer('_getIndex').call(self, property);
+    },
+    set(target, property, value, receiver) {
+      if (Reflect.has(target, property)) {
+        return Reflect.set(target, property, value, receiver);
+      }
+      indexer('_setIndex').call(self, property, value);
+      return true;
+    },
+    getPrototypeOf() {
+      // The attached proxy stands in front of the real prototype in the
+      // instance's chain; returning the real prototype keeps it visible
+      // to prototype walks so `instance instanceof Subclass` works.
+      return proto;
+    },
+  };
 }
 
 /**
@@ -152,54 +155,54 @@ function createHandler(self: object, proto: object): ProxyHandler<object> {
  * @abstract
  */
 export abstract class IndexAccessed<Value, Key extends PropertyKey = PropertyKey> {
-    constructor() {
-        const prototype = Object.getPrototypeOf(this) as object;
-        Object.setPrototypeOf(this, new Proxy(prototype, createHandler(this, prototype)));
-    }
+  constructor() {
+    const prototype = Object.getPrototypeOf(this) as object;
+    Object.setPrototypeOf(this, new Proxy(prototype, createHandler(this, prototype)));
+  }
 
-    /**
-     * Indexer read hook.
-     *
-     * @remarks
-     * Corresponds to the proxy `get` trap. Because `get` participates in the
-     * prototype-chain walk, it fires for any property read that misses the
-     * instance's own properties and the entire real prototype chain — including
-     * well-known-symbol probes (see the class-level hazards). The `key`
-     * parameter is typed `Key`, but that is a compile-time contract only — at
-     * runtime keys outside `Key` can still arrive.
-     *
-     * @param key - The property key being read.
-     * @returns The indexed value for the given key.
-     *
-     * @protected
-     * @abstract
-     */
-    protected abstract _getIndex(key: Key): Value;
+  /**
+   * Indexer read hook.
+   *
+   * @remarks
+   * Corresponds to the proxy `get` trap. Because `get` participates in the
+   * prototype-chain walk, it fires for any property read that misses the
+   * instance's own properties and the entire real prototype chain — including
+   * well-known-symbol probes (see the class-level hazards). The `key`
+   * parameter is typed `Key`, but that is a compile-time contract only — at
+   * runtime keys outside `Key` can still arrive.
+   *
+   * @param key - The property key being read.
+   * @returns The indexed value for the given key.
+   *
+   * @protected
+   * @abstract
+   */
+  protected abstract _getIndex(key: Key): Value;
 
-    /**
-     * Indexer write hook.
-     *
-     * @remarks
-     * Corresponds to the proxy `set` trap. Because `set` participates in the
-     * prototype-chain walk, it fires on assignment to a property that does not
-     * exist on the instance or the real prototype chain.
-     *
-     * As with {@link IndexAccessed._getIndex}, the `key` parameter is typed
-     * `Key` purely as a compile-time contract; keys outside `Key` can still
-     * arrive at runtime.
-     *
-     * The return value is **not** consumed by the proxy machinery — assignments
-     * always report success regardless of what is returned. It exists purely for
-     * subclass ergonomics (e.g. returning the stored value for chaining).
-     *
-     * @param key - The property key being written.
-     * @param value - The value being assigned.
-     * @returns A value for subclass ergonomics; not consumed by the proxy.
-     *
-     * @protected
-     * @abstract
-     */
-    protected abstract _setIndex(key: Key, value: Value): Value;
+  /**
+   * Indexer write hook.
+   *
+   * @remarks
+   * Corresponds to the proxy `set` trap. Because `set` participates in the
+   * prototype-chain walk, it fires on assignment to a property that does not
+   * exist on the instance or the real prototype chain.
+   *
+   * As with {@link IndexAccessed._getIndex}, the `key` parameter is typed
+   * `Key` purely as a compile-time contract; keys outside `Key` can still
+   * arrive at runtime.
+   *
+   * The return value is **not** consumed by the proxy machinery — assignments
+   * always report success regardless of what is returned. It exists purely for
+   * subclass ergonomics (e.g. returning the stored value for chaining).
+   *
+   * @param key - The property key being written.
+   * @param value - The value being assigned.
+   * @returns A value for subclass ergonomics; not consumed by the proxy.
+   *
+   * @protected
+   * @abstract
+   */
+  protected abstract _setIndex(key: Key, value: Value): Value;
 }
 
 export default IndexAccessed;

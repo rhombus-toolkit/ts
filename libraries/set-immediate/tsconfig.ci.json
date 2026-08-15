@@ -1,0 +1,8 @@
+{
+  "//": "lib: [\"ES5\"] -- inherited from the base as-is; verified it needs nothing beyond the repo floor (every platform global here is read off `globalThis as any`, not named as a type). types: [\"setimmediate\"] resolves the ambient 'setimmediate' side-effect import (the npm polyfill ships no bundled types).",
+  "extends": "../../tsconfig.lib.json",
+  "compilerOptions": {
+    "types": ["setimmediate"]
+  },
+  "include": ["src/**/*"]
+}

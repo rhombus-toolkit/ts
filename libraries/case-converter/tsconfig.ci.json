@@ -1,0 +1,5 @@
+{
+  "//": "lib: [\"ES5\"] -- inherited from the base as-is. This package is pure template-literal/conditional types (Uppercase/Lowercase/Exclude are compiler-builtin utility types, not lib-year-gated); verified it needs nothing beyond the repo floor.",
+  "extends": "../../tsconfig.lib.json",
+  "include": ["src/**/*"]
+}

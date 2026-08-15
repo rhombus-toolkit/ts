@@ -1,0 +1,35 @@
+// knip — the repo's dead-code detector. Run it with `bun run knip`.
+//
+// Unlike std, this repo has no examples/ workspace to seed reachability from, so
+// each library's own package.json `exports` (its `.`/subpath entries) is the
+// entry point set -- a library's public surface is reachable by definition, and
+// knip flags exports that surface doesn't use internally plus anything neither
+// the public surface nor another library references.
+//
+// REPORT ONLY. Never run this with `--fix`. Each flag is a binary owner
+// decision: delete the symbol, or add it to the public surface.
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+
+  // Tests never count as references (a test can keep a symbol alive forever
+  // without anything real depending on it), and the `tests/` workspace is a
+  // typecheck-only smoke fixture, not a package with its own dead-code budget.
+  "ignoreWorkspaces": ["tests"],
+
+  // `knip` itself is mise-pinned (mise.toml `[tools]`), not a package.json
+  // devDependency, per the repo's no-global-devtools rule -- so the `knip`
+  // script's own binary is invisible to a package.json-dependency scan.
+  "ignoreBinaries": ["knip"],
+
+  "workspaces": {
+    ".": {
+      "entry": ["scripts/*.{ts,mjs}"],
+      "project": ["scripts/*.{ts,mjs}"],
+    },
+
+    "libraries/*": {
+      "entry": ["rollup*.dts.mjs"],
+      "project": ["src/**/*.ts", "rollup*.dts.mjs"],
+    },
+  },
+}

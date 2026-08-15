@@ -1,0 +1,9 @@
+{
+  "//": "STOPGAP, superseded by PR #276 (fix-type-guards-iterator-protocol): that branch sets the same lib: [\"ES2018\"] floor but reaches it with types: [] by parking isUrl (URL was the one identifier here that needed an ambient platform lib) instead of adding types: [\"node\"]. Keeping types: [\"node\"] here only so this branch is self-consistent in isolation -- gets replaced with types: [] on rebase. The lib floor itself: AsyncGenerator, AsyncGeneratorFunction, AsyncIterable, AsyncIterableIterator, Symbol.asyncIterator all land in ES2018; verified ES2017 fails on all of it (TS2318/TS2583/TS2749). DOM is deliberately absent.",
+  "extends": "../../tsconfig.lib.json",
+  "compilerOptions": {
+    "lib": ["ES2018"],
+    "types": ["node"]
+  },
+  "include": ["src/**/*"]
+}

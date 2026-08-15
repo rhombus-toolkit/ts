@@ -28,11 +28,9 @@ const si: <T extends unknown[]>(callback: (...args: T) => void, ...args: T) => n
 const ci: (handle: number) => void = w.clearImmediate;
 
 try {
-    delete w.setImmediate;
-    delete w.clearImmediate;
-}
-catch (er) { } // eslint-disable-line no-empty
+  delete w.setImmediate;
+  delete w.clearImmediate;
+} catch (er) {} // eslint-disable-line no-empty
 
-
-export { si as setImmediate, ci as clearImmediate };
+export { ci as clearImmediate, si as setImmediate };
 export default si;

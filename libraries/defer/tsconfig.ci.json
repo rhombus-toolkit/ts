@@ -1,5 +1,5 @@
 {
-  "//": "lib: [\"ES2015\"] is the floor this package actually needs -- Promise (defer.ts, FnPromise.ts) lands in ES2015; verified ES5 fails on it (TS2468/TS2705/TS2585). DOM is deliberately absent -- AbortController/AbortSignal (FnPromise.ts) is the one pair that would otherwise need it, resolved instead through types: [\"node\"] (Node's ambient AbortController/AbortSignal).",
+  "//": "lib: [\"ES2015\"] is the floor this package actually needs -- Promise (defer.ts, FnPromise.ts) lands in ES2015; verified ES5 fails on it (TS2468/TS2705/TS2585). DOM is deliberately absent -- AbortController/AbortSignal (FnPromise.ts) is the one pair that would otherwise need it. STOPGAP: types: [\"node\"] (Node's ambient AbortController/AbortSignal) is a placeholder, not the destination -- these belong in `platform` as owned structural types (P4), same shape as std's platform package, not as an @types/node dependency. Swap to platform once it lands.",
   "extends": "../../tsconfig.lib.json",
   "compilerOptions": {
     "lib": ["ES2015"],

@@ -76,6 +76,9 @@
       "dependencies": {
         "@rhombus-toolkit/func": "workspace:*",
       },
+      "devDependencies": {
+        "@types/node": "^24.0.0",
+      },
     },
     "libraries/type-helpers": {
       "name": "@rhombus-toolkit/type-helpers",

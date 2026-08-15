@@ -12,7 +12,6 @@
   "license": "ISC",
   "dependencies": {
     "@rhombus-toolkit/async-timers": "workspace:*",
-    "@rhombus-toolkit/defer": "workspace:*",
     "@rhombus-toolkit/fetch": "workspace:*",
     "@rhombus-toolkit/kinda-weak-map": "workspace:*",
     "@rhombus-toolkit/proxy-base": "workspace:*",

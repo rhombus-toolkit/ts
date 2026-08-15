@@ -9,11 +9,6 @@
       "package-name": "@rhombus-toolkit/async-timers",
       "changelog-path": "CHANGELOG.md"
     },
-    "libraries/defer": {
-      "release-type": "node",
-      "package-name": "@rhombus-toolkit/defer",
-      "changelog-path": "CHANGELOG.md"
-    },
     "libraries/fetch": {
       "release-type": "node",
       "package-name": "@rhombus-toolkit/fetch",

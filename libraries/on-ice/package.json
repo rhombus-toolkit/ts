@@ -1,0 +1,14 @@
+{
+  "name": "@rhombus-toolkit/on-ice",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Parked material -- code and notes kept for reference or future revival, not a library. Never built, never published.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rhombus-toolkit/ts.git",
+    "directory": "libraries/on-ice"
+  },
+  "type": "module",
+  "keywords": [],
+  "author": "Thomas Butler"
+}

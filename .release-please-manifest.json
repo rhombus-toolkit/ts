@@ -8,6 +8,5 @@
   "libraries/proxy-base": "1.0.0",
   "libraries/set-immediate": "1.3.2",
   "libraries/singleton": "1.3.4",
-  "libraries/type-guards": "1.3.4",
-  "libraries/type-helpers": "2.0.0"
+  "libraries/type-guards": "1.3.4"
 }

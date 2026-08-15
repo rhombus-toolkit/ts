@@ -41,7 +41,6 @@
       "version": "1.3.9",
       "dependencies": {
         "@rhombus-toolkit/func": "workspace:*",
-        "@rhombus-toolkit/type-helpers": "workspace:*",
       },
     },
     "libraries/func": {
@@ -62,6 +61,10 @@
         "@rhombus-toolkit/type-guards": "workspace:*",
         "@rhombus-toolkit/types": "workspace:*",
       },
+    },
+    "libraries/on-ice": {
+      "name": "@rhombus-toolkit/on-ice",
+      "version": "0.0.0",
     },
     "libraries/platform": {
       "name": "@rhombus-toolkit/platform",
@@ -105,15 +108,6 @@
         "@rhombus-toolkit/func": "workspace:*",
       },
     },
-    "libraries/type-helpers": {
-      "name": "@rhombus-toolkit/type-helpers",
-      "version": "3.0.0",
-      "dependencies": {
-        "@rhombus-toolkit/obj": "workspace:*",
-        "@rhombus-toolkit/restify": "workspace:*",
-        "@rhombus-toolkit/types": "workspace:*",
-      },
-    },
     "libraries/typed-pluralizer": {
       "name": "@rhombus-toolkit/typed-pluralizer",
       "version": "0.1.0",
@@ -136,7 +130,6 @@
         "@rhombus-toolkit/set-immediate": "workspace:*",
         "@rhombus-toolkit/singleton": "workspace:*",
         "@rhombus-toolkit/type-guards": "workspace:*",
-        "@rhombus-toolkit/type-helpers": "workspace:*",
       },
     },
   },
@@ -217,6 +210,8 @@
 
     "@rhombus-toolkit/obj": ["@rhombus-toolkit/obj@workspace:libraries/obj"],
 
+    "@rhombus-toolkit/on-ice": ["@rhombus-toolkit/on-ice@workspace:libraries/on-ice"],
+
     "@rhombus-toolkit/platform": ["@rhombus-toolkit/platform@workspace:libraries/platform"],
 
     "@rhombus-toolkit/proxy-base": ["@rhombus-toolkit/proxy-base@workspace:libraries/proxy-base"],
@@ -230,8 +225,6 @@
     "@rhombus-toolkit/tests": ["@rhombus-toolkit/tests@workspace:tests"],
 
     "@rhombus-toolkit/type-guards": ["@rhombus-toolkit/type-guards@workspace:libraries/type-guards"],
-
-    "@rhombus-toolkit/type-helpers": ["@rhombus-toolkit/type-helpers@workspace:libraries/type-helpers"],
 
     "@rhombus-toolkit/typed-pluralizer": ["@rhombus-toolkit/typed-pluralizer@workspace:libraries/typed-pluralizer"],
 

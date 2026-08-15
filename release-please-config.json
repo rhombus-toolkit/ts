@@ -53,11 +53,6 @@
       "release-type": "node",
       "package-name": "@rhombus-toolkit/type-guards",
       "changelog-path": "CHANGELOG.md"
-    },
-    "libraries/type-helpers": {
-      "release-type": "node",
-      "package-name": "@rhombus-toolkit/type-helpers",
-      "changelog-path": "CHANGELOG.md"
     }
   },
   "changelog-sections": [

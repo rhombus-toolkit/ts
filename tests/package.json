@@ -20,7 +20,6 @@
     "@rhombus-toolkit/proxy-base": "workspace:*",
     "@rhombus-toolkit/set-immediate": "workspace:*",
     "@rhombus-toolkit/singleton": "workspace:*",
-    "@rhombus-toolkit/type-guards": "workspace:*",
-    "@rhombus-toolkit/type-helpers": "workspace:*"
+    "@rhombus-toolkit/type-guards": "workspace:*"
   }
 }

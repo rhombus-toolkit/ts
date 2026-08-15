@@ -1,7 +1,11 @@
 {
   "//": "Editor-only whole-repo program: the `source` export condition resolves @rhombus-toolkit/* to src for IDE rename/find-refs across packages. bun ignores customConditions (it uses `bun` -> dist), so build/tests are unaffected; the CI gate uses tsconfig.ci.json.",
+  "//lib": "Every libraries/*/tsconfig.json includes `../*/src/**/*` -- the whole repo, not one package -- so this program needs the UNION of every package's floor, not any single package's: ES2021 (singleton, WeakRef), ESNext.Iterator (kinda-weak-map, MapIterator.map), DOM (async-timers EventTarget, fetch ProgressEvent). Per-package floors are NOT set here or in the leaf editor configs; they are pinned and verified one rung down in each package's tsconfig.ci.json, which is what CI gates on. Setting a single package's floor here would compile every OTHER package's sources against it and report errors the gate does not.",
+  "//types": "`tsconfig.lib.json` pins `types: []` so the CI program can never be silently widened by an ambient @types package. The editor program is not the gate, and *.spec.ts files sit inside the include glob, so bun's types are loaded here to keep `import ... from 'bun:test'` resolving in the IDE.",
   "extends": "./tsconfig.lib.json",
   "compilerOptions": {
-    "customConditions": ["source"]
+    "customConditions": ["source"],
+    "lib": ["ES2021", "ESNext.Iterator", "DOM"],
+    "types": ["bun"]
   }
 }

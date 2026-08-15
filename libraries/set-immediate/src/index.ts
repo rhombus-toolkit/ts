@@ -30,7 +30,7 @@ const ci: (handle: number) => void = w.clearImmediate;
 try {
   delete w.setImmediate;
   delete w.clearImmediate;
-} catch (er) {} // eslint-disable-line no-empty
+} catch (er) {}
 
 export { ci as clearImmediate, si as setImmediate };
 export default si;

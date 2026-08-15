@@ -1,4 +1,4 @@
-import type { Func } from '@rhombus-toolkit/func';
+import type { Func } from '@rhombus-toolkit/types';
 
 // Two kinds of guard live in this file, and the distinction is the same one
 // TypeScript's own lib draws between `Iterator` and `IteratorObject`:

@@ -12,7 +12,7 @@ type CurryBasic<TFn extends Func<any[], any>> = _CurryBasic<Parameters<TFn>, Ret
  * The gap marker, structurally.
  *
  * @remarks
- * The compat target is Ramda (see `type-helpers/on-ice/curry.info.ts`), whose
+ * The compat target is Ramda, whose
  * `R.__` is the object `{'@@functional/placeholder': true}`. It was a local
  * `unique symbol` here, which no Ramda placeholder is ever assignable to — so
  * the compat claim could not be met by construction. Matching the shape is the

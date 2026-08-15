@@ -1,8 +1,0 @@
-# Type-test files are a build-time gate only — never ship them.
-# These match the renamed *.test.ts sources and every compiled artifact
-# (lib/, lib-commonjs/) heft emits for them.
-*.test.ts
-*.test.js
-*.test.js.map
-*.test.d.ts
-*.test.d.ts.map

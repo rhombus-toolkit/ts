@@ -1,4 +1,4 @@
-import type { Func } from '@rhombus-toolkit/func';
+import type { Func } from '@rhombus-toolkit/types';
 
 /**
  * Defers a value's construction until first access, then memoizes it.

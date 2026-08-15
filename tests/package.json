@@ -12,15 +12,12 @@
   "license": "ISC",
   "dependencies": {
     "@rhombus-toolkit/async-timers": "workspace:*",
-    "@rhombus-toolkit/case-converter": "workspace:*",
-    "@rhombus-toolkit/defer": "workspace:*",
     "@rhombus-toolkit/fetch": "workspace:*",
-    "@rhombus-toolkit/func": "workspace:*",
     "@rhombus-toolkit/kinda-weak-map": "workspace:*",
     "@rhombus-toolkit/proxy-base": "workspace:*",
     "@rhombus-toolkit/set-immediate": "workspace:*",
     "@rhombus-toolkit/singleton": "workspace:*",
     "@rhombus-toolkit/type-guards": "workspace:*",
-    "@rhombus-toolkit/type-helpers": "workspace:*"
+    "@rhombus-toolkit/types": "workspace:*"
   }
 }

@@ -1,7 +1,8 @@
 {
+  "//types": "Overrides the editor profile's `types`, so bun must be restated -- dropping it would break `bun:test` resolution in every *.spec.ts across the whole-repo editor program.",
   "extends": "../../tsconfig.editor.json",
   "compilerOptions": {
-    "types": ["setimmediate"]
+    "types": ["bun", "setimmediate"]
   },
   "include": ["../*/src/**/*"]
 }

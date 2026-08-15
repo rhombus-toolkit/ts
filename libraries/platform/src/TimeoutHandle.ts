@@ -4,7 +4,7 @@
 // type differs (a number in browsers, an object under node) and only ever
 // round-trips through our own `clearTimeout`.
 
-import { Func } from '@rhombus-toolkit/func';
+import { Func } from '@rhombus-toolkit/types';
 
 export type TimeoutHandle = unknown;
 

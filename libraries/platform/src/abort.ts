@@ -7,7 +7,7 @@
 // to `fetch(url, { signal })`). The value export below IS
 // `globalThis.AbortController` — native in Node >=15 / bun / deno / browsers.
 
-import { Ctor } from '@rhombus-toolkit/func';
+import { Ctor } from '@rhombus-toolkit/types';
 
 /** Structural counterpart of the platform `AbortSignal`. */
 export interface AbortSignal {

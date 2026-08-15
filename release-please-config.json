@@ -9,29 +9,34 @@
       "package-name": "@rhombus-toolkit/async-timers",
       "changelog-path": "CHANGELOG.md"
     },
-    "libraries/case-converter": {
-      "release-type": "node",
-      "package-name": "@rhombus-toolkit/case-converter",
-      "changelog-path": "CHANGELOG.md"
-    },
-    "libraries/defer": {
-      "release-type": "node",
-      "package-name": "@rhombus-toolkit/defer",
-      "changelog-path": "CHANGELOG.md"
-    },
     "libraries/fetch": {
       "release-type": "node",
       "package-name": "@rhombus-toolkit/fetch",
       "changelog-path": "CHANGELOG.md"
     },
-    "libraries/func": {
-      "release-type": "node",
-      "package-name": "@rhombus-toolkit/func",
-      "changelog-path": "CHANGELOG.md"
-    },
     "libraries/kinda-weak-map": {
       "release-type": "node",
       "package-name": "@rhombus-toolkit/kinda-weak-map",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "libraries/obj": {
+      "release-type": "node",
+      "package-name": "@rhombus-toolkit/obj",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "libraries/platform": {
+      "release-type": "node",
+      "package-name": "@rhombus-toolkit/platform",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "libraries/restify": {
+      "release-type": "node",
+      "package-name": "@rhombus-toolkit/restify",
+      "changelog-path": "CHANGELOG.md"
+    },
+    "libraries/types": {
+      "release-type": "node",
+      "package-name": "@rhombus-toolkit/types",
       "changelog-path": "CHANGELOG.md"
     },
     "libraries/proxy-base": {
@@ -52,11 +57,6 @@
     "libraries/type-guards": {
       "release-type": "node",
       "package-name": "@rhombus-toolkit/type-guards",
-      "changelog-path": "CHANGELOG.md"
-    },
-    "libraries/type-helpers": {
-      "release-type": "node",
-      "package-name": "@rhombus-toolkit/type-helpers",
       "changelog-path": "CHANGELOG.md"
     }
   },

@@ -1,8 +1,0 @@
-{
-  "//": "lib: [\"ES5\"] -- the base default, kept because this package is now a re-export shim whose source names no identifier at all: no Object.*, no Symbol, no Reflect, nothing. Verified there is no rung below to fall off (ES5 is the floor tsconfig.base.json sets) and verified clean at ES5 with skipLibCheck flipped to false as well, so nothing is hiding behind a skipped sibling declaration. The old override said ES2019 for Object.fromEntries in obj.ts and skipLibCheck: false for this package's many .d.ts files; both left with the files. The packages this shim re-exports state their own real floors -- types ES2018, restify ES2015, obj ES2019 -- and a consumer compiles against their rolled declarations, which declare what they need rather than demanding it from lib.",
-  "extends": "../../tsconfig.lib.json",
-  "compilerOptions": {
-    "lib": ["ES5"]
-  },
-  "include": ["src/**/*"]
-}

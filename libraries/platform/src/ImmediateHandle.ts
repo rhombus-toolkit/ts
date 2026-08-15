@@ -20,7 +20,7 @@
 // absorbed package's types claimed, and it only ever round-trips through our
 // own `clearImmediate`.
 
-import { Func } from '@rhombus-toolkit/func';
+import { Func } from '@rhombus-toolkit/types';
 
 export type ImmediateHandle = unknown;
 

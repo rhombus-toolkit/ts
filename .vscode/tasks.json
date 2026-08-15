@@ -1,19 +1,94 @@
 {
+  "version": "2.0.0",
   "tasks": [
     {
-      "label": "set node verson",
+      "label": "build",
+      "detail": "Topological build of every package (scripts/build-all.ts)",
       "type": "shell",
-      "command": "source ~/.nvs/nvs.sh use lts",
-      "runOptions": {
-        "runOn": "folderOpen"
-      },
+      "command": "bun run build",
       "group": {
-        "kind": "none"
+        "kind": "build",
+        "isDefault": true
       },
+      "problemMatcher": ["$tsc"],
       "presentation": {
-        "echo": false,
-        "reveal": "silent"
+        "reveal": "always",
+        "panel": "dedicated",
+        "clear": true
       }
+    },
+    {
+      "label": "typecheck",
+      "detail": "tsc -b across the project references",
+      "type": "shell",
+      "command": "bun run typecheck",
+      "group": "build",
+      "problemMatcher": ["$tsc"],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "lint",
+      "detail": "Per-package tsc --noEmit at each pinned lib floor, plus the publishConfig drift check",
+      "type": "shell",
+      "command": "bun run lint",
+      "group": "build",
+      "problemMatcher": ["$tsc"],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "test",
+      "detail": "Every package's bun test suite",
+      "type": "shell",
+      "command": "bun run test",
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "test (this package)",
+      "detail": "bun test for the package containing the active file",
+      "type": "shell",
+      "command": "bun test",
+      "options": {
+        "cwd": "${fileWorkspaceFolder}/libraries/${input:packageName}"
+      },
+      "group": "test",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "format",
+      "detail": "dprint fmt — rewrites files in place",
+      "type": "shell",
+      "command": "bun run format",
+      "problemMatcher": [],
+      "presentation": { "reveal": "silent", "panel": "shared" }
+    },
+    {
+      "label": "format:check",
+      "detail": "dprint check — the CI gate, does not rewrite",
+      "type": "shell",
+      "command": "bun run format:check",
+      "problemMatcher": [],
+      "presentation": { "reveal": "always", "panel": "dedicated", "clear": true }
+    },
+    {
+      "label": "gates",
+      "detail": "Everything CI runs, in CI's order — build, typecheck, lint, format:check, test",
+      "dependsOrder": "sequence",
+      "dependsOn": ["build", "typecheck", "lint", "format:check", "test"],
+      "group": "build",
+      "problemMatcher": []
+    }
+  ],
+  "inputs": [
+    {
+      "id": "packageName",
+      "type": "promptString",
+      "description": "Package directory under libraries/ (e.g. types, obj, type-guards)"
     }
   ]
 }

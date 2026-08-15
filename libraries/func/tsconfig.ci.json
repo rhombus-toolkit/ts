@@ -1,9 +1,0 @@
-{
-  "//": "lib: [\"ES2018\"] carried over from when this package held the types themselves; the shim re-exports @rhombus-toolkit/types, whose own floor is ES2018 (AsyncGenerator/AsyncIterable in the generics entry), so nothing here can compile below it. The old skipLibCheck: false override is gone with the .d.ts sources it existed for -- there are no declaration files left in this package to be skipped.",
-  "extends": "../../tsconfig.lib.json",
-  "compilerOptions": {
-    "lib": ["ES2018"]
-  },
-  "include": ["src/**/*"],
-  "exclude": ["src/**/*.spec.ts"]
-}

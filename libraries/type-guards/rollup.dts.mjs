@@ -1,6 +1,6 @@
 // Rolls the public type surface of @rhombus-toolkit/type-guards into a single
 // dist/bundle/index.d.ts. `respectExternal: true` keeps the cross-package
-// @rhombus-toolkit/func import as a real import in the rolled output rather
+// @rhombus-toolkit/types import as a real import in the rolled output rather
 // than inlining it.
 
 import { dirname, join } from 'node:path';

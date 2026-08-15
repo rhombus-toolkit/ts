@@ -1,9 +1,0 @@
-{
-  "//": "lib: [\"ES2018\"] is the floor this package actually needs -- Promise.prototype.finally (FnPromise.ts's then/catch/finally passthrough) lands in ES2018; verified ES2017 fails on it (TS2550). This floor moved up from the previously-recorded ES2015 now that types: [\"node\"] is gone: @types/node's own lib references were silently widening the program past what lib: [\"ES2015\"] alone implied, masking the real Promise.finally requirement. DOM is deliberately absent -- AbortController/AbortSignal (FnPromise.ts) is the one pair that would otherwise need it; both are now reached as owned structural types from `@rhombus-toolkit/platform` (a typed globalThis lookup), not an ambient global. Deliberately broke the platform import and confirmed tsc fails (TS2307), ruling out an ambient fallback.",
-  "extends": "../../tsconfig.lib.json",
-  "compilerOptions": {
-    "lib": ["ES2018"]
-  },
-  "include": ["src/**/*"],
-  "exclude": ["src/**/*.spec.ts"]
-}

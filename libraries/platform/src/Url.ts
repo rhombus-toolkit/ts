@@ -5,7 +5,7 @@
 // lib.dom/@types/node/bun-types, and naming it would drag in the second lib
 // type this whole pattern exists to avoid.
 
-import { Ctor } from '@rhombus-toolkit/func';
+import { Ctor } from '@rhombus-toolkit/types';
 
 /** Structural counterpart of the platform `URL`. */
 export interface Url {

@@ -1,4 +1,4 @@
-import { AbstractCtor as _ACtor, Ctor as _Ctor, Func as _Func } from './index';
+import { AbstractCtor as _ACtor, Ctor as _Ctor, Func as _Func } from './func';
 export declare const $: unique symbol;
 export type $ = typeof $;
 
@@ -10,10 +10,10 @@ type Replace<T, R> = T extends $ ? R
   : T extends Generator<infer X> ? Generator<Replace<X, R>>
   : T extends AsyncGenerator<infer X> ? AsyncGenerator<Replace<X, R>>
   // Parked, not deleted: MessageEvent is a DOM type, and this is otherwise a
-  // pure, zero-ambient-lib types package (no consumer of func's `.` entry --
-  // the only subpath std imports -- reaches this branch either). If a
-  // MessageEvent-shaped generic placeholder is ever wanted, `platform` (P4)
-  // can own a structural MessageEventLike<T> for it instead of pulling in DOM.
+  // pure, zero-ambient-lib types package (no consumer of the `./generic` entry
+  // reaches this branch either). If a MessageEvent-shaped generic placeholder
+  // is ever wanted, `platform` (P4) can own a structural MessageEventLike<T>
+  // for it instead of pulling in DOM.
   // : T extends MessageEvent<infer X> ? MessageEvent<Replace<X, R>>
   : T extends Map<infer X, infer Y> ? Map<Replace<X, R>, Replace<Y, R>>
   : T extends Set<infer X> ? Set<Replace<X, R>>
@@ -34,7 +34,7 @@ type ReplaceArray<Arr extends readonly any[], R, done extends readonly any[] = [
     : Arr extends $[] ? R[]
     : Arr extends readonly $[] ? readonly R[]
     : Arr extends readonly any[] ? Arr
-    : { ERROR: { '@rhombus-toolkit/func': { Arr: Arr; R: R; done: done; }; }; };
+    : { ERROR: { '@rhombus-toolkit/types': { Arr: Arr; R: R; done: done; }; }; };
 
 type _ = { readonly _: unique symbol; };
 

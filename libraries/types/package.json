@@ -1,11 +1,11 @@
 {
-  "name": "@rhombus-toolkit/func",
-  "version": "4.0.0",
-  "description": "DEPRECATED -- moved to @rhombus-toolkit/types. Kept as a pure re-export shim.",
+  "name": "@rhombus-toolkit/types",
+  "version": "1.0.0",
+  "description": "Type-level utilities: the Func family, arrays, string literals, counters and brands. No runtime.",
   "repository": {
     "type": "git",
     "url": "https://github.com/rhombus-toolkit/ts.git",
-    "directory": "libraries/func"
+    "directory": "libraries/types"
   },
   "type": "module",
   "sideEffects": false,
@@ -16,10 +16,20 @@
       "types": "./dist/bundle/index.d.ts",
       "default": "./dist/bundle/index.d.ts"
     },
+    "./array": {
+      "source": "./src/array.ts",
+      "types": "./dist/bundle/array.d.ts",
+      "default": "./dist/bundle/array.d.ts"
+    },
     "./generic": {
       "source": "./src/generics.ts",
       "types": "./dist/bundle/generics.d.ts",
       "default": "./dist/bundle/generics.d.ts"
+    },
+    "./string": {
+      "source": "./src/string.ts",
+      "types": "./dist/bundle/string.d.ts",
+      "default": "./dist/bundle/string.d.ts"
     }
   },
   "files": [
@@ -31,9 +41,6 @@
   },
   "keywords": [],
   "author": "Thomas Butler",
-  "dependencies": {
-    "@rhombus-toolkit/types": "workspace:*"
-  },
   "rhombusBuild": {
     "typesOnly": true
   },
@@ -46,9 +53,17 @@
         "types": "./dist/bundle/index.d.ts",
         "default": "./dist/bundle/index.d.ts"
       },
+      "./array": {
+        "types": "./dist/bundle/array.d.ts",
+        "default": "./dist/bundle/array.d.ts"
+      },
       "./generic": {
         "types": "./dist/bundle/generics.d.ts",
         "default": "./dist/bundle/generics.d.ts"
+      },
+      "./string": {
+        "types": "./dist/bundle/string.d.ts",
+        "default": "./dist/bundle/string.d.ts"
       }
     }
   }

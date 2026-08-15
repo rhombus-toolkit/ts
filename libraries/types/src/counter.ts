@@ -1,5 +1,5 @@
-import { Length, Skip, Tail } from './array';
-import { Cast } from './cast';
+import { Length, Tail } from './array';
+import { Cast } from './Cast';
 
 type CounterArray = any[];
 type Next<I extends CounterArray> = [never, ...I];
@@ -27,8 +27,8 @@ export type Add<X extends number, Y extends number> = Length<[...Counter<X>, ...
  * `X - Y`, clamped at zero.
  *
  * @remarks
- * Peels a cell from each side rather than routing through {@link Skip}. Going
- * through `Skip` relates its deferred result against `Length`'s `T extends any[]`
+ * Peels a cell from each side rather than routing through `array`'s `Skip`.
+ * Going through `Skip` relates its deferred result against `Length`'s `T extends any[]`
  * bound across `Counter<X>`'s unbounded recursion, which fails at this
  * declaration with "Excessive stack depth" the moment this file is type-checked
  * rather than skipped as an ambient declaration.

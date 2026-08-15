@@ -30,6 +30,13 @@
     "libraries/*": {
       "entry": ["rollup*.dts.mjs"],
       "project": ["src/**/*.ts", "rollup*.dts.mjs"],
+
+      // Type-level tests (*.test-d.ts) are compiled by the package's
+      // tsconfig.ci.json and never imported by anything -- compiling them IS
+      // the test. Nothing reaches them, which is exactly the shape knip
+      // reports as an unused file, so they are excluded rather than listed as
+      // entries: a test must not keep a symbol alive (see the note above).
+      "ignore": ["src/**/*.test-d.ts"],
     },
   },
 }

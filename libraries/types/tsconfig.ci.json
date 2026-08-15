@@ -1,0 +1,8 @@
+{
+  "//": "lib: [\"ES2018\"] is the floor this package actually needs, and nothing more -- no DOM, no ESNext sliver, so a consumer on std's [\"ES2022\", \"ESNext.Disposable\"] set needs no expansion. Verified by compiling one step down: ES2017 (and ES2016) fail on exactly two identifiers, both in generics.ts's Replace<T,R> -- AsyncGenerator and AsyncIterable (TS2583, 'try changing lib to es2018 or later'). Everything else here is compiler-builtin (Uppercase/Lowercase/Capitalize/Exclude/Extract/Awaited) or lib.es5 (Promise, Map, Set, WeakMap, WeakKey, Function, Date); the 0n in Falsy is a bigint LITERAL type, gated by `target` (ES2022 from the base), not by lib. DOM stays out for the same reason it does in func: MessageEvent was the only identifier that wanted it, and that arm is parked. No skipLibCheck override, unlike the .d.ts-based packages this one replaces -- every file here is a .ts holding only type declarations, so it is type-checked whatever skipLibCheck says. That is the entire reason for the file form.",
+  "extends": "../../tsconfig.lib.json",
+  "compilerOptions": {
+    "lib": ["ES2018"]
+  },
+  "include": ["src/**/*"]
+}

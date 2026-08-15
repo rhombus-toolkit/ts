@@ -1,5 +1,5 @@
 {
-  "//": "lib: [\"ES5\"] -- inherited from the base as-is. This package is pure template-literal/conditional types (Uppercase/Lowercase/Exclude are compiler-builtin utility types, not lib-year-gated); verified it needs nothing beyond the repo floor.",
+  "//": "lib: [\"ES5\"] -- inherited from the base as-is. Nothing is declared here any more: the package is a re-export shim for @rhombus-toolkit/types/string, whose own floor is stated in its tsconfig. Verified it needs nothing beyond the repo floor.",
   "extends": "../../tsconfig.lib.json",
   "include": ["src/**/*"]
 }

@@ -1,5 +1,5 @@
-import { flattenMap } from './index';
 import { Func } from '@rhombus-toolkit/func';
+import { flattenMap } from './index';
 
 declare function isAssignable<TActual extends TExpected, TExpected>(actual?: TActual, expected?: TExpected): void;
 declare function isAssignable<TExpected>(actual?: TExpected): void;
@@ -10,40 +10,28 @@ declare function isAssignable<TExpected>(actual?: TExpected): void;
 // any[] and vary the covariant Return to stay distinguishable.
 
 namespace shallowTest {
-    type Subject = flattenMap<{
-        a: Func<any[], number>;
-        b: { c: Func<any[], string> };
-    }>;
-    type Expected = {
-        a: Func<any[], number>;
-        'b.c': Func<any[], string>;
-    };
+  type Subject = flattenMap<{ a: Func<any[], number>; b: { c: Func<any[], string>; }; }>;
+  type Expected = { a: Func<any[], number>; 'b.c': Func<any[], string>; };
 
-    // @ts-expect-no-error
-    isAssignable<Subject, Expected>;
-    // @ts-expect-no-error
-    isAssignable<Expected, Subject>;
+  // @ts-expect-no-error
+  isAssignable<Subject, Expected>;
+  // @ts-expect-no-error
+  isAssignable<Expected, Subject>;
 
-    // wrong key
-    // @ts-expect-error
-    isAssignable<Subject, { a: Func<any[], number>; 'b.d': Func<any[], string> }>;
-    // wrong leaf return type
-    // @ts-expect-error
-    isAssignable<Subject, { a: Func<any[], string>; 'b.c': Func<any[], string> }>;
+  // wrong key
+  // @ts-expect-error
+  isAssignable<Subject, { a: Func<any[], number>; 'b.d': Func<any[], string>; }>;
+  // wrong leaf return type
+  // @ts-expect-error
+  isAssignable<Subject, { a: Func<any[], string>; 'b.c': Func<any[], string>; }>;
 }
 
 namespace deepTest {
-    type Subject = flattenMap<{
-        a: { b: { c: Func<any[], number> } };
-        x: Func<any[], void>;
-    }>;
-    type Expected = {
-        'a.b.c': Func<any[], number>;
-        x: Func<any[], void>;
-    };
+  type Subject = flattenMap<{ a: { b: { c: Func<any[], number>; }; }; x: Func<any[], void>; }>;
+  type Expected = { 'a.b.c': Func<any[], number>; x: Func<any[], void>; };
 
-    // @ts-expect-no-error
-    isAssignable<Subject, Expected>;
-    // @ts-expect-no-error
-    isAssignable<Expected, Subject>;
+  // @ts-expect-no-error
+  isAssignable<Subject, Expected>;
+  // @ts-expect-no-error
+  isAssignable<Expected, Subject>;
 }

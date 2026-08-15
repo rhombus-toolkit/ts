@@ -1,3 +1,4 @@
 {
-  "extends": "@rhombus-toolkit/heft-web-rig/profiles/library/tsconfig-base.json"
+  "extends": "../../tsconfig.editor.json",
+  "include": ["../*/src/**/*"]
 }

@@ -7,21 +7,39 @@
     "url": "https://github.com/rhombus-toolkit/ts.git",
     "directory": "libraries/proxy-base"
   },
-  "main": "lib/index.js",
+  "type": "module",
   "sideEffects": false,
-  "publishConfig": {
-    "access": "public"
+  "main": "./dist/bundle/index.js",
+  "types": "./dist/bundle/index.d.ts",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "bun": "./dist/bundle/index.js",
+      "types": "./dist/bundle/index.d.ts",
+      "import": "./dist/bundle/index.js",
+      "default": "./dist/bundle/index.js"
+    }
   },
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "heft test --clean",
-    "build": "heft build --clean",
-    "build:watch": "heft build"
+    "build": "bun ../../scripts/build-lib.ts",
+    "lint": "bun x tsc --noEmit -p tsconfig.ci.json"
   },
   "keywords": [],
   "author": "Thomas Butler",
-  "devDependencies": {
-    "@rhombus-toolkit/heft-web-rig": "workspace:*",
-    "@rushstack/heft": "~1.2.17",
-    "typescript": "~5.8.2"
+  "publishConfig": {
+    "access": "public",
+    "provenance": true,
+    "main": "./dist/bundle/index.js",
+    "types": "./dist/bundle/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/bundle/index.d.ts",
+        "import": "./dist/bundle/index.js",
+        "default": "./dist/bundle/index.js"
+      }
+    }
   }
 }

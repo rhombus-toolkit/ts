@@ -1,16 +1,19 @@
-
 export interface FetchEventMap {
-  "progress": ProgressEvent;
-  "complete": ProgressEvent;
+  progress: ProgressEvent;
+  complete: ProgressEvent;
 }
 export interface ProgressEventTarget extends EventTarget {
-  addEventListener<K extends keyof FetchEventMap>(type: K, listener: (this: ProgressEventTarget, ev: FetchEventMap[K]) => any, options?: boolean | AddEventListenerOptions): void;
-  addEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | AddEventListenerOptions): void;
-  removeEventListener<K extends keyof FetchEventMap>(type: K, listener: (this: ProgressEventTarget, ev: FetchEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
-  removeEventListener(type: string, listener: EventListenerOrEventListenerObject, options?: boolean | EventListenerOptions): void;
+  addEventListener<K extends keyof FetchEventMap>(type: K,
+    listener: (this: ProgressEventTarget, ev: FetchEventMap[K]) => any,
+    options?: boolean | AddEventListenerOptions): void;
+  addEventListener(type: string, listener: EventListenerOrEventListenerObject,
+    options?: boolean | AddEventListenerOptions): void;
+  removeEventListener<K extends keyof FetchEventMap>(type: K,
+    listener: (this: ProgressEventTarget, ev: FetchEventMap[K]) => any, options?: boolean | EventListenerOptions): void;
+  removeEventListener(type: string, listener: EventListenerOrEventListenerObject,
+    options?: boolean | EventListenerOptions): void;
 }
 export function wrapResponse(response: Response) {
-
   if (!response.body) {
     throw Error('ReadableStream not yet supported in this browser.');
   }
@@ -18,7 +21,6 @@ export function wrapResponse(response: Response) {
   if (!response.ok) {
     throw Error(response.status + ' ' + response.statusText);
   }
-
 
   // to access headers, server must send CORS header "Access-Control-Expose-Headers: content-encoding, content-length x-file-size"
   // server must send custom x-file-size header if gzip or other content-encoding is used
@@ -46,31 +48,28 @@ export function wrapResponse(response: Response) {
   const reader = response.body!.getReader();
   let cancelled = false;
 
-  const stream = new ReadableStream({
-    async start(controller) {
-      if (cancelled) {
-        controller.close();
-        return;
-      }
-      // void async function pushit() {
-      try {
-        while (true) { // eslint-disable-line no-constant-condition
-          const { done, value } = await reader.read();
-          if (done) {
-            controller.close();
-            break;
-          }
-          progress(value!.byteLength);
-          controller.enqueue(value);
+  const stream = new ReadableStream({ async start(controller) {
+    if (cancelled) {
+      controller.close();
+      return;
+    }
+    // void async function pushit() {
+    try {
+      while (true) { // eslint-disable-line no-constant-condition
+        const { done, value } = await reader.read();
+        if (done) {
+          controller.close();
+          break;
         }
-        complete();
-      } catch (error) {
-        controller.error(error);
+        progress(value!.byteLength);
+        controller.enqueue(value);
       }
-      // }();
-
-    },
-  });
+      complete();
+    } catch (error) {
+      controller.error(error);
+    }
+    // }();
+  } });
   const result = new Response(stream, response);
   result.progress = emitter;
   result.cancel = () => {
@@ -80,9 +79,7 @@ export function wrapResponse(response: Response) {
   };
   return result;
   // return obj.assignDeep(new Response(stream, response), emitter);
-
 }
-
 
 declare global {
   interface Response /*extends ProgressEventTarget*/ {
@@ -91,6 +88,10 @@ declare global {
   }
 }
 export const nativeFetch = globalThis.fetch;
-globalThis.fetch = function (...args: Parameters<typeof fetch>) {
+// `as typeof fetch`: newer lib.dom.d.ts adds static members to the `fetch`
+// function type (e.g. `preconnect`) that this wrapper doesn't implement --
+// this cast preserves the prior (pre-toolchain-swap) compile behavior without
+// reshaping the monkey-patch.
+globalThis.fetch = function(this: typeof globalThis, ...args: Parameters<typeof fetch>) {
   return nativeFetch.apply(this, args).then(wrapResponse);
-};
+} as typeof fetch;

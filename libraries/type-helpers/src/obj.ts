@@ -16,7 +16,7 @@ type StringKey<T> = Extract<keyof T, string>;
 type IndexKey<T> = Extract<keyof T, number | `${number}`>;
 
 /** A member declared with `?`, which the object at hand may or may not carry. */
-type OptionalKey<T> = { [K in keyof T]-?: {} extends Pick<T, K> ? K : never }[keyof T];
+type OptionalKey<T> = { [K in keyof T]-?: {} extends Pick<T, K> ? K : never; }[keyof T];
 
 /**
  * Every reason `T`'s keys cannot be spelled as a tuple.
@@ -47,17 +47,17 @@ type keyTuple<T extends {}> = UnionToTuple<StringKey<T>>;
  */
 export type keys<T extends {}> = ([Untuplable<T>] extends [never] ? keyTuple<T> : unknown) & readonly StringKey<T>[];
 export function keys<T extends {}>(obj: T): keys<T> {
-    return Object.keys(obj) as any;
+  return Object.keys(obj) as any;
 }
 
 /** The members `Object.values` yields, symbol-named ones excluded as the runtime excludes them. */
 export type values<T extends {}> = T[StringKey<T>];
 export function values<T extends {}>(obj: T): values<T>[] {
-    return Object.values(obj) as any;
+  return Object.values(obj) as any;
 }
 
 /** Every pair `T` can yield, each key carrying its own member type rather than the union of all. */
-export type AnyEntry<T extends {}> = { [K in StringKey<T>]: Entry<K, T[K]> }[StringKey<T>];
+export type AnyEntry<T extends {}> = { [K in StringKey<T>]: Entry<K, T[K]>; }[StringKey<T>];
 
 /**
  * The `[key, value]` pairs `Object.entries` yields, in the order {@link keys} lists them.
@@ -66,10 +66,10 @@ export type AnyEntry<T extends {}> = { [K in StringKey<T>]: Entry<K, T[K]> }[Str
  * Withholds its tuple arm on the same condition as {@link keys}, and keeps its array arm for the
  * same reason.
  */
-export type entries<T extends {}> = ([Untuplable<T>] extends [never] ? keysToEntries<T, keyTuple<T>> : unknown) &
-    readonly AnyEntry<T>[];
+export type entries<T extends {}> = ([Untuplable<T>] extends [never] ? keysToEntries<T, keyTuple<T>> : unknown)
+  & readonly AnyEntry<T>[];
 export function entries<T extends {}>(obj: T): entries<T> {
-    return Object.entries(obj) as any;
+  return Object.entries(obj) as any;
 }
 
 /**
@@ -81,14 +81,12 @@ export function entries<T extends {}>(obj: T): entries<T> {
  * that contributes `length` and the array methods as members of its own.
  */
 export type keysToEntries<T extends {}, Keys extends readonly StringKey<T>[]> = {
-    [K in keyof Keys]: Entry<Keys[K], T[Keys[K]]>;
+  [K in keyof Keys]: Entry<Keys[K], T[Keys[K]]>;
 };
 
-export type fromEntries<TUnion extends Entry> = {
-    [T in TUnion as T[0]]: T[1];
-};
+export type fromEntries<TUnion extends Entry> = { [T in TUnion as T[0]]: T[1]; };
 export function fromEntries<TEntry extends Entry>(entries: readonly TEntry[]): fromEntries<TEntry> {
-    return Object.fromEntries(entries) as any;
+  return Object.fromEntries(entries) as any;
 }
 
 /**
@@ -101,35 +99,25 @@ export function fromEntries<TEntry extends Entry>(entries: readonly TEntry[]): f
  * overlay leave the tail alone. Anything else merges by key.
  */
 export type assign<Sources extends readonly any[]> = _assign<Sources, Sources[0] extends readonly any[] ? [] : {}>;
-type _assign<Sources extends readonly any[], Result extends {}> =
-    Sources extends readonly [...infer Rest, infer Last] ? _assign<Rest, ShallowMerge<Last, Result>> : Result;
-export function assign<Target extends object, Sources extends any[]>(
-    target: Target,
-    ...sources: Sources
-): assign<[Target, ...Sources]> {
-    return Object.assign(target, ...sources);
+type _assign<Sources extends readonly any[], Result extends {}> = Sources extends readonly [...infer Rest, infer Last]
+  ? _assign<Rest, ShallowMerge<Last, Result>>
+  : Result;
+export function assign<Target extends object, Sources extends any[]>(target: Target,
+  ...sources: Sources): assign<[Target, ...Sources]>
+{
+  return Object.assign(target, ...sources);
 }
 
-type ShallowMerge<A, B> =
-    A extends readonly any[] ?
-        B extends readonly any[] ?
-            MergeArrays<A, B>
-        :   MergeObjects<A, B>
-    :   MergeObjects<A, B>;
+type ShallowMerge<A, B> = A extends readonly any[] ? B extends readonly any[] ? MergeArrays<A, B> : MergeObjects<A, B>
+  : MergeObjects<A, B>;
 
 /**
  * `B` overlaid on `A` index-wise, walking one position at a time and stopping once both are spent.
  * The result is as long as the longer of the two, which is what leaves a short overlay's tail alone.
  */
 type MergeArrays<A extends readonly any[], B extends readonly any[]> = _MergeArrays<15, A, B, [], []>;
-type _MergeArrays<
-    TTL extends number,
-    A extends readonly any[],
-    B extends readonly any[],
-    I extends readonly any[],
-    Acc extends readonly any[],
-> =
-    TTL extends 0 ? never
+type _MergeArrays<TTL extends number, A extends readonly any[], B extends readonly any[], I extends readonly any[],
+  Acc extends readonly any[]> = TTL extends 0 ? never
     : Spent<A, B, I> extends true ? Acc
     : _MergeArrays<Dec<TTL>, A, B, [...I, any], [...Acc, MergeValue<A, B, I['length']>]>;
 
@@ -142,8 +130,9 @@ type _MergeArrays<
  * the one a sparse overlay wants. It does diverge from the runtime, where an explicit `undefined`
  * overwrites.
  */
-type MergeValue<A extends readonly any[], B extends readonly any[], N extends number> =
-    At<B, N> extends undefined ? At<A, N> : At<B, N>;
+type MergeValue<A extends readonly any[], B extends readonly any[], N extends number> = At<B, N> extends undefined
+  ? At<A, N>
+  : At<B, N>;
 
 type MergeObjects<A, B> = Flatten<Omit<A, keyof B> & B>;
 
@@ -151,12 +140,9 @@ type MergeObjects<A, B> = Flatten<Omit<A, keyof B> & B>;
 type At<T extends readonly any[], N extends number> = N extends keyof T ? T[N] : undefined;
 
 /** Whether the walk has reached the end of both `A` and `B`. */
-type Spent<A extends readonly any[], B extends readonly any[], I extends readonly any[]> =
-    Covers<A, I> extends true ?
-        Covers<B, I> extends true ?
-            true
-        :   false
-    :   false;
+type Spent<A extends readonly any[], B extends readonly any[], I extends readonly any[]> = Covers<A, I> extends true
+  ? Covers<B, I> extends true ? true : false
+  : false;
 
 /**
  * Whether `I` has walked past everything `T` can offer.
@@ -167,10 +153,9 @@ type Spent<A extends readonly any[], B extends readonly any[], I extends readonl
  * and contributes nothing. Without that, a merge inside a generic function has no base case and
  * the checker gives up with an excessive-stack-depth error.
  */
-type Covers<T extends readonly any[], I extends readonly any[]> =
-    number extends T['length'] ? true
-    : keyof T extends keyof I ? true
-    : false;
+type Covers<T extends readonly any[], I extends readonly any[]> = number extends T['length'] ? true
+  : keyof T extends keyof I ? true
+  : false;
 
 // export function assignDeep<A extends object, B extends object>(target: A, stuff: B): A & B {
 //     if (!(target instanceof Object)) {

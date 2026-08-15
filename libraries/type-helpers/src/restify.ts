@@ -1,16 +1,10 @@
 import { AssertNeverError } from './Error';
-const Ξ: unique symbol = Symbol("⚡");
-type mark<T extends object> = T & { readonly [Ξ]: true; }
-function mark<T extends object>(target: T): mark<T>{
-  Reflect.defineProperty(target, Ξ, {
-    configurable: false,
-    enumerable: false,
-    writable: false,
-    value: true,
-  });
+const Ξ: unique symbol = Symbol('⚡');
+type mark<T extends object> = T & { readonly [Ξ]: true; };
+function mark<T extends object>(target: T): mark<T> {
+  Reflect.defineProperty(target, Ξ, { configurable: false, enumerable: false, writable: false, value: true });
   return target as any;
 }
-
 
 /**
  * Changes scalers back into the array type from
@@ -26,10 +20,7 @@ function mark<T extends object>(target: T): mark<T>{
  * that later we can tell the difference between them
  * and single arrays that passed through untouched.
  */
-export type restify<Œ> =
-  Œ extends void | null | undefined ? mark<[]> :
-  Œ extends any[] ? Œ :
-  mark<[Œ]>;
+export type restify<Œ> = Œ extends void | null | undefined ? mark<[]> : Œ extends any[] ? Œ : mark<[Œ]>;
 
 export function restify<Ø>(arg: Ø): restify<Ø>;
 export function restify(arg: any) {
@@ -55,14 +46,10 @@ export function restify(arg: any) {
  * array-typed value are intended to be spread on the reducer or are actually
  * a single array parameter.
  */
-export type unrestify<Ω extends any[]> =
-  Ω extends mark<infer Δ> ? (
-    Δ extends [infer φ] | [infer Θ] ? φ | Θ :
-    Δ extends [infer φ] ? φ :
-    Δ extends [] ? void :
-    Δ extends any[] ? Δ ://InvalidTypeArg<`unrestify<T>`, [T: Ω, U: Δ], `Encountered a plain ol' array where a tuple should be specified. Somewhere along the way this type has beed widened and the type information lost.` > :
-    AssertNeverError< `unrestify<T>`, [T: Ω], `The 'Ξ' marker should only be dropped on arrays, and I'm pretty sure that I've already exhaustively checked for that. How the hell did you land here?` >
-  )
+export type unrestify<Ω extends any[]> = Ω extends mark<infer Δ>
+  ? (Δ extends [infer φ] | [infer Θ] ? φ | Θ : Δ extends [infer φ] ? φ : Δ extends [] ? void : Δ extends any[] ? Δ // InvalidTypeArg<`unrestify<T>`, [T: Ω, U: Δ], `Encountered a plain ol' array where a tuple should be specified. Somewhere along the way this type has beed widened and the type information lost.` > :
+  : AssertNeverError<`unrestify<T>`, [T: Ω],
+    `The 'Ξ' marker should only be dropped on arrays, and I'm pretty sure that I've already exhaustively checked for that. How the hell did you land here?`>)
   : Ω;
 
 export function unrestify<Ħ extends any[]>(arg: Ħ): unrestify<Ħ>;
@@ -71,7 +58,7 @@ export function unrestify(arg: any) {
     return arg;
   }
   if (!Array.isArray(arg)) {
-    throw new TypeError("Value must be an array");
+    throw new TypeError('Value must be an array');
   }
   switch (arg.length) {
     case 0:
@@ -79,6 +66,6 @@ export function unrestify(arg: any) {
     case 1:
       return arg[0];
     default:
-      return [...arg]; //clear the marker symbol
+      return [...arg]; // clear the marker symbol
   }
 }

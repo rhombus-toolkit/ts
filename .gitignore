@@ -58,16 +58,9 @@ jspm_packages/
 # OS X temporary files
 .DS_Store
 
-# Rush temporary files
-common/deploy/
-common/temp/
-common/autoinstallers/*/.npmrc
-**/.rush/temp/
+# Build outputs
+dist/
+*.tsbuildinfo
 
-# Heft
-.heft
-
-# Heft / Rush per-project build scratch
-**/temp/
-
-libraries/*/lib*
+# bun's own lockfile format when a non-text .lockb is ever produced
+bun.lockb

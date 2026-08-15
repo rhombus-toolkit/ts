@@ -7,4 +7,4 @@
  * The brand key is the no-entry string `'⛔'` — emoji aren't valid identifiers,
  * so nothing outside this file can name the key to forge a value.
  */
-export type Opaque<Type, Scope extends string | symbol> = Type & { readonly ['⛔']: Scope };
+export type Opaque<Type, Scope extends string | symbol> = Type & { readonly ['⛔']: Scope; };

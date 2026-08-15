@@ -1,0 +1,8 @@
+{
+  "//": "types: [\"jest\"] (rather than the shared base's []) resolves the ambient describe/it/expect globals that flattenMap.spec.ts's jest-style runtime tests use. Type-level only for now -- @types/jest supplies the ambient declarations this package's tsc gate needs; actually running the spec under a real runner (bun test doesn't auto-global these) is deferred to the P5 test-restructure phase.",
+  "extends": "../../tsconfig.lib.json",
+  "compilerOptions": {
+    "types": ["jest"]
+  },
+  "include": ["src/**/*"]
+}

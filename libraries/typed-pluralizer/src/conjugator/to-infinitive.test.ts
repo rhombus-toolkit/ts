@@ -14,78 +14,78 @@ declare function isAssignable<TExpected>(actual?: TExpected): void;
 // Irregular-verb table is consulted first (unlike FromInfinitive, this branch is
 // active): a past-tense form in the table maps straight back to its infinitive.
 namespace irregular {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'left'>, 'leave'>;
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'made'>, 'make'>;
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'drew'>, 'draw'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'left'>, 'leave'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'made'>, 'make'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'drew'>, 'draw'>;
 }
 
 // (ued) => ue
 namespace argued {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'argued'>, 'argue'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'argued'>, 'argue'>;
 }
 namespace queued {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'queued'>, 'queue'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'queued'>, 'queue'>;
 }
 
 // (e|i)lled => $1ll
 namespace filled {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'filled'>, 'fill'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'filled'>, 'fill'>;
 }
 namespace spilled {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'spilled'>, 'spill'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'spilled'>, 'spill'>;
 }
 
 // (..[^aeiou])ed => $1e  [FIX: strip ed + append e, was dropping the e]
 namespace rolled {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'rolled'>, 'rolle'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'rolled'>, 'rolle'>;
 }
 namespace controlled {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'controlled'>, 'controlle'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'controlled'>, 'controlle'>;
 }
 namespace helped {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'helped'>, 'helpe'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'helped'>, 'helpe'>;
 }
 namespace jumped {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'jumped'>, 'jumpe'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'jumped'>, 'jumpe'>;
 }
 namespace gulped {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'gulped'>, 'gulpe'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'gulped'>, 'gulpe'>;
 }
 namespace curved {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'curved'>, 'curve'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'curved'>, 'curve'>;
 }
 namespace served {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'served'>, 'serve'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'served'>, 'serve'>;
 }
 namespace bulged {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'bulged'>, 'bulge'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'bulged'>, 'bulge'>;
 }
 namespace judged {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'judged'>, 'judge'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'judged'>, 'judge'>;
 }
 namespace surfed {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'surfed'>, 'surfe'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'surfed'>, 'surfe'>;
 }
 namespace scoffed {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'scoffed'>, 'scoffe'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'scoffed'>, 'scoffe'>;
 }
 
 // VCed-MINIMAL boundary (4-letter VCed words): upstream's `..` requires THREE
@@ -93,154 +93,154 @@ namespace scoffed {
 // fall through unchanged (used -> used, not 'use'). Regression pin for the gate
 // tightening that requires two `${Letter}`s before the consonant.
 namespace used {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'used'>, 'used'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'used'>, 'used'>;
 }
 namespace aged {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'aged'>, 'aged'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'aged'>, 'aged'>;
 }
 namespace aped {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'aped'>, 'aped'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'aped'>, 'aped'>;
 }
 namespace aced {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'aced'>, 'aced'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'aced'>, 'aced'>;
 }
 
 // (sh|ch)ed => $1
 namespace washed {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'washed'>, 'wash'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'washed'>, 'wash'>;
 }
 namespace marched {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'marched'>, 'march'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'marched'>, 'march'>;
 }
 
 // (tl|gl)ed => $1e
 namespace settled {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'settled'>, 'settle'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'settled'>, 'settle'>;
 }
 namespace toggled {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'toggled'>, 'toggle'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'toggled'>, 'toggle'>;
 }
 
 // (ss)ed => $1
 namespace tossed {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'tossed'>, 'toss'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'tossed'>, 'toss'>;
 }
 namespace kissed {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'kissed'>, 'kiss'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'kissed'>, 'kiss'>;
 }
 
 // pped => p
 namespace stopped {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'stopped'>, 'stop'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'stopped'>, 'stop'>;
 }
 namespace hopped {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'hopped'>, 'hop'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'hopped'>, 'hop'>;
 }
 
 // tted => t
 namespace fitted {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'fitted'>, 'fit'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'fitted'>, 'fit'>;
 }
 namespace batted {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'batted'>, 'bat'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'batted'>, 'bat'>;
 }
 
 // gged => g
 namespace bagged {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'bagged'>, 'bag'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'bagged'>, 'bag'>;
 }
 namespace tagged {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'tagged'>, 'tag'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'tagged'>, 'tag'>;
 }
 
 // (h|ion|n[dt]|ai.|...|rm)ed => $1
 namespace wanted {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'wanted'>, 'want'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'wanted'>, 'want'>;
 }
 namespace folded {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'folded'>, 'fold'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'folded'>, 'fold'>;
 }
 namespace called {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'called'>, 'call'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'called'>, 'call'>;
 }
 namespace mailed {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'mailed'>, 'mail'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'mailed'>, 'mail'>;
 }
 namespace looked {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'looked'>, 'look'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'looked'>, 'look'>;
 }
 namespace poured {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'poured'>, 'pour'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'poured'>, 'pour'>;
 }
 namespace started {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'started'>, 'start'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'started'>, 'start'>;
 }
 namespace alarmed {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'alarmed'>, 'alarm'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'alarmed'>, 'alarm'>;
 }
 namespace formed {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'formed'>, 'form'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'formed'>, 'form'>;
 }
 
 // ied => y
 namespace cried {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'cried'>, 'cry'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'cried'>, 'cry'>;
 }
 namespace tried {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'tried'>, 'try'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'tried'>, 'try'>;
 }
 namespace denied {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'denied'>, 'deny'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'denied'>, 'deny'>;
 }
 
 // (.o)ed => $1o
 namespace toed {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'toed'>, 'too'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'toed'>, 'too'>;
 }
 namespace echoed {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'echoed'>, 'echoo'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'echoed'>, 'echoo'>;
 }
 namespace wooed {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'wooed'>, 'wooo'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'wooed'>, 'wooo'>;
 }
 
 // ([rl])ew => $1ow
 namespace crew {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'crew'>, 'crow'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'crew'>, 'crow'>;
 }
 namespace slew {
-    // @ts-expect-no-error
-    isAssignable<ToInfinitive<'slew'>, 'slow'>;
+  // @ts-expect-no-error
+  isAssignable<ToInfinitive<'slew'>, 'slow'>;
 }

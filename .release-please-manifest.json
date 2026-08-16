@@ -1,6 +1,6 @@
 {
   "libraries/async-timers": "2.0.0",
-  "libraries/fetch": "1.3.9",
+  "libraries/fetch": "2.0.0",
   "libraries/kinda-weak-map": "2.0.0",
   "libraries/obj": "1.0.0",
   "libraries/platform": "1.0.0",

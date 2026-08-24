@@ -1,5 +1,8 @@
 {
-  "//": "lib: [\"ES5\"] -- inherited from the base as-is; every type here is a locally-declared interface plus `Record` (lib.es5.d.ts), so nothing pulls in anything higher. ES5 is also TS's lowest `lib` entry -- there is no rung below it to verify a failure against. DOM stays absent: every platform global is reached by casting `globalThis` through an owned structural type, never by naming a DOM type, and types: [] (from tsconfig.lib.json) keeps @types/node and bun-types out too. See tsconfig.compat.json for the companion no-conflict-with-real-libs program.",
+  "//": "lib: [\"ES5\", \"ES2015.Symbol\"] is the floor this package actually needs, and the sliver above the base's ES5 is set by a single identifier: Symbol.for (single-instance-guard.ts) -- verified the inherited [\"ES5\"] fails on exactly that one (TS2585, 'try changing lib to es2015 or later'), and that the sliver alone clears it, so no bump to the full [\"ES2015\"]. Everything else here is a locally-declared interface plus `Record` and the `Symbol` type (lib.es5.d.ts), so nothing pulls in anything higher. DOM stays absent: every platform global is reached by casting `globalThis` through an owned structural type, never by naming a DOM type, and types: [] (from tsconfig.lib.json) keeps @types/node and bun-types out too. See tsconfig.compat.json for the companion no-conflict-with-real-libs program.",
   "extends": "../../tsconfig.lib.json",
+  "compilerOptions": {
+    "lib": ["ES5", "ES2015.Symbol"]
+  },
   "include": ["src/**/*"]
 }

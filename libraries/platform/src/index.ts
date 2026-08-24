@@ -7,5 +7,6 @@ export * from './abort';
 export * from './ImmediateHandle';
 export * from './process';
 export type * from './ReadableStream';
+export * from './single-instance-guard';
 export * from './TimeoutHandle';
 export * from './Url';

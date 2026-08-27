@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.1.0](https://github.com/rhombus-toolkit/ts/compare/platform-v1.0.0...platform-v1.1.0) (2026-08-27)
+
+
+### Features
+
+* import std's primitives toolkit into obj, platform and types ([7bde0e1](https://github.com/rhombus-toolkit/ts/commit/7bde0e156e1a7deab2a5ab1655f153e0d5710d72))
+* **platform:** add stampSingleInstance, the duplicate-copy guard ([0aa6dad](https://github.com/rhombus-toolkit/ts/commit/0aa6dad3821f20d65e49d82fd9a66b0f6cb05943))
+
 ## [1.0.0](https://github.com/rhombus-toolkit/ts/compare/platform-v0.1.0...platform-v1.0.0) (2026-08-15)
 
 

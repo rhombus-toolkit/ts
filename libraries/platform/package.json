@@ -1,6 +1,6 @@
 {
   "name": "@rhombus-toolkit/platform",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Structural typings for host-platform globals (AbortController, process, ReadableStream, timers, URL), each a typed globalThis lookup rather than an ambient declaration.",
   "repository": {
     "type": "git",

@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.0.0](https://github.com/rhombus-toolkit/ts/compare/types-v1.0.0...types-v1.0.0) (2026-08-27)
+
+
+### Features
+
+* import std's primitives toolkit into obj, platform and types ([7bde0e1](https://github.com/rhombus-toolkit/ts/commit/7bde0e156e1a7deab2a5ab1655f153e0d5710d72))
+* **types:** add DistributiveOmit and ButNot ([d16c02c](https://github.com/rhombus-toolkit/ts/commit/d16c02ca7ff9e89884eb77a1b36c3a974a41c30b))
+
 ## [1.0.0](https://github.com/rhombus-toolkit/ts/compare/types-v1.0.0...types-v1.0.0) (2026-08-15)
 
 

@@ -9,7 +9,7 @@ declare function isAssignable<TExpected>(actual?: TExpected): void;
 // `T | undefined`.
 
 namespace isAllThereNarrowsAnArrayTest {
-  const items: (string | undefined)[] = [];
+  const items: Array<string | undefined> = [];
 
   // @ts-expect-error
   isAssignable<typeof items[0], string>;

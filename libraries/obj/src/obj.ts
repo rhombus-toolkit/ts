@@ -43,14 +43,16 @@ type keyTuple<T extends {}> = UnionToTuple<StringKey<T>>;
  * a type parameter — a position where neither the tuple nor the test in front of it can be
  * evaluated, and an unevaluated conditional carries no members at all.
  */
-export type keys<T extends {}> = ([Untuplable<T>] extends [never] ? keyTuple<T> : unknown) & readonly StringKey<T>[];
+export type keys<T extends {}> = ([Untuplable<T>] extends [never] ? keyTuple<T> : unknown) & ReadonlyArray<
+  StringKey<T>
+>;
 export function keys<T extends {}>(obj: T): keys<T> {
   return Object.keys(obj) as any;
 }
 
 /** The members `Object.values` yields, symbol-named ones excluded as the runtime excludes them. */
 export type values<T extends {}> = T[StringKey<T>];
-export function values<T extends {}>(obj: T): values<T>[] {
+export function values<T extends {}>(obj: T): Array<values<T>> {
   return Object.values(obj) as any;
 }
 
@@ -65,7 +67,7 @@ export type AnyEntry<T extends {}> = { [K in StringKey<T>]: Entry<K, T[K]>; }[St
  * same reason.
  */
 export type entries<T extends {}> = ([Untuplable<T>] extends [never] ? keysToEntries<T, keyTuple<T>> : unknown)
-  & readonly AnyEntry<T>[];
+  & ReadonlyArray<AnyEntry<T>>;
 export function entries<T extends {}>(obj: T): entries<T> {
   return Object.entries(obj) as any;
 }
@@ -78,7 +80,7 @@ export function entries<T extends {}>(obj: T): entries<T> {
  * as a tuple and hands back a tuple; mapping straight over an unevaluated conditional maps something
  * that contributes `length` and the array methods as members of its own.
  */
-export type keysToEntries<T extends {}, Keys extends readonly StringKey<T>[]> = {
+export type keysToEntries<T extends {}, Keys extends ReadonlyArray<StringKey<T>>> = {
   [K in keyof Keys]: Entry<Keys[K], T[Keys[K]]>;
 };
 

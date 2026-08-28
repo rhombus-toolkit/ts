@@ -55,7 +55,7 @@ export function wrapResponse(response: Response) {
     }
     // void async function pushit() {
     try {
-      while (true) { // eslint-disable-line no-constant-condition
+      while (true) {
         const { done, value } = await reader.read();
         if (done) {
           controller.close();

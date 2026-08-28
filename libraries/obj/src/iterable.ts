@@ -32,7 +32,7 @@ export function first<T>(source: Iterable<T>): T | undefined {
  * narrowed value it hands back yields nothing. Pass an array, a `Set`, or anything else that can
  * be iterated twice.
  */
-export function isAllThere<T>(items: readonly (T | undefined)[]): items is readonly T[];
+export function isAllThere<T>(items: ReadonlyArray<T | undefined>): items is readonly T[];
 export function isAllThere<T>(items: Iterable<T | undefined>): items is Iterable<T>;
 export function isAllThere(items: Iterable<unknown>): boolean {
   return Iterator.from(items).every(item => item !== undefined);
@@ -47,7 +47,7 @@ export function isAllThere(items: Iterable<unknown>): boolean {
  * carries `Symbol.iterator`. The `Iterator.from` on the iterable arm is what makes that hold rather
  * than throw — `flatMap` rejects a primitive outright, where `Iterator.from` iterates a string.
  */
-export function concat<T>(...args: readonly (Iterable<T> | T)[]): IteratorObject<T, undefined, unknown> {
+export function concat<T>(...args: ReadonlyArray<Iterable<T> | T>): IteratorObject<T, undefined, unknown> {
   return Iterator.from(args).flatMap(item => isIterable(item) ? Iterator.from(item as Iterable<T>) : [item]);
 }
 
@@ -114,7 +114,7 @@ export function zip<T1, T2, T3, T4, T5, T6, T7, T8, T9>(mode: 'outer', source1: 
   [T1 | undefined, T2 | undefined, T3 | undefined, T4 | undefined, T5 | undefined, T6 | undefined, T7 | undefined,
     T8 | undefined, T9 | undefined]
 >;
-export function* zip(mode: 'inner' | 'outer', ...sources: readonly Iterable<unknown>[]): Generator<unknown[]> {
+export function* zip(mode: 'inner' | 'outer', ...sources: ReadonlyArray<Iterable<unknown>>): Generator<unknown[]> {
   const iterators = sources.map(source => Iterator.from(source));
   while (true) {
     const results = iterators.map(iterator => iterator.next());

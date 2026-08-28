@@ -85,7 +85,7 @@ export function flattenMap<T extends DeepDictionary<Leaf>, Leaf>(map: T,
   leafPredicate: (p: any) => p is Leaf): flattenMap<T, Leaf>;
 
 export function flattenMap(map: DeepDictionary<any>, leafPredicate: (p: any) => boolean = isFunction): any {
-  const result: Entry<string, any>[] = [];
+  const result: Array<Entry<string, any>> = [];
   const stack = Object.entries(map);
   while (stack.length) {
     const [prefix, branchOrLeaf] = stack.pop()!;

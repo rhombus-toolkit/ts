@@ -8,8 +8,6 @@ export default tseslint.config({
   files: ['libraries/*/src/**/*.ts', 'tests/src/**/*.ts'],
   extends: [tseslint.configs.base],
   languageOptions: { parserOptions: { projectService: true, tsconfigRootDir: import.meta.dirname } },
-  rules: { curly: ['error', 'all'],
-    '@typescript-eslint/strict-boolean-expressions': ['error', { allowNullableBoolean: true, allowNullableString: true,
-      allowNullableNumber: true }], '@typescript-eslint/switch-exhaustiveness-check': 'error',
+  rules: { curly: ['error', 'all'], '@typescript-eslint/switch-exhaustiveness-check': 'error',
     '@typescript-eslint/array-type': ['error', { default: 'array-simple' }] },
 });

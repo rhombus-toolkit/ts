@@ -223,3 +223,20 @@ export function isAsyncGeneratorFunction(value: any): value is AsyncGeneratorFun
   return (Object.getPrototypeOf(value) === AsyncGeneratorFunctionPrototype
     || typeTag(value) === 'AsyncGeneratorFunction');
 }
+
+/**
+ * Type guard: whether every element of `items` is present — none are `undefined`.
+ *
+ * @remarks
+ * Deciding this reads `items` to the end, which is why the overloads take an array rather than any
+ * `Iterable`: a one-shot source would be spent by the call, leaving the narrowed value it hands
+ * back yielding nothing.
+ *
+ * Two overloads rather than one so a mutable array keeps its mutability through the narrowing — the
+ * `ReadonlyArray` overload matches a mutable array too, and would hand back `readonly T[]`.
+ */
+export function isAllThere<T>(items: Array<T | undefined>): items is T[];
+export function isAllThere<T>(items: ReadonlyArray<T | undefined>): items is readonly T[];
+export function isAllThere(items: readonly unknown[]): boolean {
+  return items.every(item => item !== undefined);
+}

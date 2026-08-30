@@ -1,7 +1,8 @@
 import { describe, expect, test } from 'bun:test';
-import { hasValue, isArray, isAsyncGenerator, isAsyncGeneratorFunction, isAsyncIterable, isAsyncIterableIterator,
-  isAsyncIteratorObject, isDefined, isFunction, isGenerator, isGeneratorFunction, isIterable, isIterableIterator,
-  isIterator, isIteratorObject, isObject, isPromise, isPromiseLike, isReadonlyArray, isUndefined } from './is';
+import { hasValue, isAllThere, isArray, isAsyncGenerator, isAsyncGeneratorFunction, isAsyncIterable,
+  isAsyncIterableIterator, isAsyncIteratorObject, isDefined, isFunction, isGenerator, isGeneratorFunction, isIterable,
+  isIterableIterator, isIterator, isIteratorObject, isObject, isPromise, isPromiseLike, isReadonlyArray,
+  isUndefined } from './is';
 
 function* genFn() {
   yield 1;
@@ -328,5 +329,28 @@ describe('the two guard kinds stay distinct', () => {
     expect(isIteratorObject(generator)).toBe(true);
     expect(isGenerator(generator)).toBe(true);
     expect(isAsyncGenerator(generator)).toBe(false);
+  });
+});
+
+describe('isAllThere', () => {
+  test('is true when no element is undefined', () => {
+    expect(isAllThere([1, 2, 3])).toBe(true);
+  });
+
+  test('is false when any element is undefined', () => {
+    expect(isAllThere([1, undefined, 3])).toBe(false);
+  });
+
+  test('is true for an empty source', () => {
+    expect(isAllThere([])).toBe(true);
+  });
+
+  test('counts every other falsy value as present', () => {
+    expect(isAllThere([0, '', false, null, Number.NaN])).toBe(true);
+  });
+
+  test('reads to the end rather than stopping at the first defined element', () => {
+    expect(isAllThere(['a', 'b'])).toBe(true);
+    expect(isAllThere(['a', undefined])).toBe(false);
   });
 });

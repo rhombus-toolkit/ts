@@ -1,24 +1,24 @@
 // Topological publish helper for the @rhombus-toolkit libraries.
 //
 // Independent versioning (NOT std's lockstep): every publishable library ships
-// its OWN version, bumped independently by release-please from conventional
-// commits, and release-please writes the new number straight into each
-// package's own manifest before this script ever runs. Only a subset of the
-// workspace moves on any given release, so publishing is NOT "ship whatever's
-// committed" -- a package whose manifest version is already live on npm makes
-// `npm stage publish` fail with "cannot publish over the previously published
-// versions", which aborts the whole run (that killed the 2026-08-16 release on
-// `@rhombus-toolkit/fetch@1.3.9`).
+// its OWN version. Publishing is driven by the manifest version against npm
+// rather than by release-please: `--publish` walks every publishable package
+// and ships the ones whose version is not already live. A package whose version
+// IS live comes back from npm as a duplicate and is skipped -- the steady state
+// for most of the workspace on any given commit. That keeps the run idempotent,
+// which is what lets it fire on EVERY push to main rather than only on a
+// release merge, and means "only what changed" needs no release metadata: an
+// unbumped package is a no-op by construction.
 //
-// The released set therefore comes from release-please itself, not from the
-// filesystem: the `RELEASED_PATHS` env var carries its `paths_released` output
-// verbatim -- a JSON array of repo-relative component paths like
-// `["libraries/obj","libraries/types"]` -- and `--publish` ships exactly those,
-// still in topological order. `--publish` REFUSES to run when `RELEASED_PATHS`
-// is unset or malformed rather than falling back to "everything": defaulting to
-// the full workspace is precisely the bug this gate exists to stop, and the
-// only caller that legitimately has no released set is a local invocation that
-// should be using `--list`.
+// No pre-flight `npm view` to decide what is live. A read that hangs wedges the
+// whole run with no output, where a publish attempt that loses the race just
+// reports the duplicate and moves on.
+//
+// DIRECT publish, straight to `latest` -- deliberately NOT `npm stage publish`.
+// Staging defers proof-of-presence to a human running `npm stage approve <id>`,
+// which needs 2FA that OIDC trust tokens cannot satisfy, so a staged pipeline
+// can never complete unattended. Every @rhombus-toolkit package's npm Trusted
+// Publisher permits both; this script uses the one that finishes on its own.
 //
 // Package discovery + Kahn's-algorithm tiering are unchanged from std's shape:
 // PUBLISHABLE = has a `publishConfig` key and isn't `"private": true`, tiered
@@ -27,32 +27,19 @@
 // embeds the dependency's CURRENT version (see the pnpm pack note below), so
 // publishing out of order would ship a tarball pinned to a version not yet live.
 //
-// STAGED, not direct, publish. Every @rhombus-toolkit package's npm Trusted
-// Publisher allows both `npm publish` and `npm stage publish`; this script
-// deliberately uses the latter. `npm stage publish` uploads the tarball
-// without going live -- the version sits pending until a human runs
-// `npm stage approve <id>`, which DOES require 2FA (OIDC trust tokens can
-// stage but cannot approve -- verified against npm's staged-publish docs).
-// That makes an 11-package release atomic in the way that matters: a
-// mid-sequence CI failure leaves everything staged so far merely PENDING, not
-// live, so there's no partial release to unwind -- reject the bad ones, fix,
-// rerun.
-//
-// `pnpm pack`, not `pnpm publish`: pnpm has no staged-publish mode as of pnpm
-// 10.34 (pnpm/pnpm#13183, open). `pnpm pack` alone already does the two things
-// that matter -- applies the publishConfig dist-swap and rewrites `workspace:*`
-// dependency ranges to the sibling's current concrete version (both verified
-// against this repo's manifests) -- neither of which plain `npm pack` does.
-// `npm stage publish <tarball>` then uploads exactly that tarball; npm never
-// re-derives publishConfig itself, so pnpm has to have done it already.
+// `pnpm pack`, not `pnpm publish`: `pnpm pack` applies the publishConfig
+// dist-swap and rewrites `workspace:*` dependency ranges to the sibling's
+// current concrete version (both verified against this repo's manifests),
+// neither of which plain `npm pack` does. `npm publish <tarball>` then uploads
+// exactly that tarball; npm never re-derives publishConfig itself, so pnpm has
+// to have done it already.
 //
 // Two modes:
-//   --list      print publishable names, topological order, one per line --
-//               the FULL inventory, deliberately unfiltered by release state,
-//               since callers use it to enumerate what this repo can publish
-//   --publish   pnpm pack + npm stage publish each RELEASED package, in order
+//   --list      print publishable names, topological order, one per line
+//   --publish   pnpm pack + npm publish each package whose version isn't live
 //
-// A failed pack/stage exits non-zero immediately.
+// A failed pack, or a publish failure that is not a duplicate version, exits
+// non-zero immediately.
 
 import { spawnSync } from 'node:child_process';
 import { mkdtempSync, readdirSync, readFileSync } from 'node:fs';
@@ -172,33 +159,6 @@ interface PackResult {
   readonly filename: string;
 }
 
-/**
- * Release-please's `paths_released` for this run, from `RELEASED_PATHS`.
- * Missing or malformed exits non-zero rather than defaulting to the whole
- * workspace -- see the header note on why "everything" is never the fallback.
- */
-function readReleasedPaths(): ReadonlySet<string> {
-  const raw = process.env.RELEASED_PATHS?.trim();
-  if (!raw) {
-    console.error(
-      "publish-libraries: RELEASED_PATHS is unset -- refusing to publish. It must carry release-please's `paths_released` output.",
-    );
-    process.exit(2);
-  }
-  let parsed: unknown;
-  try {
-    parsed = JSON.parse(raw);
-  } catch {
-    console.error(`publish-libraries: RELEASED_PATHS is not valid JSON: ${raw}`);
-    process.exit(2);
-  }
-  if (!Array.isArray(parsed) || parsed.some((path) => typeof path !== 'string')) {
-    console.error(`publish-libraries: RELEASED_PATHS is not an array of paths: ${raw}`);
-    process.exit(2);
-  }
-  return new Set(parsed as string[]);
-}
-
 /** `pnpm pack`'s tarball path -- the publishConfig-rewritten package npm will stage. */
 function packTarball(pkg: Package, destDir: string): string {
   const result = spawnSync('pnpm', ['pack', '--json', '--pack-destination', destDir], { cwd: pkg.dir });
@@ -209,35 +169,35 @@ function packTarball(pkg: Package, destDir: string): string {
   return (JSON.parse(result.stdout.toString()) as PackResult).filename;
 }
 
-const released = readReleasedPaths();
-const selected = ordered.filter((pkg) => released.has(pkg.path));
-
-// Skipping silently reads as "published everything" in a CI log, so every
-// omission is accounted for -- both packages this release didn't touch and
-// released paths that map to nothing publishable.
-for (const pkg of ordered) {
-  if (!released.has(pkg.path)) {
-    console.log(`- skip ${pkg.name} -- ${pkg.path} not in this release`);
-  }
-}
-for (const path of released) {
-  if (!ordered.some((pkg) => pkg.path === path)) {
-    console.warn(`publish-libraries: released path ${path} matches no publishable package -- ignoring`);
-  }
-}
-
-if (!selected.length) {
-  console.log('publish-libraries: nothing released is publishable -- nothing to stage');
-  process.exit(0);
+/** Whether npm rejected this publish only because the version is already live. */
+function isAlreadyPublished(output: string): boolean {
+  return /cannot publish over|previously published version|EPUBLISHCONFLICT|E409/i.test(output);
 }
 
 const destDir = mkdtempSync(`${tmpdir()}/rhombus-publish-`);
+const published: string[] = [];
+const skipped: string[] = [];
 
-for (const pkg of selected) {
-  console.log(`\n▶ stage ${pkg.name}`);
+for (const pkg of ordered) {
+  console.log(`\n▶ ${pkg.name}`);
   const tarball = packTarball(pkg, destDir);
-  const stage = spawnSync('npm', ['stage', 'publish', tarball, '--provenance'], { cwd: pkg.dir, stdio: 'inherit' });
-  if (stage.status !== 0) {
-    process.exit(stage.status ?? 1);
+  const result = spawnSync('npm', ['publish', tarball, '--provenance', '--access', 'public'], { cwd: pkg.dir });
+  const output = `${result.stdout?.toString() ?? ''}${result.stderr?.toString() ?? ''}`;
+  process.stdout.write(output);
+
+  if (result.status === 0) {
+    published.push(pkg.name);
+  } else if (isAlreadyPublished(output)) {
+    // The manifest version is already live, so this package did not move in the
+    // push being built. That is the steady state for most of the workspace on
+    // any given commit, not a failure.
+    console.log(`- skip ${pkg.name} -- version already on npm`);
+    skipped.push(pkg.name);
+  } else {
+    console.error(`publish-libraries: ${pkg.name} failed to publish`);
+    process.exit(result.status ?? 1);
   }
 }
+
+console.log(`\npublished: ${published.join(' ') || 'none'}`);
+console.log(`skipped:   ${skipped.join(' ') || 'none'}`);

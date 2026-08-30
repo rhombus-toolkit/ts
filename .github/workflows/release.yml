@@ -1,29 +1,31 @@
 # Publish pipeline: release-please (independent per-package versioning) ->
-# pnpm pack -> npm staged publish (OIDC trusted publishing).
+# pnpm pack -> npm publish (OIDC trusted publishing), straight to `latest`.
 #
-# WIRED BUT INERT. All 11 publishable packages' npm Trusted Publisher points at
-# THIS file by name -- npm allows exactly one trusted publisher per package, so
-# renaming this workflow means redoing 11 packages by hand, each behind a
-# security-key tap. Never rename it.
+# All 11 publishable packages' npm Trusted Publisher points at THIS file by
+# name -- npm allows exactly one trusted publisher per package, so renaming this
+# workflow means redoing 11 packages by hand, each behind a security-key tap.
+# Never rename it.
 #
-# Two independent gates sit between a merge to main and a live npm release:
+# One gate sits between a push to main and a live npm release: the `publish` job
+# runs only while the `PUBLISHING_ENABLED` repository variable is the string
+# "true". That is the kill switch; there is no second gate.
 #
-#   1. The `publish` job only runs once the `PUBLISHING_ENABLED` repository
-#      variable is the string "true". It does not exist yet, so `publish`
-#      cannot run even though its trigger is otherwise live -- this is
-#      deliberate: the pipeline is fully wired, publishing is not switched on.
-#   2. Even once enabled, this workflow only STAGES each release (`npm stage
-#      publish`), never publishes it directly. A staged package sits pending
-#      until a human runs `npm stage approve <id>`, which requires 2FA -- OIDC
-#      trust tokens can stage but cannot approve (verified against npm's
-#      staged-publish docs, npm/cli#9201). That is what makes an 11-package
-#      release atomic: a mid-sequence failure here leaves everything staged so
-#      far merely pending, never live, so there is no partial release to undo.
+# Publishing is UNATTENDED and direct. It does not stage. `npm stage publish`
+# defers proof-of-presence to a human running `npm stage approve <id>`, which
+# requires 2FA that OIDC trust tokens cannot satisfy (npm/cli#9201) -- so a
+# staged pipeline can never finish on its own, which is why this one does not
+# use it. The cost is that a mid-sequence failure can leave a partial release:
+# packages earlier in the topological order are already live. Re-running the
+# workflow is the fix, since publishing is idempotent -- anything already live
+# reports a duplicate and is skipped.
+#
+# `publish` deliberately does NOT depend on the `release-please` job. Release
+# proposals and publishing are independent: publishing is keyed on each
+# manifest's version against npm, so whatever lands on main with a version that
+# is not yet live ships, whether release-please bumped it or a human did.
 #
 # The `release-please` job itself is NOT gated behind `PUBLISHING_ENABLED` --
-# opening/updating a release PR touches no registry and is safe to run from
-# day one, so the version/changelog proposals are reviewable before publishing
-# is ever switched on.
+# opening/updating a release PR touches no registry.
 
 name: Release
 
@@ -49,12 +51,6 @@ jobs:
       pull-requests: write
     outputs:
       releases-created: ${{ steps.release.outputs.releases_created }}
-      # JSON array of the component paths release-please actually cut a release
-      # for, e.g. ["libraries/obj","libraries/types"]. The publish job filters
-      # on it so a package whose version is already live is never re-staged --
-      # `npm stage publish` hard-fails on a duplicate version and takes the
-      # whole release down with it.
-      paths-released: ${{ steps.release.outputs.paths_released }}
     steps:
       # release-please's own PRs need a PAT, not GITHUB_TOKEN: PRs opened with
       # the default token don't trigger downstream workflow runs (GitHub
@@ -81,13 +77,14 @@ jobs:
           manifest-file: .release-please-manifest.json
           token: ${{ secrets.AUTOMERGE_PAT }}
 
-  # Fires only once a release-please PR has actually merged (releases-created)
-  # AND publishing is deliberately switched on. Builds every package, then
-  # walks scripts/publish-libraries.ts's topological order staging the ones
-  # this release actually bumped.
+  # Fires on EVERY push to main, not only on a release-please merge -- publishing
+  # is keyed on each manifest's version against npm, so a package that did not
+  # move is a no-op and one that did ships immediately. Deliberately does NOT
+  # `needs: release-please`: that job fails on its own (a duplicate release tag
+  # aborts it after tagging) and gating on it would strand publishes behind an
+  # unrelated failure, which is exactly what left 1.1.0 unpublished.
   publish:
-    needs: release-please
-    if: needs.release-please.outputs.releases-created == 'true' && vars.PUBLISHING_ENABLED == 'true'
+    if: vars.PUBLISHING_ENABLED == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -109,9 +106,7 @@ jobs:
           node-version: 24
           registry-url: https://registry.npmjs.org
 
-      # `npm stage` needs a newer npm than plain OIDC provenance does: verified
-      # against npm/cli#9201 (merged 2026-05-20), first shipped in npm 11.16.0.
-      - name: Upgrade npm (staged publishing needs npm >= 11.16.0)
+      - name: Upgrade npm
         run: npm install -g npm@latest
 
       - name: Install dependencies
@@ -120,9 +115,8 @@ jobs:
       - name: Build
         run: bun run build
 
-      # The script refuses to publish when RELEASED_PATHS is unset or malformed
-      # rather than falling back to the whole workspace -- see its header.
-      - name: Stage-publish released packages
-        env:
-          RELEASED_PATHS: ${{ needs.release-please.outputs.paths-released }}
+      # Walks every publishable package in topological order and ships the ones
+      # whose manifest version is not already on npm; the rest report a duplicate
+      # and are skipped. Idempotent, so re-running a push is safe.
+      - name: Publish packages whose version is not yet live
         run: bun scripts/publish-libraries.ts --publish

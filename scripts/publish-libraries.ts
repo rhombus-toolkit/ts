@@ -3,9 +3,22 @@
 // Independent versioning (NOT std's lockstep): every publishable library ships
 // its OWN version, bumped independently by release-please from conventional
 // commits, and release-please writes the new number straight into each
-// package's own manifest before this script ever runs. Publishing here is
-// therefore just "walk the dependency graph leaf-first and ship whatever's
-// committed" -- no `--version` fan-out like std's script has.
+// package's own manifest before this script ever runs. Only a subset of the
+// workspace moves on any given release, so publishing is NOT "ship whatever's
+// committed" -- a package whose manifest version is already live on npm makes
+// `npm stage publish` fail with "cannot publish over the previously published
+// versions", which aborts the whole run (that killed the 2026-08-16 release on
+// `@rhombus-toolkit/fetch@1.3.9`).
+//
+// The released set therefore comes from release-please itself, not from the
+// filesystem: the `RELEASED_PATHS` env var carries its `paths_released` output
+// verbatim -- a JSON array of repo-relative component paths like
+// `["libraries/obj","libraries/types"]` -- and `--publish` ships exactly those,
+// still in topological order. `--publish` REFUSES to run when `RELEASED_PATHS`
+// is unset or malformed rather than falling back to "everything": defaulting to
+// the full workspace is precisely the bug this gate exists to stop, and the
+// only caller that legitimately has no released set is a local invocation that
+// should be using `--list`.
 //
 // Package discovery + Kahn's-algorithm tiering are unchanged from std's shape:
 // PUBLISHABLE = has a `publishConfig` key and isn't `"private": true`, tiered
@@ -34,8 +47,10 @@
 // re-derives publishConfig itself, so pnpm has to have done it already.
 //
 // Two modes:
-//   --list      print publishable names, topological order, one per line
-//   --publish   pnpm pack + npm stage publish each package, in order
+//   --list      print publishable names, topological order, one per line --
+//               the FULL inventory, deliberately unfiltered by release state,
+//               since callers use it to enumerate what this repo can publish
+//   --publish   pnpm pack + npm stage publish each RELEASED package, in order
 //
 // A failed pack/stage exits non-zero immediately.
 
@@ -56,6 +71,8 @@ interface Package {
   readonly name: string;
   /** Absolute path to the package directory (cwd for pnpm/npm invocations). */
   readonly dir: string;
+  /** Repo-relative directory, the spelling release-please uses in `paths_released` (e.g. `libraries/obj`). */
+  readonly path: string;
   /** Workspace-sibling package names this one depends on (any dependency kind). */
   readonly deps: readonly string[];
 }
@@ -97,7 +114,8 @@ function discoverPackages(): Map<string, Package> {
     if (!manifest.publishConfig || manifest.private) {
       continue;
     }
-    packages.set(manifest.name, { name: manifest.name, dir, deps: [...new Set(workspaceDeps(manifest))] });
+    const deps = [...new Set(workspaceDeps(manifest))];
+    packages.set(manifest.name, { name: manifest.name, dir, path: `${GROUP}/${entry}`, deps });
   }
   return packages;
 }
@@ -154,6 +172,33 @@ interface PackResult {
   readonly filename: string;
 }
 
+/**
+ * Release-please's `paths_released` for this run, from `RELEASED_PATHS`.
+ * Missing or malformed exits non-zero rather than defaulting to the whole
+ * workspace -- see the header note on why "everything" is never the fallback.
+ */
+function readReleasedPaths(): ReadonlySet<string> {
+  const raw = process.env.RELEASED_PATHS?.trim();
+  if (!raw) {
+    console.error(
+      "publish-libraries: RELEASED_PATHS is unset -- refusing to publish. It must carry release-please's `paths_released` output.",
+    );
+    process.exit(2);
+  }
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    console.error(`publish-libraries: RELEASED_PATHS is not valid JSON: ${raw}`);
+    process.exit(2);
+  }
+  if (!Array.isArray(parsed) || parsed.some((path) => typeof path !== 'string')) {
+    console.error(`publish-libraries: RELEASED_PATHS is not an array of paths: ${raw}`);
+    process.exit(2);
+  }
+  return new Set(parsed as string[]);
+}
+
 /** `pnpm pack`'s tarball path -- the publishConfig-rewritten package npm will stage. */
 function packTarball(pkg: Package, destDir: string): string {
   const result = spawnSync('pnpm', ['pack', '--json', '--pack-destination', destDir], { cwd: pkg.dir });
@@ -164,9 +209,31 @@ function packTarball(pkg: Package, destDir: string): string {
   return (JSON.parse(result.stdout.toString()) as PackResult).filename;
 }
 
+const released = readReleasedPaths();
+const selected = ordered.filter((pkg) => released.has(pkg.path));
+
+// Skipping silently reads as "published everything" in a CI log, so every
+// omission is accounted for -- both packages this release didn't touch and
+// released paths that map to nothing publishable.
+for (const pkg of ordered) {
+  if (!released.has(pkg.path)) {
+    console.log(`- skip ${pkg.name} -- ${pkg.path} not in this release`);
+  }
+}
+for (const path of released) {
+  if (!ordered.some((pkg) => pkg.path === path)) {
+    console.warn(`publish-libraries: released path ${path} matches no publishable package -- ignoring`);
+  }
+}
+
+if (!selected.length) {
+  console.log('publish-libraries: nothing released is publishable -- nothing to stage');
+  process.exit(0);
+}
+
 const destDir = mkdtempSync(`${tmpdir()}/rhombus-publish-`);
 
-for (const pkg of ordered) {
+for (const pkg of selected) {
   console.log(`\n▶ stage ${pkg.name}`);
   const tarball = packTarball(pkg, destDir);
   const stage = spawnSync('npm', ['stage', 'publish', tarball, '--provenance'], { cwd: pkg.dir, stdio: 'inherit' });

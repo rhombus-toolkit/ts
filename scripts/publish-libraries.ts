@@ -47,6 +47,7 @@ import { tmpdir } from 'node:os';
 
 interface Manifest {
   readonly name: string;
+  readonly version: string;
   readonly private?: boolean;
   readonly publishConfig?: Record<string, unknown>;
   readonly dependencies?: Record<string, string>;
@@ -56,6 +57,8 @@ interface Manifest {
 
 interface Package {
   readonly name: string;
+  /** The manifest version this run would publish, used to record it live for dependents packed later. */
+  readonly version: string;
   /** Absolute path to the package directory (cwd for pnpm/npm invocations). */
   readonly dir: string;
   /** Repo-relative directory, the spelling release-please uses in `paths_released` (e.g. `libraries/obj`). */
@@ -102,7 +105,8 @@ function discoverPackages(): Map<string, Package> {
       continue;
     }
     const deps = [...new Set(workspaceDeps(manifest))];
-    packages.set(manifest.name, { name: manifest.name, dir, path: `${GROUP}/${entry}`, deps });
+    packages.set(manifest.name, { name: manifest.name, version: manifest.version, dir, path: `${GROUP}/${entry}`,
+      deps });
   }
   return packages;
 }
@@ -174,20 +178,66 @@ function isAlreadyPublished(output: string): boolean {
   return /cannot publish over|previously published version|EPUBLISHCONFLICT|E409/i.test(output);
 }
 
+/**
+ * The `@rhombus-toolkit/*` versions a packed tarball pins, read back out of it.
+ *
+ * @remarks
+ * `pnpm pack` rewrites each `workspace:*` range to whatever the sibling's manifest currently says,
+ * which is only correct while every manifest matches what is live. A manifest left BEHIND npm --
+ * reverted, or bumped out-of-band -- produces a tarball pinning a version that was never published,
+ * and npm accepts it: the break surfaces at install time in a consumer's project rather than here.
+ */
+function pinnedSiblings(tarball: string): Record<string, string> {
+  const show = spawnSync('tar', ['-xzOf', tarball, 'package/package.json']);
+  if (show.status !== 0) {
+    return {};
+  }
+  const manifest = JSON.parse(show.stdout.toString()) as Manifest;
+  const pinned: Record<string, string> = {};
+  for (const [name, spec] of Object.entries(manifest.dependencies ?? {})) {
+    if (name.startsWith('@rhombus-toolkit/')) {
+      pinned[name] = spec;
+    }
+  }
+  return pinned;
+}
+
 const destDir = mkdtempSync(`${tmpdir()}/rhombus-publish-`);
 const published: string[] = [];
 const skipped: string[] = [];
+/** Versions this run has confirmed live -- either already on npm, or published moments ago. */
+const live = new Set<string>();
 
 for (const pkg of ordered) {
   console.log(`\n▶ ${pkg.name}`);
   const tarball = packTarball(pkg, destDir);
+
+  // Refuse before publishing rather than after: a tarball pinning an unpublished sibling installs
+  // as a hard resolution failure downstream, and npm has no way to take it back.
+  for (const [dep, version] of Object.entries(pinnedSiblings(tarball))) {
+    if (live.has(`${dep}@${version}`)) {
+      continue;
+    }
+    const check = spawnSync('npm', ['view', `${dep}@${version}`, 'version']);
+    if (check.status === 0 && check.stdout.toString().trim()) {
+      live.add(`${dep}@${version}`);
+      continue;
+    }
+    console.error(
+      `publish-libraries: ${pkg.name} pins ${dep}@${version}, which is not on npm. `
+        + `Its manifest is behind what was published -- sync it before publishing.`,
+    );
+    process.exit(1);
+  }
   const result = spawnSync('npm', ['publish', tarball, '--provenance', '--access', 'public'], { cwd: pkg.dir });
   const output = `${result.stdout?.toString() ?? ''}${result.stderr?.toString() ?? ''}`;
   process.stdout.write(output);
 
   if (result.status === 0) {
     published.push(pkg.name);
+    live.add(`${pkg.name}@${pkg.version}`);
   } else if (isAlreadyPublished(output)) {
+    live.add(`${pkg.name}@${pkg.version}`);
     // The manifest version is already live, so this package did not move in the
     // push being built. That is the steady state for most of the workspace on
     // any given commit, not a failure.

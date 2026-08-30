@@ -1,6 +1,6 @@
 {
   "name": "@rhombus-toolkit/restify",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "restify/unrestify: a scalar and the one-element array it came from, told apart by a marker symbol.",
   "repository": {
     "type": "git",

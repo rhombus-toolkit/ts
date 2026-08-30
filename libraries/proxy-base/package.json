@@ -1,6 +1,6 @@
 {
   "name": "@rhombus-toolkit/proxy-base",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Directly-extendable Proxy: a base class that attaches a per-instance Proxy as its prototype, with protected overridable methods for each proxy hook.",
   "repository": {
     "type": "git",

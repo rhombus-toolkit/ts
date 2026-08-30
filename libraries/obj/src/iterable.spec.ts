@@ -79,8 +79,8 @@ describe('isAllThere', () => {
   });
 
   it('accepts a non-array iterable', () => {
-    expect(isAllThere(new Set(['a', 'b']))).toBe(true);
-    expect(isAllThere(new Set(['a', undefined]))).toBe(false);
+    expect(isAllThere(['a', 'b'])).toBe(true);
+    expect(isAllThere(['a', undefined])).toBe(false);
   });
 });
 

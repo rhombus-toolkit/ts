@@ -1,4 +1,4 @@
-import { isFunction, isIterable } from '@rhombus-toolkit/type-guards';
+import { isDefined, isFunction, isIterable } from '@rhombus-toolkit/type-guards';
 import type { Func } from '@rhombus-toolkit/types';
 
 /** Yields every element of `source`, substituting `replacement` for each one `match` selects — an exact value or a predicate. */
@@ -17,7 +17,7 @@ export function* replace<T, U>(source: Iterable<T>, match: T | Func<[T], boolean
 }
 
 /** The first element `source` yields, or `undefined` when it yields nothing. */
-export function first<T>(source: Iterable<T>): T | undefined {
+export function tryFirst<T>(source: Iterable<T>): T | undefined {
   for (const value of source) {
     return value;
   }
@@ -25,17 +25,38 @@ export function first<T>(source: Iterable<T>): T | undefined {
 }
 
 /**
- * Type guard: whether every element of `items` is present — none are `undefined`.
+ * The first element `source` yields.
  *
- * @remarks
- * Deciding this reads `items` to the end, so a one-shot source is spent by the call and the
- * narrowed value it hands back yields nothing. Pass an array, a `Set`, or anything else that can
- * be iterated twice.
+ * @throws TypeError - when `source` yields nothing. A source whose first element is `undefined` is
+ * indistinguishable from an empty one and throws too; reach for {@link tryFirst} where an absent
+ * first element is an ordinary outcome rather than a broken expectation.
  */
-export function isAllThere<T>(items: Array<T | undefined>): items is T[];
-export function isAllThere<T>(items: ReadonlyArray<T | undefined>): items is readonly T[];
-export function isAllThere(items: Iterable<unknown>): boolean {
-  return Iterator.from(items).every(item => item !== undefined);
+export function first<T>(source: Iterable<T>): T {
+  const result = tryFirst(source);
+  if (result === undefined) {
+    throw new TypeError('first: the source yielded nothing.');
+  }
+  return result;
+}
+
+/** The first element `source` yields that is not `undefined`, or `undefined` when every one is. */
+export function tryFirstDefined<T>(source: Iterable<T>): T | undefined {
+  return Iterator.from(source).find(isDefined);
+}
+
+/**
+ * The first element `source` yields that is not `undefined`.
+ *
+ * @throws TypeError - when every element is `undefined`, or `source` yields nothing at all. Use
+ * {@link tryFirstDefined} where an absent result is an ordinary outcome rather than a broken
+ * expectation.
+ */
+export function firstDefined<T>(source: Iterable<T>): T {
+  const result = tryFirstDefined(source);
+  if (result === undefined) {
+    throw new TypeError('firstDefined: the source yielded no defined element.');
+  }
+  return result;
 }
 
 /**

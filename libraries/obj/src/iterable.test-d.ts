@@ -1,25 +1,7 @@
-import { concat, isAllThere, zip } from './index';
+import { concat, zip } from './index';
 
 declare function isAssignable<TActual extends TExpected, TExpected>(actual?: TActual, expected?: TExpected): void;
 declare function isAssignable<TExpected>(actual?: TExpected): void;
-
-// `isAllThere` is two overloads rather than one so a mutable array keeps its
-// mutability through the narrowing -- the ReadonlyArray overload alone matches a
-// mutable array too, handing back `readonly T[]` and taking write access with it.
-
-namespace isAllThereNarrowsAnArrayTest {
-  const items: Array<string | undefined> = [];
-
-  // @ts-expect-error
-  isAssignable<typeof items[0], string>;
-
-  if (isAllThere(items)) {
-    // @ts-expect-no-error
-    isAssignable<typeof items[0], string>;
-    // @ts-expect-no-error
-    isAssignable<typeof items, readonly string[]>;
-  }
-}
 
 namespace concatKeepsItsElementTypeTest {
   // @ts-expect-no-error

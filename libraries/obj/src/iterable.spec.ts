@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'bun:test';
-import { concat, first, isAllThere, iterable, replace, sequenceEquals, zip } from './iterable';
+import { concat, first, firstDefined, iterable, replace, sequenceEquals, tryFirst, tryFirstDefined,
+  zip } from './iterable';
 
 describe('replace', () => {
   it('substitutes a value replacement for every exact-value match', () => {
@@ -38,13 +39,13 @@ describe('replace', () => {
   });
 });
 
-describe('first', () => {
+describe('tryFirst', () => {
   it('gives the first element of a non-empty source', () => {
-    expect(first([7, 8, 9])).toBe(7);
+    expect(tryFirst([7, 8, 9])).toBe(7);
   });
 
   it('gives undefined for an empty source', () => {
-    expect(first([])).toBeUndefined();
+    expect(tryFirst([])).toBeUndefined();
   });
 
   it('reads one element only', () => {
@@ -56,31 +57,68 @@ describe('first', () => {
       }
     }
 
-    expect(first(counted())).toBe(1);
+    expect(tryFirst(counted())).toBe(1);
     expect(read).toBe(1);
   });
 });
 
-describe('isAllThere', () => {
-  it('is true when no element is undefined', () => {
-    expect(isAllThere([1, 2, 3])).toBe(true);
+describe('first', () => {
+  it('gives the first element of a non-empty source', () => {
+    expect(first([7, 8, 9])).toBe(7);
   });
 
-  it('is false when any element is undefined', () => {
-    expect(isAllThere([1, undefined, 3])).toBe(false);
+  it('throws a TypeError for an empty source', () => {
+    expect(() => first([])).toThrow(TypeError);
   });
 
-  it('is true for an empty source', () => {
-    expect(isAllThere([])).toBe(true);
+  it('throws when the first element is undefined, which is indistinguishable from empty', () => {
+    expect(() => first([undefined, 1])).toThrow(TypeError);
   });
 
-  it('counts every other falsy value as present', () => {
-    expect(isAllThere([0, '', false, null, Number.NaN])).toBe(true);
+  it('names itself in the message', () => {
+    expect(() => first([])).toThrow('first: the source yielded nothing.');
+  });
+});
+
+describe('tryFirstDefined', () => {
+  it('skips leading undefined elements', () => {
+    expect(tryFirstDefined([undefined, undefined, 3])).toBe(3);
   });
 
-  it('accepts a non-array iterable', () => {
-    expect(isAllThere(['a', 'b'])).toBe(true);
-    expect(isAllThere(['a', undefined])).toBe(false);
+  it('gives undefined when every element is undefined', () => {
+    expect(tryFirstDefined([undefined, undefined])).toBeUndefined();
+  });
+
+  it('gives undefined for an empty source', () => {
+    expect(tryFirstDefined([])).toBeUndefined();
+  });
+
+  it('keeps other falsy values', () => {
+    expect(tryFirstDefined([undefined, 0])).toBe(0);
+    expect(tryFirstDefined([undefined, null])).toBeNull();
+  });
+});
+
+describe('firstDefined', () => {
+  it('skips leading undefined elements', () => {
+    expect(firstDefined([undefined, undefined, 3])).toBe(3);
+  });
+
+  it('throws a TypeError when every element is undefined', () => {
+    expect(() => firstDefined([undefined, undefined])).toThrow(TypeError);
+  });
+
+  it('throws a TypeError for an empty source', () => {
+    expect(() => firstDefined([])).toThrow(TypeError);
+  });
+
+  it('names itself in the message', () => {
+    expect(() => firstDefined([])).toThrow('firstDefined: the source yielded no defined element.');
+  });
+
+  it('keeps other falsy values rather than skipping them', () => {
+    expect(firstDefined([undefined, 0])).toBe(0);
+    expect(firstDefined([undefined, ''])).toBe('');
   });
 });
 

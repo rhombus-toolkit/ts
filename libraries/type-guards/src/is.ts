@@ -65,11 +65,24 @@ function inheritsFrom(value: unknown, prototype: object): boolean {
 }
 
 /** Whether `value` carries a callable `key`. Boxing makes this safe on primitives; nullish is always false. */
-function hasMethod(value: unknown, key: PropertyKey): boolean {
-  if (value === null || value === undefined) {
-    return false;
-  }
-  return typeof (value as Record<PropertyKey, unknown>)[key] === 'function';
+function hasMethod<K extends PropertyKey>(value: unknown, key: K): value is Record<K, Func<unknown[], unknown>> {
+  return hasMember(value, key) && isFunction(value[key]);
+}
+
+/**
+ * Whether `value` carries `key` at all, whatever it holds.
+ *
+ * @remarks
+ * `K` is a type parameter rather than a plain `PropertyKey` so the narrowing names the key that was
+ * actually checked: a literal argument makes the result `Record<'foo', unknown>`, where a widened
+ * `PropertyKey` would collapse to an index signature that admits every other key too.
+ *
+ * `Object(value)` boxes primitives, since `in` demands an object where a property read would have
+ * boxed on its own. Testing the member's *value* instead would conflate absence with a falsy
+ * member — `''` carries `length`.
+ */
+export function hasMember<K extends PropertyKey>(value: unknown, key: K): value is Record<K, unknown> {
+  return hasValue(value) && key in Object(value);
 }
 
 /**
@@ -84,13 +97,21 @@ function hasMethod(value: unknown, key: PropertyKey): boolean {
 function typeTag(value: unknown): string {
   return Object.prototype.toString.call(value).slice(8, -1);
 }
-
-export function isArray(value: any): value is any[] {
+export function isObject(value: any): value is object {
+  return hasValue(value) && typeof value === 'object';
+}
+export function isReadonlyArray(value: any): value is readonly unknown[] {
+  return isArray(value);
+}
+export function isArray(value: any): value is unknown[] {
   return Array.isArray(value);
 }
 
+export function isUndefined(value: any): value is undefined {
+  return value === undefined;
+}
 /** Whether `value` is anything other than `undefined` — `null` is a defined value, so it passes. Use {@link hasValue} to exclude both. */
-export function isDefined<T>(p: T | undefined | null): p is T | null {
+export function isDefined<T>(p: T | undefined): p is T {
   return p !== undefined;
 }
 
@@ -98,18 +119,26 @@ export function hasValue<T>(p: T | null | undefined): p is T {
   return isDefined(p) && p !== null;
 }
 
-export function isFunction(value: any): value is Func {
+/**
+ * Whether `value` is callable.
+ *
+ * @remarks
+ * Narrows to an unconstrained signature deliberately. `typeof` witnesses that something is callable
+ * and nothing about what it accepts or returns, so letting a caller name those would dress an
+ * unchecked assertion up as a guard — a caller who needs a signature should spell the cast out.
+ */
+export function isFunction(value: unknown): value is Func<unknown[], unknown> {
   return typeof value === 'function';
 }
 
 /** CONTRACT. Whether `value` is thenable, whatever produced it. */
-export function isPromiseLike(value: any): value is PromiseLike<any> {
-  return isPromise(value) || typeTag(value) === 'Promise' || hasMethod(value, 'then');
+export function isPromiseLike(value: any): value is PromiseLike<unknown> {
+  return isPromise(value) || hasMethod(value, 'then');
 }
 
 /** PROTOTYPE. Whether `value` is a real `Promise`, so `catch`/`finally` are present. A thenable from another realm reads as {@link isPromiseLike} only. */
-export function isPromise(value: any): value is Promise<any> {
-  return value instanceof Promise;
+export function isPromise(value: any): value is Promise<unknown> {
+  return isObject(value) && value instanceof Promise;
 }
 
 // `URL` is the single identifier in this file that lives in lib.dom, and naming
@@ -123,27 +152,27 @@ export function isPromise(value: any): value is Promise<any> {
 // }
 
 /** CONTRACT. Whether `value` has a `next`. Sync and async iterators are indistinguishable by shape — use {@link isAsyncIteratorObject} or {@link isAsyncIterable} to tell them apart. */
-export function isIterator(value: any): value is Iterator<any> {
+export function isIterator(value: any): value is Iterator<unknown> {
   return hasMethod(value, 'next');
 }
 
 /** CONTRACT. Whether `value` yields an iterator when asked. Strings, arrays, `Map` and `Set` all pass. */
-export function isIterable(value: any): value is Iterable<any> {
-  return hasMethod(value, Symbol.iterator);
+export function isIterable(value: any): value is Iterable<unknown> {
+  return isFunction(value?.[Symbol.iterator]);
 }
 
 /** CONTRACT. Whether `value` is an iterator that is also iterable, the shape a `for…of` accepts directly. */
-export function isIterableIterator(value: any): value is IterableIterator<any> {
-  return isIterator(value) && isIterable(value);
+export function isIterableIterator(value: any): value is IterableIterator<unknown> {
+  return isDefined(value) && isIterator(value) && isIterable(value);
 }
 
 /** CONTRACT. Whether `value` yields an async iterator when asked. */
-export function isAsyncIterable(value: any): value is AsyncIterable<any> {
-  return hasMethod(value, Symbol.asyncIterator);
+export function isAsyncIterable(value: any): value is AsyncIterable<unknown> {
+  return isFunction(value?.[Symbol.asyncIterator]);
 }
 
 /** CONTRACT. Whether `value` is an async iterator that is also async-iterable. */
-export function isAsyncIterableIterator(value: any): value is AsyncIterableIterator<any> {
+export function isAsyncIterableIterator(value: any): value is AsyncIterableIterator<unknown> {
   return isIterator(value) && isAsyncIterable(value);
 }
 
@@ -154,22 +183,22 @@ export function isAsyncIterableIterator(value: any): value is AsyncIterableItera
  * @remarks
  * A hand-rolled `{ next() { … } }` is an {@link isIterator} but not this.
  */
-export function isIteratorObject(value: any): value is IteratorObject<any, any, any> {
+export function isIteratorObject(value: any): value is IteratorObject<unknown> {
   return inheritsFrom(value, IteratorPrototype);
 }
 
 /** PROTOTYPE. The async counterpart of {@link isIteratorObject}. */
-export function isAsyncIteratorObject(value: any): value is AsyncIteratorObject<any, any, any> {
+export function isAsyncIteratorObject(value: any): value is AsyncIteratorObject<unknown> {
   return inheritsFrom(value, AsyncIteratorPrototype);
 }
 
 /** PROTOTYPE. Whether `value` is a generator *object* — what calling a generator function returns, not the function itself. */
-export function isGenerator(value: any): value is Generator<any, any, any> {
+export function isGenerator(value: any): value is Generator<unknown> {
   return inheritsFrom(value, GeneratorPrototype) || typeTag(value) === 'Generator';
 }
 
 /** PROTOTYPE. Whether `value` is an async generator object. Never true for a sync generator — the two have distinct intrinsics. */
-export function isAsyncGenerator(value: any): value is AsyncGenerator<any, any, any> {
+export function isAsyncGenerator(value: any): value is AsyncGenerator<unknown> {
   return inheritsFrom(value, AsyncGeneratorPrototype) || typeTag(value) === 'AsyncGenerator';
 }
 

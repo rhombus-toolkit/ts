@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'bun:test';
 import { hasValue, isArray, isAsyncGenerator, isAsyncGeneratorFunction, isAsyncIterable, isAsyncIterableIterator,
   isAsyncIteratorObject, isDefined, isFunction, isGenerator, isGeneratorFunction, isIterable, isIterableIterator,
-  isIterator, isIteratorObject, isPromise, isPromiseLike } from './is';
+  isIterator, isIteratorObject, isObject, isPromise, isPromiseLike, isReadonlyArray, isUndefined } from './is';
 
 function* genFn() {
   yield 1;
@@ -21,7 +21,12 @@ const handRolledIterable = { [Symbol.iterator]() {
   return handRolledIterator;
 } };
 
-const nothings = [null, undefined, 42, 'ab', {}, [], Object.create(null)];
+const nothings = [null, undefined, 42, 'ab', {}, [], Object.create(null), 0, '', false, Symbol('s'), 10n, NaN];
+
+/** Every exported guard, so the whole-surface invariants below cannot silently miss a new one. */
+const everyGuard = [isArray, isReadonlyArray, isObject, isUndefined, isDefined, hasValue, isFunction, isPromise,
+  isPromiseLike, isIterable, isAsyncIterable, isIterator, isIterableIterator, isAsyncIterableIterator, isIteratorObject,
+  isAsyncIteratorObject, isGenerator, isAsyncGenerator, isGeneratorFunction, isAsyncGeneratorFunction];
 
 describe('no guard has side effects', () => {
   test('none invokes Symbol.iterator, Symbol.asyncIterator, or next', () => {
@@ -54,10 +59,7 @@ describe('no guard has side effects', () => {
 
 describe('no guard throws on primitives or nullish', () => {
   test('every guard returns a boolean for every non-object input', () => {
-    for (const guard of [isArray, isFunction, isPromise, isPromiseLike, isIterable, isAsyncIterable, isIterator,
-      isIterableIterator, isAsyncIterableIterator, isIteratorObject, isAsyncIteratorObject, isGenerator,
-      isAsyncGenerator, isGeneratorFunction, isAsyncGeneratorFunction])
-    {
+    for (const guard of everyGuard) {
       for (const value of nothings) {
         expect(typeof guard(value)).toBe('boolean');
       }
@@ -191,5 +193,140 @@ describe('the rest', () => {
     expect(hasValue(null)).toBe(false);
     expect(hasValue(undefined)).toBe(false);
     expect(hasValue(0)).toBe(true);
+  });
+});
+
+describe('isObject', () => {
+  test('null is not an object, despite typeof saying so', () => {
+    expect(typeof null).toBe('object');
+    expect(isObject(null)).toBe(false);
+  });
+
+  test('accepts every object shape, including exotic ones', () => {
+    expect(isObject({})).toBe(true);
+    expect(isObject([])).toBe(true);
+    expect(isObject(Object.create(null))).toBe(true);
+    expect(isObject(new Map())).toBe(true);
+    expect(isObject(Promise.resolve())).toBe(true);
+    expect(isObject(genFn())).toBe(true);
+  });
+
+  test('rejects primitives and functions', () => {
+    expect(isObject(undefined)).toBe(false);
+    expect(isObject(42)).toBe(false);
+    expect(isObject('ab')).toBe(false);
+    expect(isObject(false)).toBe(false);
+    expect(isObject(Symbol('s'))).toBe(false);
+    expect(isObject(10n)).toBe(false);
+    // `typeof` reports 'function', not 'object', so a callable does not pass.
+    expect(isObject(() => {})).toBe(false);
+  });
+
+  test('a boxed primitive is an object', () => {
+    expect(isObject(Object(42))).toBe(true);
+    expect(isObject(Object('ab'))).toBe(true);
+  });
+});
+
+describe('isUndefined', () => {
+  test('separates undefined from null and from other falsy values', () => {
+    expect(isUndefined(undefined)).toBe(true);
+    expect(isUndefined(null)).toBe(false);
+    expect(isUndefined(0)).toBe(false);
+    expect(isUndefined('')).toBe(false);
+    expect(isUndefined(false)).toBe(false);
+    expect(isUndefined(NaN)).toBe(false);
+  });
+
+  test('is the exact complement of isDefined', () => {
+    for (const value of nothings) {
+      expect(isUndefined(value)).toBe(!isDefined(value));
+    }
+  });
+});
+
+describe('isReadonlyArray', () => {
+  test('agrees with isArray on every input — readonly is a type-level distinction only', () => {
+    for (const value of [...nothings, [1, 2], new Array(3), Object.freeze([1])]) {
+      expect(isReadonlyArray(value)).toBe(isArray(value));
+    }
+  });
+
+  test('a frozen array still passes', () => {
+    expect(isReadonlyArray(Object.freeze([1, 2]))).toBe(true);
+  });
+
+  test('array-likes are not arrays', () => {
+    expect(isArray({ length: 0 })).toBe(false);
+    expect(isReadonlyArray({ length: 0 })).toBe(false);
+  });
+});
+
+describe('isFunction', () => {
+  test('accepts every callable form', () => {
+    expect(isFunction(() => {})).toBe(true);
+    expect(isFunction(function() {})).toBe(true);
+    expect(isFunction(async () => {})).toBe(true);
+    expect(isFunction(genFn)).toBe(true);
+    expect(isFunction(asyncGenFn)).toBe(true);
+    expect(isFunction(class {})).toBe(true);
+    expect(isFunction(Math.max)).toBe(true);
+  });
+
+  test('rejects non-callables', () => {
+    expect(isFunction({})).toBe(false);
+    expect(isFunction(null)).toBe(false);
+    expect(isFunction(undefined)).toBe(false);
+    expect(isFunction('ab')).toBe(false);
+  });
+});
+
+describe('nullish inputs specifically', () => {
+  // Regression: hasMethod indexes its argument, so dropping its nullish guard
+  // turns every contract guard into a TypeError on null rather than false.
+  test('the contract guards return false for null and undefined', () => {
+    for (const guard of [isIterable, isAsyncIterable, isIterator, isIterableIterator, isAsyncIterableIterator,
+      isPromiseLike])
+    {
+      expect(guard(null)).toBe(false);
+      expect(guard(undefined)).toBe(false);
+    }
+  });
+
+  test('the prototype guards return false for null and undefined', () => {
+    for (const guard of [isIteratorObject, isAsyncIteratorObject, isGenerator, isAsyncGenerator, isGeneratorFunction,
+      isAsyncGeneratorFunction, isPromise])
+    {
+      expect(guard(null)).toBe(false);
+      expect(guard(undefined)).toBe(false);
+    }
+  });
+
+  test('an object with a null prototype does not throw', () => {
+    const bare = Object.create(null) as object;
+    for (const guard of everyGuard) {
+      expect(typeof guard(bare)).toBe('boolean');
+    }
+  });
+});
+
+describe('the two guard kinds stay distinct', () => {
+  test('every prototype-guard hit is also a contract-guard hit, never the reverse', () => {
+    expect(isIteratorObject([].values())).toBe(true);
+    expect(isIterator([].values())).toBe(true);
+
+    // The hand-rolled iterator satisfies the contract and nothing else.
+    expect(isIterator(handRolledIterator)).toBe(true);
+    expect(isIteratorObject(handRolledIterator)).toBe(false);
+  });
+
+  test('a generator satisfies every sync guard at once', () => {
+    const generator = genFn();
+    expect(isIterator(generator)).toBe(true);
+    expect(isIterable(generator)).toBe(true);
+    expect(isIterableIterator(generator)).toBe(true);
+    expect(isIteratorObject(generator)).toBe(true);
+    expect(isGenerator(generator)).toBe(true);
+    expect(isAsyncGenerator(generator)).toBe(false);
   });
 });

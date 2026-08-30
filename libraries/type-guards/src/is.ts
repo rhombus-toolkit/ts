@@ -123,11 +123,16 @@ export function hasValue<T>(p: T | null | undefined): p is T {
  * Whether `value` is callable.
  *
  * @remarks
- * Narrows to an unconstrained signature deliberately. `typeof` witnesses that something is callable
- * and nothing about what it accepts or returns, so letting a caller name those would dress an
- * unchecked assertion up as a guard — a caller who needs a signature should spell the cast out.
+ * Takes no type arguments: `typeof` witnesses that something is callable and nothing about what it
+ * accepts or returns, so letting a caller name those would dress an unchecked assertion up as a
+ * guard — a caller who needs a signature should spell the cast out.
+ *
+ * `Func`'s permissive default is what the narrowing needs, rather than a stricter
+ * `Func<unknown[], unknown>`. Parameters are contravariant, so a concrete `Func<[T], U>` is not
+ * assignable to the stricter form; narrowing a `U | Func<[T], U>` by it cannot pick the function
+ * member and yields a call signature returning `unknown`, losing `U`.
  */
-export function isFunction(value: unknown): value is Func<unknown[], unknown> {
+export function isFunction(value: unknown): value is Func {
   return typeof value === 'function';
 }
 

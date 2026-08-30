@@ -3,9 +3,9 @@
 // call to it — import `obj` and call `obj.keys(x)` where the stock `Object.keys`
 // typing is too loose. Nothing here augments the global `ObjectConstructor`.
 
-import type { Flatten, Store, UnionToTuple } from '@rhombus-toolkit/types';
+import type { Flatten, Func, Store, UnionToTuple } from '@rhombus-toolkit/types';
 
-export type Entry<Key extends PropertyKey = PropertyKey, Value = any> = readonly [Key, Value];
+export type Entry<Key extends string = string, Value = any> = readonly [Key, Value];
 
 /** The keys `Object.keys` lists — string-named, so a symbol-named member never appears. */
 type StringKey<T> = Extract<keyof T, string>;
@@ -43,7 +43,7 @@ type keyTuple<T extends {}> = UnionToTuple<StringKey<T>>;
  * a type parameter — a position where neither the tuple nor the test in front of it can be
  * evaluated, and an unevaluated conditional carries no members at all.
  */
-export type keys<T extends {}> = ([Untuplable<T>] extends [never] ? keyTuple<T> : unknown) & ReadonlyArray<
+export type keys<T extends {}> = string & ([Untuplable<T>] extends [never] ? keyTuple<T> : unknown) & ReadonlyArray<
   StringKey<T>
 >;
 export function keys<T extends {}>(obj: T): keys<T> {
@@ -178,3 +178,24 @@ type Covers<T extends readonly any[], I extends readonly any[]> = number extends
 //     Reflect.setPrototypeOf(current, Reflect.getPrototypeOf(stuff));
 //     return Object.assign(target, stuff);
 //   }
+/**
+ * Remaps every pair of `obj` through `fn`, keyed by whatever key each result carries.
+ *
+ * @remarks
+ * `fn` takes the pair as ONE {@link AnyEntry} argument rather than as `(key, value)`, which is what
+ * keeps its halves correlated: testing `entry[0]` narrows `entry[1]` to that key's own member type.
+ * Spread across two parameters the checker widens them independently, and the callback body sees
+ * every key beside every value with no way to tell which pairing it was handed.
+ */
+export function mapEntries<Obj extends Record<string, any>, NewEntry extends Entry>(obj: Obj,
+  fn: Func<[entry: AnyEntry<Obj>], NewEntry>): fromEntries<NewEntry>
+{
+  return fromEntries(entries(obj).map(fn));
+}
+
+/** Every member of `obj` replaced by what `fn` returns for its pair, the keys left as they are. */
+export function mapValues<Obj extends Record<string, any>, NewValue>(obj: Obj,
+  fn: Func<[entry: AnyEntry<Obj>], NewValue>): { [K in StringKey<Obj>]: NewValue; }
+{
+  return Object.fromEntries(entries(obj).map(entry => [entry[0], fn(entry)])) as { [K in StringKey<Obj>]: NewValue; };
+}

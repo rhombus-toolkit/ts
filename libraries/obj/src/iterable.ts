@@ -34,7 +34,6 @@ export function first<T>(source: Iterable<T>): T | undefined {
  */
 export function isAllThere<T>(items: Array<T | undefined>): items is T[];
 export function isAllThere<T>(items: ReadonlyArray<T | undefined>): items is readonly T[];
-export function isAllThere<T>(items: Iterable<T | undefined>): items is Iterable<T>;
 export function isAllThere(items: Iterable<unknown>): boolean {
   return Iterator.from(items).every(item => item !== undefined);
 }

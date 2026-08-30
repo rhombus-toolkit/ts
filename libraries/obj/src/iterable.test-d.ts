@@ -3,10 +3,9 @@ import { concat, isAllThere, zip } from './index';
 declare function isAssignable<TActual extends TExpected, TExpected>(actual?: TActual, expected?: TExpected): void;
 declare function isAssignable<TExpected>(actual?: TExpected): void;
 
-// `isAllThere` is two overloads rather than one so an array keeps its array-ness
-// through the narrowing -- the Iterable overload alone would hand back
-// `(T | undefined)[] & Iterable<T>`, whose index signature still yields
-// `T | undefined`.
+// `isAllThere` is two overloads rather than one so a mutable array keeps its
+// mutability through the narrowing -- the ReadonlyArray overload alone matches a
+// mutable array too, handing back `readonly T[]` and taking write access with it.
 
 namespace isAllThereNarrowsAnArrayTest {
   const items: Array<string | undefined> = [];
@@ -19,15 +18,6 @@ namespace isAllThereNarrowsAnArrayTest {
     isAssignable<typeof items[0], string>;
     // @ts-expect-no-error
     isAssignable<typeof items, readonly string[]>;
-  }
-}
-
-namespace isAllThereNarrowsANonArrayIterableTest {
-  const items: Set<string | undefined> = new Set();
-
-  if (isAllThere(items)) {
-    // @ts-expect-no-error
-    isAssignable<typeof items, Iterable<string>>;
   }
 }
 

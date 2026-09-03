@@ -1,5 +1,4 @@
 export * from './flattenMap';
-export * from './iterable';
 // Namespaced rather than flattened into this barrel: `obj.keys` is the point --
 // each member is a type and a same-named wrapper function declaration-merged
 // together, and the namespace is what keeps `obj.keys(x)` and `obj.keys<T>`

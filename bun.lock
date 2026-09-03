@@ -30,6 +30,14 @@
       "name": "@rhombus-toolkit/fetch",
       "version": "2.0.0",
     },
+    "libraries/iterable": {
+      "name": "@rhombus-toolkit/iterable",
+      "version": "0.0.0-placeholder.0",
+      "dependencies": {
+        "@rhombus-toolkit/type-guards": "workspace:*",
+        "@rhombus-toolkit/types": "workspace:*",
+      },
+    },
     "libraries/obj": {
       "name": "@rhombus-toolkit/obj",
       "version": "2.0.0",
@@ -170,6 +178,8 @@
     "@rhombus-toolkit/collections": ["@rhombus-toolkit/collections@workspace:libraries/collections"],
 
     "@rhombus-toolkit/fetch": ["@rhombus-toolkit/fetch@workspace:libraries/fetch"],
+
+    "@rhombus-toolkit/iterable": ["@rhombus-toolkit/iterable@workspace:libraries/iterable"],
 
     "@rhombus-toolkit/obj": ["@rhombus-toolkit/obj@workspace:libraries/obj"],
 

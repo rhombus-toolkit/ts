@@ -19,6 +19,11 @@
       "package-name": "@rhombus-toolkit/fetch",
       "changelog-path": "CHANGELOG.md"
     },
+    "libraries/iterable": {
+      "release-type": "node",
+      "package-name": "@rhombus-toolkit/iterable",
+      "changelog-path": "CHANGELOG.md"
+    },
     "libraries/obj": {
       "release-type": "node",
       "package-name": "@rhombus-toolkit/obj",

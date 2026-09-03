@@ -2,6 +2,7 @@
   "libraries/async-timers": "2.0.0",
   "libraries/collections": "0.0.0-placeholder.0",
   "libraries/fetch": "2.0.0",
+  "libraries/iterable": "0.0.0-placeholder.0",
   "libraries/obj": "1.0.0",
   "libraries/platform": "1.1.0",
   "libraries/proxy-base": "1.1.0",

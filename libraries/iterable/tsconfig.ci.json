@@ -1,0 +1,9 @@
+{
+  "//": "lib: [\"ES2015\", \"ESNext.Iterator\"] is the floor this package actually needs, and two identifiers set it. ES2015 comes from Generator, the return type of every generator here (replace, zip) -- verified ES5 fails on exactly that one (TS2304, 'Cannot find name Generator'), 24 sites across index.ts and index.test-d.ts. The ESNext.Iterator sliver comes from Iterator.from, the ES2025 iterator helper entry point, called by tryFirstDefined, concat, zip and sequenceEquals -- verified ES2015 alone fails on exactly those six call sites (TS2693, 'Iterator only refers to a type, but is being used as a value here'). No ES-numbered lib bundles that helper yet, hence the sliver rather than a bump to a numbered year; the IteratorObject in concat's return type needs none of it, being declared in lib.es2015.iterable, as are Iterable and Symbol.iterator. Nothing else here reaches past lib.es5. No DOM: nothing here names a DOM identifier. types: [] is inherited from tsconfig.lib.json and stays -- the runtime spec below is excluded rather than given @types/bun, so no ambient package can quietly loosen this floor. exclude: the *.spec.ts runtime tests belong to `bun test`, not to the library program.",
+  "extends": "../../tsconfig.lib.json",
+  "compilerOptions": {
+    "lib": ["ES2015", "ESNext.Iterator"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.spec.ts"]
+}

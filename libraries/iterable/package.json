@@ -1,0 +1,50 @@
+{
+  "name": "@rhombus-toolkit/iterable",
+  "version": "0.0.0-placeholder.0",
+  "description": "Iterable helpers: concat, first, firstDefined, iterable, replace, sequenceEquals, zip.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rhombus-toolkit/ts.git",
+    "directory": "libraries/iterable"
+  },
+  "type": "module",
+  "sideEffects": false,
+  "main": "./dist/bundle/index.js",
+  "types": "./dist/bundle/index.d.ts",
+  "exports": {
+    ".": {
+      "source": "./src/index.ts",
+      "bun": "./dist/bundle/index.js",
+      "types": "./dist/bundle/index.d.ts",
+      "import": "./dist/bundle/index.js",
+      "default": "./dist/bundle/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "bun ../../scripts/build-lib.ts",
+    "lint": "bun x tsc --noEmit -p tsconfig.ci.json",
+    "test": "bun test"
+  },
+  "keywords": [],
+  "author": "Thomas Butler",
+  "dependencies": {
+    "@rhombus-toolkit/type-guards": "workspace:*",
+    "@rhombus-toolkit/types": "workspace:*"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true,
+    "main": "./dist/bundle/index.js",
+    "types": "./dist/bundle/index.d.ts",
+    "exports": {
+      ".": {
+        "types": "./dist/bundle/index.d.ts",
+        "import": "./dist/bundle/index.js",
+        "default": "./dist/bundle/index.js"
+      }
+    }
+  }
+}

@@ -1,4 +1,4 @@
-// Rolls the public type surface of @rhombus-toolkit/kinda-weak-map into a
+// Rolls the public type surface of @rhombus-toolkit/collections into a
 // single dist/bundle/index.d.ts. No `external` entries -- a leaf package with
 // zero workspace dependencies to keep out of the bundle.
 

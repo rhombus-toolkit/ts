@@ -1,0 +1,9 @@
+{
+  "//": "lib: [\"ES2021\", \"ESNext.Iterator\"] is the floor this package actually needs. WeakRef/FinalizationRegistry (KindaWeakMap.ts) land in ES2021; verified ES2020 fails on both (TS2304). MapIterator itself is declared in lib.es2015.iterable, but the `.map()`/`.filter()` calls on it (entries()/values()/clear()) are ES2025 Iterator-helper methods that only lib.esnext.iterator.d.ts adds -- verified ES2021 alone fails on both (TS2339) while carrying WeakRef fine. No ES-numbered lib bundles those helpers yet, hence the explicit ESNext.Iterator sliver rather than a bump to a numbered year. DOM is absent -- nothing here needs it.",
+  "extends": "../../tsconfig.lib.json",
+  "compilerOptions": {
+    "lib": ["ES2021", "ESNext.Iterator"]
+  },
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.spec.ts"]
+}

@@ -16,23 +16,23 @@
     },
     "libraries/async-timers": {
       "name": "@rhombus-toolkit/async-timers",
-      "version": "1.4.4",
+      "version": "2.0.1",
       "dependencies": {
         "@rhombus-toolkit/platform": "workspace:*",
         "@rhombus-toolkit/types": "workspace:*",
       },
     },
+    "libraries/collections": {
+      "name": "@rhombus-toolkit/collections",
+      "version": "0.0.0-placeholder.0",
+    },
     "libraries/fetch": {
       "name": "@rhombus-toolkit/fetch",
-      "version": "1.3.9",
-    },
-    "libraries/kinda-weak-map": {
-      "name": "@rhombus-toolkit/kinda-weak-map",
-      "version": "1.4.2",
+      "version": "2.0.0",
     },
     "libraries/obj": {
       "name": "@rhombus-toolkit/obj",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "dependencies": {
         "@rhombus-toolkit/type-guards": "workspace:*",
         "@rhombus-toolkit/types": "workspace:*",
@@ -40,32 +40,32 @@
     },
     "libraries/once": {
       "name": "@rhombus-toolkit/once",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "dependencies": {
         "@rhombus-toolkit/types": "workspace:*",
       },
     },
     "libraries/platform": {
       "name": "@rhombus-toolkit/platform",
-      "version": "0.1.0",
+      "version": "1.1.0",
       "dependencies": {
         "@rhombus-toolkit/types": "workspace:*",
       },
     },
     "libraries/proxy-base": {
       "name": "@rhombus-toolkit/proxy-base",
-      "version": "1.0.0",
+      "version": "1.1.1",
     },
     "libraries/restify": {
       "name": "@rhombus-toolkit/restify",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "dependencies": {
         "@rhombus-toolkit/types": "workspace:*",
       },
     },
     "libraries/set-immediate": {
       "name": "@rhombus-toolkit/set-immediate",
-      "version": "1.3.2",
+      "version": "1.3.4",
       "dependencies": {
         "setimmediate": "^1.0.5",
       },
@@ -75,7 +75,7 @@
     },
     "libraries/type-guards": {
       "name": "@rhombus-toolkit/type-guards",
-      "version": "1.3.4",
+      "version": "3.1.0",
       "dependencies": {
         "@rhombus-toolkit/types": "workspace:*",
       },
@@ -86,7 +86,7 @@
     },
     "libraries/types": {
       "name": "@rhombus-toolkit/types",
-      "version": "1.0.0",
+      "version": "1.0.1",
     },
     "tests": {
       "name": "@rhombus-toolkit/tests",
@@ -94,7 +94,6 @@
       "dependencies": {
         "@rhombus-toolkit/async-timers": "workspace:*",
         "@rhombus-toolkit/fetch": "workspace:*",
-        "@rhombus-toolkit/kinda-weak-map": "workspace:*",
         "@rhombus-toolkit/once": "workspace:*",
         "@rhombus-toolkit/proxy-base": "workspace:*",
         "@rhombus-toolkit/set-immediate": "workspace:*",
@@ -168,9 +167,9 @@
 
     "@rhombus-toolkit/async-timers": ["@rhombus-toolkit/async-timers@workspace:libraries/async-timers"],
 
-    "@rhombus-toolkit/fetch": ["@rhombus-toolkit/fetch@workspace:libraries/fetch"],
+    "@rhombus-toolkit/collections": ["@rhombus-toolkit/collections@workspace:libraries/collections"],
 
-    "@rhombus-toolkit/kinda-weak-map": ["@rhombus-toolkit/kinda-weak-map@workspace:libraries/kinda-weak-map"],
+    "@rhombus-toolkit/fetch": ["@rhombus-toolkit/fetch@workspace:libraries/fetch"],
 
     "@rhombus-toolkit/obj": ["@rhombus-toolkit/obj@workspace:libraries/obj"],
 

@@ -1,11 +1,11 @@
 {
-  "name": "@rhombus-toolkit/kinda-weak-map",
-  "version": "2.0.1",
-  "description": "",
+  "name": "@rhombus-toolkit/collections",
+  "version": "0.0.0-placeholder.0",
+  "description": "Collection data structures: KindaWeakMap (strong keys, weak values).",
   "repository": {
     "type": "git",
     "url": "https://github.com/rhombus-toolkit/ts.git",
-    "directory": "libraries/kinda-weak-map"
+    "directory": "libraries/collections"
   },
   "type": "module",
   "sideEffects": false,

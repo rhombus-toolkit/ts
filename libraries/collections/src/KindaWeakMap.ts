@@ -54,4 +54,3 @@ export class KindaWeakMap<K, V extends object> /*implements Map<K, V>*/ {
 
   readonly [Symbol.toStringTag] = 'KindaWeakMap' as const;
 }
-export default KindaWeakMap;

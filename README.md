@@ -73,7 +73,7 @@ A publish pipeline is not wired up yet.
 | `KebabCase`                  | `@rhombus-toolkit/types`            |
 | `keys`                       | `@rhombus-toolkit/obj`              |
 | `keysToEntries`              | `@rhombus-toolkit/obj`              |
-| `KindaWeakMap`               | `@rhombus-toolkit/kinda-weak-map`   |
+| `KindaWeakMap`               | `@rhombus-toolkit/collections`      |
 | `Last`                       | `@rhombus-toolkit/types`            |
 | `LastChar`                   | `@rhombus-toolkit/typed-pluralizer` |
 | `Lazy`                       | `@rhombus-toolkit/once`             |

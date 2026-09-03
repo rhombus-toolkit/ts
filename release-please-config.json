@@ -9,16 +9,15 @@
       "package-name": "@rhombus-toolkit/async-timers",
       "changelog-path": "CHANGELOG.md"
     },
+    "libraries/collections": {
+      "release-type": "node",
+      "package-name": "@rhombus-toolkit/collections",
+      "changelog-path": "CHANGELOG.md"
+    },
     "libraries/fetch": {
       "release-type": "node",
       "package-name": "@rhombus-toolkit/fetch",
       "changelog-path": "CHANGELOG.md"
-    },
-    "libraries/kinda-weak-map": {
-      "release-type": "node",
-      "package-name": "@rhombus-toolkit/kinda-weak-map",
-      "changelog-path": "CHANGELOG.md",
-      "release-as": "2.0.0"
     },
     "libraries/obj": {
       "release-type": "node",

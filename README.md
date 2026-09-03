@@ -61,6 +61,7 @@ A publish pipeline is not wired up yet.
 | `IfFalsy`                    | `@rhombus-toolkit/types`            |
 | `IfTruthy`                   | `@rhombus-toolkit/types`            |
 | `ImmediateHandle`            | `@rhombus-toolkit/platform`         |
+| `ImmutableLinkedList`        | `@rhombus-toolkit/collections`      |
 | `Inc`                        | `@rhombus-toolkit/types`            |
 | `IndexAccessed`              | `@rhombus-toolkit/proxy-base`       |
 | `Indexed`                    | `@rhombus-toolkit/proxy-base`       |

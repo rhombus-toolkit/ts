@@ -27,8 +27,7 @@
     "libraries/obj": {
       "release-type": "node",
       "package-name": "@rhombus-toolkit/obj",
-      "changelog-path": "CHANGELOG.md",
-      "release-as": "1.0.0"
+      "changelog-path": "CHANGELOG.md"
     },
     "libraries/platform": {
       "release-type": "node",
@@ -38,14 +37,12 @@
     "libraries/restify": {
       "release-type": "node",
       "package-name": "@rhombus-toolkit/restify",
-      "changelog-path": "CHANGELOG.md",
-      "release-as": "1.0.0"
+      "changelog-path": "CHANGELOG.md"
     },
     "libraries/types": {
       "release-type": "node",
       "package-name": "@rhombus-toolkit/types",
-      "changelog-path": "CHANGELOG.md",
-      "release-as": "1.0.0"
+      "changelog-path": "CHANGELOG.md"
     },
     "libraries/proxy-base": {
       "release-type": "node",
@@ -60,8 +57,7 @@
     "libraries/once": {
       "release-type": "node",
       "package-name": "@rhombus-toolkit/once",
-      "changelog-path": "CHANGELOG.md",
-      "release-as": "1.0.0"
+      "changelog-path": "CHANGELOG.md"
     },
     "libraries/type-guards": {
       "release-type": "node",

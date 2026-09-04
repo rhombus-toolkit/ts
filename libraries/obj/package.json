@@ -1,6 +1,6 @@
 {
   "name": "@rhombus-toolkit/obj",
-  "version": "2.0.0",
+  "version": "3.0.0",
   "description": "Typed counterparts of the Object.* statics, plus flattenMap.",
   "repository": {
     "type": "git",

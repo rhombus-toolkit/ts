@@ -1,5 +1,27 @@
 # Changelog
 
+## [3.0.0](https://github.com/rhombus-toolkit/ts/compare/async-timers-v2.0.1...async-timers-v3.0.0) (2026-09-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* **repo:** delete func and case-converter compat shims
+
+### Features
+
+* **platform:** add package for typed host-platform globals ([dfae48d](https://github.com/rhombus-toolkit/ts/commit/dfae48d18b36e45c0ef8f82832d3a3b6e4fb5a4e))
+
+
+### Bug Fixes
+
+* **async-timers:** source setImmediate from platform, not set-immediate ([8813e81](https://github.com/rhombus-toolkit/ts/commit/8813e81b177e14c9e5e7d76fca61e6887b9adaf3))
+* **repo:** sync manifests to npm, refuse to publish an unpublished pin ([693a9b8](https://github.com/rhombus-toolkit/ts/commit/693a9b84c1113e7ec9d1098b6c10036cd168787a))
+
+
+### Chores
+
+* **repo:** delete func and case-converter compat shims ([a195004](https://github.com/rhombus-toolkit/ts/commit/a195004db8ebe6886d8aeca7cd8fb5274db6be35))
+
 ## [2.0.0](https://github.com/rhombus-toolkit/ts/compare/async-timers-v1.4.4...async-timers-v2.0.0) (2026-08-15)
 
 

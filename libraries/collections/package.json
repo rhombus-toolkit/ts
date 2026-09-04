@@ -1,6 +1,6 @@
 {
   "name": "@rhombus-toolkit/collections",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Collection data structures: ImmutableLinkedList (persistent, both ends known), KindaWeakMap (strong keys, weak values).",
   "repository": {
     "type": "git",

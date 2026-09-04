@@ -1,6 +1,6 @@
 {
   "libraries/async-timers": "2.0.1",
-  "libraries/collections": "1.0.0",
+  "libraries/collections": "2.0.0",
   "libraries/fetch": "2.0.0",
   "libraries/iterable": "1.0.0",
   "libraries/obj": "3.0.0",

@@ -1,5 +1,13 @@
 # Changelog
 
+## [3.0.1](https://github.com/rhombus-toolkit/ts/compare/obj-v3.0.0...obj-v3.0.1) (2026-09-04)
+
+
+### Bug Fixes
+
+* **obj:** correlate mapValues' callback pair, add mapEntries ([52af040](https://github.com/rhombus-toolkit/ts/commit/52af04034c5fa21348a3f9dc6c308fc40df6933c))
+* **obj:** keep obj.&lt;name&gt;'s type half in the rolled .d.ts ([d34716a](https://github.com/rhombus-toolkit/ts/commit/d34716ac2033e8f44dc31441df28b358e396fee8))
+
 ## [3.0.0](https://github.com/rhombus-toolkit/ts/compare/obj-v2.0.0...obj-v3.0.0) (2026-09-03)
 
 

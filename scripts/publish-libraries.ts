@@ -14,11 +14,17 @@
 // whole run with no output, where a publish attempt that loses the race just
 // reports the duplicate and moves on.
 //
-// DIRECT publish, straight to `latest` -- deliberately NOT `npm stage publish`.
-// Staging defers proof-of-presence to a human running `npm stage approve <id>`,
-// which needs 2FA that OIDC trust tokens cannot satisfy, so a staged pipeline
-// can never complete unattended. Every @rhombus-toolkit package's npm Trusted
-// Publisher permits both; this script uses the one that finishes on its own.
+// DIRECT publish -- deliberately NOT `npm stage publish`. Staging defers
+// proof-of-presence to a human running `npm stage approve <id>`, which needs 2FA
+// that OIDC trust tokens cannot satisfy, so a staged pipeline can never complete
+// unattended. Every @rhombus-toolkit package's npm Trusted Publisher permits
+// both; this script uses the one that finishes on its own.
+//
+// The dist-tag is derived per package, never assumed: a stable version goes to
+// `latest`, a prerelease to its own identifier (`1.2.0-placeholder.0` ->
+// `placeholder`), which is the convention already on npm for this repo's
+// reservation placeholders. npm REFUSES a prerelease publish that carries no
+// `--tag` at all, so the derivation is what makes a prerelease publishable here.
 //
 // Package discovery + Kahn's-algorithm tiering are unchanged from std's shape:
 // PUBLISHABLE = has a `publishConfig` key and isn't `"private": true`, tiered
@@ -141,22 +147,21 @@ function computeTiers(packages: Map<string, Package>): string[][] {
   return tiers;
 }
 
-const packages = discoverPackages();
-const tiers = computeTiers(packages);
-const ordered = tiers.flat().map((name) => packages.get(name)!);
-
-const mode = process.argv[2];
-
-if (mode === '--list') {
-  for (const pkg of ordered) {
-    console.log(pkg.name);
+/**
+ * The npm dist-tag a version publishes under -- `latest` for a stable release, the version's own
+ * prerelease identifier otherwise (`2.0.0-rc.1` -> `rc`).
+ *
+ * @remarks
+ * `undefined` for a prerelease whose identifier is purely numeric (`1.0.0-0`): it names no channel,
+ * and npm rejects a dist-tag that parses as a semver range anyway.
+ */
+export function deriveDistTag(version: string): string | undefined {
+  const prerelease = /^[^-+]+-([^+]+)/.exec(version)?.[1];
+  if (prerelease === undefined) {
+    return 'latest';
   }
-  process.exit(0);
-}
-
-if (mode !== '--publish') {
-  console.error('usage: publish-libraries.ts --list | --publish');
-  process.exit(2);
+  const identifier = prerelease.split('.')[0] ?? '';
+  return /^\d+$/.test(identifier) || !identifier ? undefined : identifier;
 }
 
 interface PackResult {
@@ -202,52 +207,81 @@ function pinnedSiblings(tarball: string): Record<string, string> {
   return pinned;
 }
 
-const destDir = mkdtempSync(`${tmpdir()}/rhombus-publish-`);
-const published: string[] = [];
-const skipped: string[] = [];
-/** Versions this run has confirmed live -- either already on npm, or published moments ago. */
-const live = new Set<string>();
+function main(): void {
+  const packages = discoverPackages();
+  const ordered = computeTiers(packages).flat().map((name) => packages.get(name)!);
+  const mode = process.argv[2];
 
-for (const pkg of ordered) {
-  console.log(`\n▶ ${pkg.name}`);
-  const tarball = packTarball(pkg, destDir);
-
-  // Refuse before publishing rather than after: a tarball pinning an unpublished sibling installs
-  // as a hard resolution failure downstream, and npm has no way to take it back.
-  for (const [dep, version] of Object.entries(pinnedSiblings(tarball))) {
-    if (live.has(`${dep}@${version}`)) {
-      continue;
+  if (mode === '--list') {
+    for (const pkg of ordered) {
+      console.log(pkg.name);
     }
-    const check = spawnSync('npm', ['view', `${dep}@${version}`, 'version']);
-    if (check.status === 0 && check.stdout.toString().trim()) {
-      live.add(`${dep}@${version}`);
-      continue;
-    }
-    console.error(
-      `publish-libraries: ${pkg.name} pins ${dep}@${version}, which is not on npm. `
-        + `Its manifest is behind what was published -- sync it before publishing.`,
-    );
-    process.exit(1);
+    return;
   }
-  const result = spawnSync('npm', ['publish', tarball, '--provenance', '--access', 'public'], { cwd: pkg.dir });
-  const output = `${result.stdout?.toString() ?? ''}${result.stderr?.toString() ?? ''}`;
-  process.stdout.write(output);
 
-  if (result.status === 0) {
-    published.push(pkg.name);
-    live.add(`${pkg.name}@${pkg.version}`);
-  } else if (isAlreadyPublished(output)) {
-    live.add(`${pkg.name}@${pkg.version}`);
-    // The manifest version is already live, so this package did not move in the
-    // push being built. That is the steady state for most of the workspace on
-    // any given commit, not a failure.
-    console.log(`- skip ${pkg.name} -- version already on npm`);
-    skipped.push(pkg.name);
-  } else {
-    console.error(`publish-libraries: ${pkg.name} failed to publish`);
-    process.exit(result.status ?? 1);
+  if (mode !== '--publish') {
+    console.error('usage: publish-libraries.ts --list | --publish');
+    process.exit(2);
   }
+
+  const destDir = mkdtempSync(`${tmpdir()}/rhombus-publish-`);
+  const published: string[] = [];
+  const skipped: string[] = [];
+  /** Versions this run has confirmed live -- either already on npm, or published moments ago. */
+  const live = new Set<string>();
+
+  for (const pkg of ordered) {
+    console.log(`\n▶ ${pkg.name}`);
+    const distTag = deriveDistTag(pkg.version);
+    if (distTag === undefined) {
+      console.error(`publish-libraries: ${pkg.name} version ${pkg.version} names no dist-tag to publish under`);
+      process.exit(1);
+    }
+    const tarball = packTarball(pkg, destDir);
+
+    // Refuse before publishing rather than after: a tarball pinning an unpublished sibling installs
+    // as a hard resolution failure downstream, and npm has no way to take it back.
+    for (const [dep, version] of Object.entries(pinnedSiblings(tarball))) {
+      if (live.has(`${dep}@${version}`)) {
+        continue;
+      }
+      const check = spawnSync('npm', ['view', `${dep}@${version}`, 'version']);
+      if (check.status === 0 && check.stdout.toString().trim()) {
+        live.add(`${dep}@${version}`);
+        continue;
+      }
+      console.error(
+        `publish-libraries: ${pkg.name} pins ${dep}@${version}, which is not on npm. `
+          + `Its manifest is behind what was published -- sync it before publishing.`,
+      );
+      process.exit(1);
+    }
+    const result = spawnSync('npm', ['publish', tarball, '--provenance', '--access', 'public', '--tag', distTag], {
+      cwd: pkg.dir,
+    });
+    const output = `${result.stdout?.toString() ?? ''}${result.stderr?.toString() ?? ''}`;
+    process.stdout.write(output);
+
+    if (result.status === 0) {
+      published.push(pkg.name);
+      live.add(`${pkg.name}@${pkg.version}`);
+    } else if (isAlreadyPublished(output)) {
+      live.add(`${pkg.name}@${pkg.version}`);
+      // The manifest version is already live, so this package did not move in the
+      // push being built. That is the steady state for most of the workspace on
+      // any given commit, not a failure.
+      console.log(`- skip ${pkg.name} -- version already on npm`);
+      skipped.push(pkg.name);
+    } else {
+      console.error(`publish-libraries: ${pkg.name} failed to publish`);
+      process.exit(result.status ?? 1);
+    }
+  }
+
+  console.log(`\npublished: ${published.join(' ') || 'none'}`);
+  console.log(`skipped:   ${skipped.join(' ') || 'none'}`);
 }
 
-console.log(`\npublished: ${published.join(' ') || 'none'}`);
-console.log(`skipped:   ${skipped.join(' ') || 'none'}`);
+if (import.meta.main) {
+  main();
+}

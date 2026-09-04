@@ -1,6 +1,6 @@
 export * from './flattenMap';
-// Namespaced rather than flattened into this barrel: `obj.keys` is the point --
-// each member is a type and a same-named wrapper function declaration-merged
-// together, and the namespace is what keeps `obj.keys(x)` and `obj.keys<T>`
-// spelled the same way they were when this lived in type-helpers.
-export * as obj from './obj';
+// `obj` is declared as a real `export namespace obj` in ./obj rather than a
+// barrel `export * as obj from './obj'`: the barrel form makes rollup-plugin-dts
+// synthesize the namespace at bundle time, in the process dropping the type
+// half of each declaration-merged type+function pair (see ./obj header).
+export { obj } from './obj';

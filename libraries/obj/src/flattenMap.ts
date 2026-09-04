@@ -1,8 +1,7 @@
 import { isFunction } from '@rhombus-toolkit/type-guards';
 import type { Cast, Dec, DeepDictionary, DeepDictionaryItem, DeepRecord, DeepRecordItem, Falsy, Func, Inc,
   Store } from '@rhombus-toolkit/types';
-import type { Entry } from './obj';
-import { fromEntries } from './obj';
+import { obj } from './obj';
 // type _flattenMap<T extends DeepDictionaryItem<Func>, prefix extends string = '', CurrentDepth extends number = 0> =
 //   CurrentDepth extends 10 ? never :
 //   T extends DeepDictionary<Func> ? {
@@ -50,7 +49,7 @@ type join<A extends string, B extends PropertyKey> = A extends Falsy ? Cast<B, s
  * `MaxDepth` below 10 would quietly turn a map that used to flatten into
  * `never`.
  */
-export type flattenMap<T extends DeepDictionary<any>, TLeaf = Func, MaxDepth extends number = 10> = fromEntries<
+export type flattenMap<T extends DeepDictionary<any>, TLeaf = Func, MaxDepth extends number = 10> = obj.fromEntries<
   _flattenMap<T, TLeaf, '', Store<MaxDepth>>
 >;
 
@@ -85,7 +84,7 @@ export function flattenMap<T extends DeepDictionary<Leaf>, Leaf>(map: T,
   leafPredicate: (p: any) => p is Leaf): flattenMap<T, Leaf>;
 
 export function flattenMap(map: DeepDictionary<any>, leafPredicate: (p: any) => boolean = isFunction): any {
-  const result: Array<Entry<string, any>> = [];
+  const result: Array<obj.Entry<string, any>> = [];
   const stack = Object.entries(map);
   while (stack.length) {
     const [prefix, branchOrLeaf] = stack.pop()!;
@@ -95,5 +94,5 @@ export function flattenMap(map: DeepDictionary<any>, leafPredicate: (p: any) => 
       Object.entries(branchOrLeaf).forEach(([key, p]) => stack.push([join(prefix, key), p]));
     }
   }
-  return fromEntries(result);
+  return obj.fromEntries(result);
 }

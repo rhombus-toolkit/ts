@@ -92,6 +92,13 @@ describe('repeatable', () => {
     expect(calls).toBe(3);
   });
 
+  it('walks a spent source with the array iterator of its cache', () => {
+    const sequence = repeatable(counted([1, 2]).source);
+    [...sequence];
+
+    expect(Object.prototype.toString.call(sequence[Symbol.iterator]())).toBe('[object Array Iterator]');
+  });
+
   it('accepts any iterable, a string included', () => {
     expect([...repeatable(new Set(['x', 'y']))]).toEqual(['x', 'y']);
     expect([...repeatable('ab')]).toEqual(['a', 'b']);

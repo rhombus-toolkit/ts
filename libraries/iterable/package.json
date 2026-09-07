@@ -1,7 +1,7 @@
 {
   "name": "@rhombus-toolkit/iterable",
   "version": "1.1.0",
-  "description": "Iterable helpers: concat, first, firstDefined, iterable, replace, sequenceEquals, zip.",
+  "description": "Iterable helpers: concat, first, firstDefined, iterable, repeatable, replace, sequenceEquals, zip.",
   "repository": {
     "type": "git",
     "url": "https://github.com/rhombus-toolkit/ts.git",

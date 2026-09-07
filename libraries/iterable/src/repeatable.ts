@@ -16,14 +16,19 @@ class SafeIterable<T> implements Iterable<T> {
     }
   }
 
-  *[Symbol.iterator](): Generator<T> {
+  [Symbol.iterator](): IterableIterator<T> {
+    if (this.#source === undefined) {
+      return this.#cache[Symbol.iterator]();
+    }
+    return this.#pullThrough();
+  }
+
+  /** Walks the cache, pulling from the source whenever the cache runs out ahead of the walk. */
+  *#pullThrough(): Generator<T> {
     let pos = 0;
     while (true) {
-      if (pos < this.#cache.length) {
-        const replay = this.#cache.slice(pos);
-        pos += replay.length;
-        yield* replay;
-        continue;
+      while (pos < this.#cache.length) {
+        yield this.#cache[pos++];
       }
       if (this.#source === undefined) {
         return;
@@ -34,8 +39,6 @@ class SafeIterable<T> implements Iterable<T> {
         return;
       }
       this.#cache.push(value);
-      pos += 1;
-      yield value;
     }
   }
 }

@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.1](https://github.com/rhombus-toolkit/ts/compare/iterable-v1.2.0...iterable-v1.2.1) (2026-09-07)
+
+
+### Bug Fixes
+
+* **iterable:** let repeatable release its source once it is exhausted ([b5a9f5f](https://github.com/rhombus-toolkit/ts/commit/b5a9f5ff907d3d466ef794de7a4386a6dff74937))
+* **iterable:** let repeatable release its source once it is exhausted ([2fc20a2](https://github.com/rhombus-toolkit/ts/commit/2fc20a2f77bdc968d1896cf2526020a597c8dbbe))
+
 ## [1.2.0](https://github.com/rhombus-toolkit/ts/compare/iterable-v1.1.0...iterable-v1.2.0) (2026-09-07)
 
 

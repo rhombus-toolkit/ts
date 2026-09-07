@@ -1,4 +1,4 @@
-import { concat, zip } from './index';
+import { concat, zip } from './utils';
 
 declare function isAssignable<TActual extends TExpected, TExpected>(actual?: TActual, expected?: TExpected): void;
 declare function isAssignable<TExpected>(actual?: TExpected): void;

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'bun:test';
 import { concat, first, firstDefined, iterable, replace, sequenceEquals, tryFirst, tryFirstDefined,
-  zip } from './index';
+  zip } from './utils';
 
 describe('replace', () => {
   it('substitutes a value replacement for every exact-value match', () => {

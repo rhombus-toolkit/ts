@@ -2,7 +2,8 @@ import { assertNever, isIterable, isIterator } from '@rhombus-toolkit/type-guard
 
 /** Replays a one-shot source: each element is pulled once, on first demand, and kept for every later walk. */
 class SafeIterable<T> implements Iterable<T> {
-  #source: Iterator<T>;
+  /** The source until it reports done, then dropped so whatever it held can be collected. */
+  #source: Iterator<T> | undefined;
   #cache: T[] = [];
 
   constructor(source: Iterator<T> | Iterable<T>) {
@@ -24,9 +25,13 @@ class SafeIterable<T> implements Iterable<T> {
         yield* replay;
         continue;
       }
+      if (this.#source === undefined) {
+        return;
+      }
       const { done, value } = this.#source.next();
       if (done) {
-        break;
+        this.#source = undefined;
+        return;
       }
       this.#cache.push(value);
       pos += 1;

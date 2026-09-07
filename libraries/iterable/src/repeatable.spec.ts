@@ -79,6 +79,19 @@ describe('repeatable', () => {
     expect([...sequence]).toEqual([0, 1]);
   });
 
+  it('stops asking the source once it has reported done', () => {
+    let calls = 0;
+    const iterator: Iterator<number> = { next: () => {
+      calls++;
+      return calls <= 2 ? { done: false, value: calls } : { done: true, value: undefined };
+    } };
+    const sequence = repeatable(iterator);
+
+    expect([...sequence]).toEqual([1, 2]);
+    expect([...sequence]).toEqual([1, 2]);
+    expect(calls).toBe(3);
+  });
+
   it('accepts any iterable, a string included', () => {
     expect([...repeatable(new Set(['x', 'y']))]).toEqual(['x', 'y']);
     expect([...repeatable('ab')]).toEqual(['a', 'b']);

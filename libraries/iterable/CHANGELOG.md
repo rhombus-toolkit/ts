@@ -1,5 +1,13 @@
 # Changelog
 
+## [1.2.2](https://github.com/rhombus-toolkit/ts/compare/iterable-v1.2.1...iterable-v1.2.2) (2026-09-07)
+
+
+### Performance
+
+* **iterable:** walk a spent repeatable straight off its cache ([5b95cf2](https://github.com/rhombus-toolkit/ts/commit/5b95cf2e10f4e0c31abeeb3dddeb8bd9696218a2))
+* **iterable:** walk a spent repeatable straight off its cache ([13eac7b](https://github.com/rhombus-toolkit/ts/commit/13eac7b987ceaf2a18abffd7bdc13f00bf81acf8))
+
 ## [1.2.1](https://github.com/rhombus-toolkit/ts/compare/iterable-v1.2.0...iterable-v1.2.1) (2026-09-07)
 
 

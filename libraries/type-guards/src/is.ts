@@ -73,13 +73,10 @@ function hasMethod<K extends PropertyKey>(value: unknown, key: K): value is Reco
  * Whether `value` carries `key` at all, whatever it holds.
  *
  * @remarks
- * `K` is a type parameter rather than a plain `PropertyKey` so the narrowing names the key that was
- * actually checked: a literal argument makes the result `Record<'foo', unknown>`, where a widened
- * `PropertyKey` would collapse to an index signature that admits every other key too.
- *
- * `Object(value)` boxes primitives, since `in` demands an object where a property read would have
- * boxed on its own. Testing the member's *value* instead would conflate absence with a falsy
- * member — `''` carries `length`.
+ * `K` is a type parameter (not a plain `PropertyKey`) so a literal key narrows to `Record<'foo',
+ * unknown>` instead of collapsing to an index signature. `Object(value)` boxes primitives, since
+ * testing the member's value instead would conflate absence with a falsy member — `''` carries
+ * `length`.
  */
 export function hasMember<K extends PropertyKey>(value: unknown, key: K): value is Record<K, unknown> {
   return hasValue(value) && key in Object(value);
@@ -119,19 +116,10 @@ export function hasValue<T>(p: T | null | undefined): p is T {
   return isDefined(p) && p !== null;
 }
 
-/**
- * Whether `value` is callable.
- *
- * @remarks
- * Takes no type arguments: `typeof` witnesses that something is callable and nothing about what it
- * accepts or returns, so letting a caller name those would dress an unchecked assertion up as a
- * guard — a caller who needs a signature should spell the cast out.
- *
- * `Func`'s permissive default is what the narrowing needs, rather than a stricter
- * `Func<unknown[], unknown>`. Parameters are contravariant, so a concrete `Func<[T], U>` is not
- * assignable to the stricter form; narrowing a `U | Func<[T], U>` by it cannot pick the function
- * member and yields a call signature returning `unknown`, losing `U`.
- */
+/** Whether `value` is callable. Takes no type arguments — a caller who needs a signature spells the cast out. */
+// `Func`'s permissive default is what the narrowing needs: a stricter `Func<unknown[], unknown>`
+// is contravariant in its parameters, so narrowing a `U | Func<[T], U>` by it can't pick the
+// function member and yields a call signature returning `unknown`, losing `U`.
 export function isFunction(value: unknown): value is Func {
   return typeof value === 'function';
 }
@@ -225,15 +213,11 @@ export function isAsyncGeneratorFunction(value: any): value is AsyncGeneratorFun
 }
 
 /**
- * Type guard: whether every element of `items` is present — none are `undefined`.
+ * Whether every element of `items` is present — none are `undefined`.
  *
  * @remarks
- * Deciding this reads `items` to the end, which is why the overloads take an array rather than any
- * `Iterable`: a one-shot source would be spent by the call, leaving the narrowed value it hands
- * back yielding nothing.
- *
- * Two overloads rather than one so a mutable array keeps its mutability through the narrowing — the
- * `ReadonlyArray` overload matches a mutable array too, and would hand back `readonly T[]`.
+ * Takes an array rather than any `Iterable`: deciding this reads to the end, and a one-shot source
+ * would be spent by the call.
  */
 export function isAllThere<T>(items: Array<T | undefined>): items is T[];
 export function isAllThere<T>(items: ReadonlyArray<T | undefined>): items is readonly T[];

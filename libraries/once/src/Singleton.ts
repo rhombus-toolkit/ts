@@ -1,19 +1,15 @@
 import { Ctor } from '@rhombus-toolkit/types';
 
 /**
- * Wraps `ctor` so that every `new` hands back the same instance.
+ * Wraps `ctor` so every `new` returns the same cached instance, keyed per `new.target`
+ * so a subclass gets an instance of its own.
  *
- * The cache is keyed on `new.target`, so a subclass of the returned class gets an
- * instance of its own rather than sharing the base's slot. Each call to `Singleton`
- * mints a fresh wrapper with a fresh cache.
+ * @remarks
+ * Constructor arguments take effect only on the call that builds the instance; later
+ * calls return the cached one and ignore what they were passed.
  *
- * Constructor arguments are honoured only on the call that actually builds the
- * instance; every later call returns the cached one and ignores what it was passed.
- *
- * @param weak Hold the instance weakly, so it can be collected once nothing else
- * refers to it. The next `new` then rebuilds it, re-running the constructor's side
- * effects at a moment nothing controls — which is why this is opt-in, suited to a
- * cache rather than to a genuine singleton.
+ * @param weak Hold the instance weakly; a rebuild after collection re-runs the
+ * constructor's side effects at an uncontrolled moment.
  */
 export function Singleton<T extends Ctor>(ctor: T, weak = false): T {
   // `new.target` carries no type relationship to its own instances, so the cache

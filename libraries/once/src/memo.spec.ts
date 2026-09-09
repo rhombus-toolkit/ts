@@ -68,4 +68,51 @@ describe('memo', () => {
     expect(first(key)).toBe(1);
     expect(second(key)).toBe(2);
   });
+
+  it('computes once per distinct key tuple', () => {
+    let calls = 0;
+    const join = memo((left: { name: string; }, right: { name: string; }) => {
+      calls++;
+      return `${left.name}+${right.name}`;
+    });
+
+    const a = { name: 'a' };
+    const b = { name: 'b' };
+
+    expect(join(a, b)).toBe('a+b');
+    expect(join(a, b)).toBe('a+b');
+    expect(join(b, a)).toBe('b+a');
+    expect(join(a, a)).toBe('a+a');
+
+    expect(calls).toBe(3);
+  });
+
+  it('passes every key to compute in order', () => {
+    const seen: object[][] = [];
+    const record = memo((first: object, second: object, third: object) => {
+      seen.push([first, second, third]);
+    });
+
+    const x = {};
+    const y = {};
+    const z = {};
+    record(x, y, z);
+
+    expect(seen).toEqual([[x, y, z]]);
+  });
+
+  it('stores nothing under a key tuple whose compute throws', () => {
+    let calls = 0;
+    const failing = memo((_first: object, _second: object) => {
+      calls++;
+      throw new Error('nope');
+    });
+
+    const first = {};
+    const second = {};
+
+    expect(() => failing(first, second)).toThrow('nope');
+    expect(() => failing(first, second)).toThrow('nope');
+    expect(calls).toBe(2);
+  });
 });

@@ -46,16 +46,11 @@ type ShallowMerge<A, B> = A extends readonly any[] ? B extends readonly any[] ? 
 /**
  * `B` overlaid on `A` index-wise, walking one position at a time and stopping once both are spent.
  * The result is as long as the longer of the two, which is what leaves a short overlay's tail alone.
- *
- * @remarks
- * The walk's budget is a tuple peeled one cell per step rather than a number run down through
- * `Dec`. `Dec<N>` is `Length<Tail<Counter<N>>>` and `Counter` recurses without a bound while its
- * argument is still a parameter, so relating `Dec<TTL>` back to a `TTL extends number` constraint
- * fails at this declaration with "Excessive stack depth" — the same reason `counter`'s own
- * `Subtract` peels tuples instead of routing through `Skip`. It only compiled before because the
- * `Dec` in scope was a generated lookup table, which this package's move onto
- * `@rhombus-toolkit/types` retires.
  */
+// The walk's budget is a tuple peeled one cell per step rather than a number run down through
+// `Dec`, which recurses unboundedly on a still-generic argument and fails here with "Excessive
+// stack depth" (the same reason `counter`'s own `Subtract` peels tuples instead of routing through
+// `Skip`).
 type MergeArrays<A extends readonly any[], B extends readonly any[]> = _MergeArrays<Store<15>, A, B, [], []>;
 type _MergeArrays<TTL extends readonly any[], A extends readonly any[], B extends readonly any[],
   I extends readonly any[], Acc extends readonly any[]> = TTL extends readonly [any, ...infer TTLRest]
@@ -67,10 +62,8 @@ type _MergeArrays<TTL extends readonly any[], A extends readonly any[], B extend
  * `B`'s element at this index, falling back to `A`'s where `B` has none.
  *
  * @remarks
- * `undefined` counts as "none". A tuple type cannot tell a hole (`[, 7]`) from an explicit
- * `undefined` — both read as `undefined` — so falling back is the only reading available, and it is
- * the one a sparse overlay wants. It does diverge from the runtime, where an explicit `undefined`
- * overwrites.
+ * An explicit `undefined` in `B` also falls back, since a tuple type can't tell it apart from a
+ * hole — this diverges from the runtime `Object.assign`, where an explicit `undefined` overwrites.
  */
 type MergeValue<A extends readonly any[], B extends readonly any[], N extends number> = At<B, N> extends undefined
   ? At<A, N>
@@ -86,15 +79,10 @@ type Spent<A extends readonly any[], B extends readonly any[], I extends readonl
   ? Covers<B, I> extends true ? true : false
   : false;
 
-/**
- * Whether `I` has walked past everything `T` can offer.
- *
- * @remarks
- * A length of `number` rather than a literal means an unbounded array, or a type parameter still
- * standing in for one. There is no index to walk to, so such an operand is covered from the start
- * and contributes nothing. Without that, a merge inside a generic function has no base case and
- * the checker gives up with an excessive-stack-depth error.
- */
+/** Whether `I` has walked past everything `T` can offer. */
+// An unbounded or still-generic `T` (length `number`) is treated as covered from the start, since
+// there's no index to walk to — without that a merge inside a generic function has no base case
+// and the checker gives up with an excessive-stack-depth error.
 type Covers<T extends readonly any[], I extends readonly any[]> = number extends T['length'] ? true
   : keyof T extends keyof I ? true
   : false;
@@ -102,15 +90,7 @@ type Covers<T extends readonly any[], I extends readonly any[]> = number extends
 export namespace obj {
   export type Entry<Key extends string = string, Value = any> = readonly [Key, Value];
 
-  /**
-   * The string keys `Object.keys` yields.
-   *
-   * @remarks
-   * The tuple arm carries the order and is withheld whenever {@link Untuplable} finds a reason to
-   * doubt it. The array arm is unconditional, so `map` and the rest stay reachable while `T` is still
-   * a type parameter — a position where neither the tuple nor the test in front of it can be
-   * evaluated, and an unevaluated conditional carries no members at all.
-   */
+  /** The string keys `Object.keys` yields, ordered where {@link Untuplable} raises no doubt. */
   export type keys<T extends {}> = string & ([Untuplable<T>] extends [never] ? keyTuple<T> : unknown) & ReadonlyArray<
     StringKey<T>
   >;
@@ -127,27 +107,17 @@ export namespace obj {
   /** Every pair `T` can yield, each key carrying its own member type rather than the union of all. */
   export type AnyEntry<T extends {}> = { [K in StringKey<T>]: Entry<K, T[K]>; }[StringKey<T>];
 
-  /**
-   * The `[key, value]` pairs `Object.entries` yields, in the order {@link keys} lists them.
-   *
-   * @remarks
-   * Withholds its tuple arm on the same condition as {@link keys}, and keeps its array arm for the
-   * same reason.
-   */
+  /** The `[key, value]` pairs `Object.entries` yields, in the order {@link keys} lists them. */
   export type entries<T extends {}> = ([Untuplable<T>] extends [never] ? keysToEntries<T, keyTuple<T>> : unknown)
     & ReadonlyArray<AnyEntry<T>>;
   export function entries<T extends {}>(obj: T): entries<T> {
     return Object.entries(obj) as any;
   }
 
-  /**
-   * `Keys` paired with the member each one names on `T`.
-   *
-   * @remarks
-   * The key tuple arrives as a parameter rather than being computed inline so the mapped type reads
-   * it as a tuple and hands back a tuple; mapping straight over an unevaluated conditional maps
-   * something that contributes `length` and the array methods as members of its own.
-   */
+  /** `Keys` paired with the member each one names on `T`. */
+  // `Keys` arrives as a parameter rather than being computed inline so the mapped type reads it as
+  // a tuple and hands back one; mapping straight over an unevaluated conditional instead maps
+  // `length` and the array methods in as members of their own.
   export type keysToEntries<T extends {}, Keys extends ReadonlyArray<StringKey<T>>> = {
     [K in keyof Keys]: Entry<Keys[K], T[Keys[K]]>;
   };
@@ -162,9 +132,8 @@ export namespace obj {
    * it, left to right.
    *
    * @remarks
-   * Arrays and objects merge differently, so `ShallowMerge` dispatches on the pair. Two arrays
-   * merge INDEX-WISE and the result is as long as the longer of them, which is what makes a short
-   * overlay leave the tail alone. Anything else merges by key.
+   * Two array sources merge index-wise, the result as long as the longer of them; anything else
+   * merges by key.
    */
   export type assign<Sources extends readonly any[]> = _assign<Sources, Sources[0] extends readonly any[] ? [] : {}>;
   export function assign<Target extends object, Sources extends any[]>(target: Target,
@@ -177,10 +146,9 @@ export namespace obj {
    * Remaps every pair of `obj` through `fn`, keyed by whatever key each result carries.
    *
    * @remarks
-   * `fn` takes the pair as ONE {@link AnyEntry} argument rather than as `(key, value)`, which is what
-   * keeps its halves correlated: testing `entry[0]` narrows `entry[1]` to that key's own member type.
-   * Spread across two parameters the checker widens them independently, and the callback body sees
-   * every key beside every value with no way to tell which pairing it was handed.
+   * `fn` takes the pair as one {@link AnyEntry} argument rather than as `(key, value)`, so testing
+   * `entry[0]` narrows `entry[1]` to that key's own member type — spread across two parameters the
+   * checker would widen them independently.
    */
   export function mapEntries<Obj extends Record<string, any>, NewEntry extends Entry>(obj: Obj,
     fn: Func<[entry: AnyEntry<Obj>], NewEntry>): fromEntries<NewEntry>

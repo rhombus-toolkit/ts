@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.1.0](https://github.com/rhombus-toolkit/ts/compare/once-v2.0.0...once-v2.1.0) (2026-09-09)
+
+
+### Features
+
+* **once:** memo takes any number of keys ([91f3410](https://github.com/rhombus-toolkit/ts/commit/91f3410967adc9dc1958fe043873e6683b4b2d0a))
+
 ## [2.0.0](https://github.com/rhombus-toolkit/ts/compare/once-v1.0.1...once-v2.0.0) (2026-09-04)
 
 

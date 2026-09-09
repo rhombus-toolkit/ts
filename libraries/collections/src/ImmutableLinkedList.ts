@@ -1,12 +1,8 @@
 /**
- * Extending answers a new list sharing everything already there, so whoever holds one reads
- * exactly what it held however much is added or removed afterwards.
+ * A persistent singly-linked list — extending shares everything already there.
  *
  * @remarks
- * Both ends are known. {@link push} adds at the head and shares the whole list after it, which
- * leaves the tail the same link it already was — so a list knows what it ends with without ever
- * walking to find out. {@link tailToHead} is settled once per list and answered from then on, which
- * is what lets a list be read from its tail as often as wanted without paying to reverse it.
+ * {@link tail} is O(1); {@link tailToHead} reverses once and caches the result.
  */
 export class ImmutableLinkedList<T> implements Iterable<T> {
   /** The one list holding nothing, however it is asked for. */

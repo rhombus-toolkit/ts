@@ -5,5 +5,6 @@
     "libraries/*/rollup.dts.mjs": true,
     "libraries/*/dist": true,
     "libraries/*/node_modules": true
-  }
+  },
+  "explorerExcludeManager.backup": {}
 }

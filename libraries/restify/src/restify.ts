@@ -6,20 +6,7 @@ function mark<T extends object>(target: T): mark<T> {
   return target as any;
 }
 
-/**
- * Changes scalers back into the array type from
- * whence they came.
- *
- * Payload signatures are collected by 'un-spreading'
- * the reducer function's argument list into an
- * array, unless it's a single value -- in that
- * case the value stands on its own (makes for
- * cleaner / easier to read devtools and the like).
- *
- * Types that get modified are marked with a 'Ξ' so
- * that later we can tell the difference between them
- * and single arrays that passed through untouched.
- */
+/** Wraps a value into a marked tuple: nullish becomes `[]`, anything else a one-element tuple; arrays pass through unmarked. */
 export type restify<Œ> = Œ extends void | null | undefined ? mark<[]> : Œ extends any[] ? Œ : mark<[Œ]>;
 
 export function restify<Ø>(arg: Ø): restify<Ø>;
@@ -33,26 +20,7 @@ export function restify(arg: any) {
   return mark([arg]);
 }
 
-/**
- * Changes tuples/arrays (extracted from fn signatures) into a scaler (if
- * possible).
- *
- * Useful when payloads are captured as an array in fn.apply. The resulting
- * type will be that array, unless, it is empty (then void) or a single item
- * (that single value will be extracted). This is all in effor to make devtools
- *  and whatnot look a lot cleaner.
- *
- * The Ξ markers are there to clarify whether payloads composed of a single
- * array-typed value are intended to be spread on the reducer or are actually
- * a single array parameter.
- *
- * @remarks
- * The one-element arm used to be spelled `Δ extends [infer φ] | [infer Θ] ? φ | Θ`, with
- * `Δ extends [infer φ] ? φ` behind it. The second was dead: a union of two identical one-tuple
- * patterns matches exactly what one of them matches, and both slots infer the same element, so the
- * first arm answered every call the second was there for and `φ | Θ` was only ever `φ`. Collapsed to
- * the single arm, which is what it computed.
- */
+/** Reverses {@link restify}: unwraps a marked tuple to its element, empty to `void`, unmarked arrays pass through. */
 export type unrestify<Ω extends any[]> = Ω extends mark<infer Δ>
   ? (Δ extends [infer φ] ? φ : Δ extends [] ? void : Δ extends any[] ? Δ // InvalidTypeArg<`unrestify<T>`, [T: Ω, U: Δ], `Encountered a plain ol' array where a tuple should be specified. Somewhere along the way this type has beed widened and the type information lost.` >
   : AssertNeverError<`unrestify<T>`, [T: Ω],

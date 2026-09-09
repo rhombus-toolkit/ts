@@ -44,9 +44,10 @@ class SafeIterable<T> implements Iterable<T> {
 }
 
 /**
- * Protection from one-shot iterators: wraps a source that spends itself on its first walk so it can be walked
- * any number of times. Elements are read lazily and at most once; walks in flight at the same time share that
- * single pass.
+ * Wraps a source that spends itself on its first walk so it can be walked any number of times.
+ *
+ * @remarks
+ * Elements are read lazily and at most once; walks in flight at the same time share that single pass.
  */
 export function repeatable<T>(source: Iterator<T>): Iterable<T>;
 export function repeatable<T>(source: Iterable<T>): Iterable<T>;

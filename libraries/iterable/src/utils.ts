@@ -63,10 +63,8 @@ export function firstDefined<T>(source: Iterable<T>): T {
  * Yields each argument's elements in order, an argument that is not iterable yielded as itself.
  *
  * @remarks
- * `Iterable<T> | T` is genuinely ambiguous once `T` is itself iterable, and `isIterable` is the
- * only arbiter at runtime: a `T` of `string` arrives flattened into its characters, since a string
- * carries `Symbol.iterator`. The `Iterator.from` on the iterable arm is what makes that hold rather
- * than throw — `flatMap` rejects a primitive outright, where `Iterator.from` iterates a string.
+ * A `T` of `string` is itself iterable, so it flattens into its characters rather than passing
+ * through whole.
  */
 export function concat<T>(...args: ReadonlyArray<Iterable<T> | T>): IteratorObject<T, undefined, unknown> {
   return Iterator.from(args).flatMap(item => isIterable(item) ? Iterator.from(item as Iterable<T>) : [item]);

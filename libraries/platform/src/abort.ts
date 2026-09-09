@@ -38,11 +38,7 @@ export const AbortController: AbortControllerConstructor =
   // The bare-library `globalThis` type lacks these properties, so the cast goes through `unknown`.
   (globalThis as unknown as { AbortController: AbortControllerConstructor; }).AbortController;
 
-/**
- * A singleton inert signal that never aborts. Pass it where an
- * {@link AbortSignal} is required but cancellation is genuinely not-applicable;
- * every member is a no-op.
- */
+/** A singleton {@link AbortSignal} that never aborts, for call sites where cancellation doesn't apply. */
 export const neverSignal: AbortSignal = { aborted: false, reason: undefined, onabort: null, throwIfAborted() {},
   addEventListener() {}, removeEventListener() {}, dispatchEvent() {
   return false;

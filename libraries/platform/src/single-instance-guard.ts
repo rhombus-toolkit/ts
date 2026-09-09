@@ -10,12 +10,7 @@
  * copies of that package end up loaded in one process.
  *
  * @remarks
- * The first call records `moduleUrl` on `globalThis`, under
- * `Symbol.for('rhombus-toolkit:' + packageName + '/instance')`. Every later
- * call compares against that record: the same URL means this same copy is
- * just being evaluated again, and nothing happens; a different URL means a
- * second copy of the package is loading, and the call throws an error naming
- * both URLs.
+ * A later call with the same `moduleUrl` is a no-op; a different `moduleUrl` throws.
  */
 export function stampSingleInstance(packageName: string, moduleUrl: string): void {
   const slot = Symbol.for(`rhombus-toolkit:${packageName}/instance`);

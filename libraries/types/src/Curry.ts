@@ -9,15 +9,8 @@ type _CurryBasic<TArgs extends any[], TReturn> = <T extends PartialList<TArgs>>(
 type CurryBasic<TFn extends Func<any[], any>> = _CurryBasic<Parameters<TFn>, ReturnType<TFn>>;
 
 /**
- * The gap marker, structurally.
- *
- * @remarks
- * The compat target is Ramda, whose
- * `R.__` is the object `{'@@functional/placeholder': true}`. It was a local
- * `unique symbol` here, which no Ramda placeholder is ever assignable to — so
- * the compat claim could not be met by construction. Matching the shape is the
- * whole fix; nothing needs to import this to use it, because Ramda's own `__`
- * already has it.
+ * The gap marker, structurally — matches Ramda's `R.__` (`{'@@functional/placeholder': true}`),
+ * so nothing needs to import this to use it.
  */
 interface Placeholder {
   readonly '@@functional/placeholder': true;

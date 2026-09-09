@@ -1,20 +1,10 @@
 /**
- * Brand `Type` with a phantom `Scope` so it is no longer assignable *from* the
- * bare underlying type. A `Brand<string, 'UserId'>` is still usable anywhere a
- * `string` is wanted, but a plain `string` (or a brand of a different `Scope`)
- * is not assignable back to it.
+ * Brand `Type` with a phantom `Scope` so it is no longer assignable *from* the bare underlying
+ * type — a `Brand<string, 'UserId'>` still assigns to `string`, but not the reverse.
  *
  * @remarks
- * The `'⛔'` key is a marker, not a lock. A string-literal computed key is
- * nameable from anywhere, so `x as string & { readonly ['⛔']: 'UserId' }`
- * assigns to `Brand<string, 'UserId'>` cleanly (verified) — the emoji only
- * blocks dot-access. Reach for a brand to catch an accidental mix-up, not to
- * defend against a caller who is trying to get around it.
- *
- * Genuine unforgeability would want an unexported `declare const brand: unique
- * symbol` as the key instead: it emits nothing and cannot be named from
- * outside, at the price of a brand that no longer survives being re-declared in
- * a separately rolled declaration bundle.
+ * The `'⛔'` key is a marker, not a lock: a computed string-literal key is nameable from
+ * anywhere, so `x as string & { readonly ['⛔']: 'UserId' }` gets past it.
  */
 export type Brand<Type, Scope extends string | symbol> = Type & { readonly ['⛔']: Scope; };
 

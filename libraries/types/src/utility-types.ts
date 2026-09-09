@@ -5,18 +5,13 @@
 export type Simplify<T> = { [KeyType in keyof T]: T[KeyType]; };
 
 /**
- * {@link Simplify}, plus the implicit index signature an `interface` lacks —
- * the shape that lets a namespace's members merge onto an interface through
- * `extends Flatten<typeof TheNamespace>`.
+ * {@link Simplify}, plus the implicit index signature an `interface` lacks — the shape that lets
+ * a namespace's members merge onto an interface via `extends Flatten<typeof TheNamespace>`.
  *
  * @remarks
- * `Flatten` and `Simplify` are the same restatement; the trailing `& {}` is the
- * whole difference, and it is for the reader, not the checker: it makes an error
- * or a hover print the members rather than the alias name. Keep it — deleting it
- * changes nothing that type-checks, so nothing will fail to tell you it is gone.
- * Both names ship because both call sites read wrong under the other: you
- * `Simplify` a computed type to see it, and you `Flatten` a namespace to merge
- * it.
+ * The trailing `& {}` is for the reader, not the checker: it makes an error or hover print the
+ * members instead of the alias name, and type-checks the same without it — don't delete it
+ * expecting a visible difference.
  */
 export type Flatten<T> = Simplify<T> & {};
 

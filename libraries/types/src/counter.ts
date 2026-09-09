@@ -27,16 +27,13 @@ export type Add<X extends number, Y extends number> = Length<[...Counter<X>, ...
  * `X - Y`, clamped at zero.
  *
  * @remarks
- * Peels a cell from each side rather than routing through `array`'s `Skip`.
- * Going through `Skip` relates its deferred result against `Length`'s `T extends any[]`
- * bound across `Counter<X>`'s unbounded recursion, which fails at this
- * declaration with "Excessive stack depth" the moment this file is type-checked
- * rather than skipped as an ambient declaration.
- *
- * Clamping is not a choice: a tuple has no negative length, so the subtrahend
- * running out first is the only representable answer.
+ * A tuple has no negative length, so the subtrahend running out first is the only representable
+ * answer.
  */
 export type Subtract<X extends number, Y extends number> = Length<_Subtract<Counter<X>, Counter<Y>>>;
+// Peels a cell from each side rather than routing through `array`'s `Skip`: relating its deferred
+// result against `Length`'s `T extends any[]` bound across `Counter<X>`'s unbounded recursion
+// fails here with "Excessive stack depth" once this file is type-checked rather than skipped.
 type _Subtract<X extends CounterArray, Y extends CounterArray> = Y extends [any, ...infer YRest]
   ? X extends [any, ...infer XRest] ? _Subtract<XRest, YRest> : []
   : X;

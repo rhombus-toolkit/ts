@@ -133,13 +133,7 @@ type InsertBefore<TInput, TSearch, TInsert> = TInput extends J<[infer X, infer Y
 //     1;
 // type DashCase<T extends string> = Replace<SnakeCase<T>, '_', '-'>;
 
-/**
- * `CONSTANT_CASE` — `ConstantCase<'fooBar'>` is `'FOO_BAR'`.
- *
- * @remarks
- * This shipped as `SnakeCase` and never produced snake_case; the name was the
- * bug. {@link SnakeCase} below is the real one.
- */
+/** `CONSTANT_CASE` — `ConstantCase<'fooBar'>` is `'FOO_BAR'`. */
 export type ConstantCase<T extends string> = Uppercase<InsertBefore<T, UpperCaseChar, '_'>>;
 
 /** `snake_case` — `SnakeCase<'fooBar'>` is `'foo_bar'`. */
@@ -163,10 +157,8 @@ type Separated<T extends string> = Replace<Replace<T, '_', ' '>, '-', ' '>;
  * ```
  *
  * @remarks
- * Existing separators become spaces, then every case boundary becomes one too,
- * and `Split` drops the empties a doubled separator leaves behind. The `Cast`
- * restates string-array-ness for the `Join` below, which cannot see through the
- * deferred conditional while `T` is still a parameter.
+ * Existing separators become spaces, then every case boundary becomes one too, and `Split` drops
+ * the empties a doubled separator leaves behind.
  */
 type Words<T extends string> = Cast<Split<Lowercase<InsertBefore<Separated<T>, UpperCaseChar, ' '>>, ' '>, string[]>;
 

@@ -20,26 +20,12 @@ import { spawnSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
 
 /**
- * Runs `fn` with this package's own `sideEffects` manifest field temporarily
- * removed from disk, then restores the original file byte-for-byte (even on
- * throw).
+ * Runs `fn` with this package's own `sideEffects` manifest field temporarily removed, then restores it byte-for-byte.
  *
- * `sideEffects: false`/an array is correct PUBLISHED metadata -- a hint to a
- * DOWNSTREAM consumer's bundler that importing this package for its side
- * effects is safe to elide. The bug: `bun build` also reads it from THIS
- * package's own package.json and applies it to the package's OWN internal
- * re-export graph, dropping a re-exported class/function body while its name
- * survives in the `export {}` list -- a bundle that throws `ReferenceError`
- * on import. Verified: without this, proxy-base's dist/bundle/index.js was 5
- * lines (an export statement, no declarations).
- *
- * `ignoreDCEAnnotations: true` (Bun's own documented escape hatch for exactly
- * this -- "package.json sideEffects fields... temporary workaround for
- * incorrect annotations") was tried FIRST and verified NOT to fix it (bun
- * 1.3.14, both the JS API option and the `--ignore-dce-annotations` CLI
- * flag): reproduced in isolation, `sideEffects: false` still drops the body
- * with the flag set either way. Only removing the field from the manifest
- * bun actually reads at build time works, hence this temporary strip.
+ * @remarks
+ * Works around a `bun build` bug: it applies the package's own `sideEffects: false` to its internal
+ * re-export graph, silently dropping a re-exported declaration's body while its name survives in
+ * the `export {}` list.
  */
 function withoutSideEffectsField<T>(dir: string, fn: () => T): T {
   const manifestPath = `${dir}/package.json`;
@@ -48,6 +34,8 @@ function withoutSideEffectsField<T>(dir: string, fn: () => T): T {
   if (!('sideEffects' in manifest)) {
     return fn();
   }
+  // `ignoreDCEAnnotations: true` (Bun's documented escape hatch for this) does NOT fix it (bun
+  // 1.3.14, JS API and CLI flag both) -- only removing the field from the manifest bun reads works.
   const { sideEffects: _sideEffects, ...stripped } = manifest;
   writeFileSync(manifestPath, JSON.stringify(stripped, null, 2) + '\n');
   try {

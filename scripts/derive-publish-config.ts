@@ -67,20 +67,16 @@ interface Manifest {
   readonly rhombusBuild?: { readonly typesOnly?: boolean; };
 }
 
-/** True for a white-box seam subpath dropped from the published surface. Both
- * halves are dev-only: `./tokens/*` (a source token surface) and `./private/*`
- * (a built lowered runtime) -- std's convention, unused here so far. */
+/** True for a white-box seam subpath (`./tokens/*`, `./private/*`) dropped from the published surface. */
 function isInternal(subpath: string): boolean {
   return subpath.startsWith('./tokens/') || subpath.startsWith('./private/');
 }
 
 /**
- * Swap a dev path to its published dist target -- `./dist/bundle/` is where
- * build-lib.ts emits:
- *   kind 'js'  -> `./dist/bundle/<name>.js`   (runtime bundle)
- *   kind 'dts' -> `./dist/bundle/<name>.d.ts` (rolled declarations)
- * Idempotent: a value already under `./dist/bundle/` only has its extension
- * retargeted, which is the common case in this repo (see header comment).
+ * Swaps a dev export path to its published `dist/bundle` target.
+ *
+ * @remarks
+ * Idempotent: a value already under `./dist/bundle/` only has its extension retargeted.
  */
 function toDist(path: string, kind: 'js' | 'dts'): string {
   const inDist = path.replace(/^\.\/src\//, './dist/bundle/');

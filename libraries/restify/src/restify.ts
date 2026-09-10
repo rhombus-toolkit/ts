@@ -21,7 +21,7 @@ export function unrestify(args: any) {
     case 1:
       return args[0];
     default:
-      return mark([...args]);
+      return mark(args.slice()); // slice, not spread: a hole stays a hole
   }
 }
 

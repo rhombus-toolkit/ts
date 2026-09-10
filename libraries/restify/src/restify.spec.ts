@@ -156,10 +156,36 @@ describe('payload shape', () => {
   });
 });
 
+describe('holes', () => {
+  it('keeps a hole in one sparse array argument, by identity', () => {
+    const sparse = [, 'b'];
+    const payload = unrestify([sparse]);
+
+    expect(payload).toBe(sparse);
+    expect(0 in restify(payload)[0]!).toBe(false);
+  });
+
+  it('keeps a hole in a sparse argument list', () => {
+    const payload = unrestify([, 'b'] as any[]);
+
+    expect(payload.length).toBe(2);
+    expect(0 in payload).toBe(false);
+    expect(payload[1]).toBe('b');
+  });
+
+  it('hands a hole back to the handler as a hole', () => {
+    const args = restify(unrestify([, 'b', , 'd'] as any[]));
+
+    expect(args.length).toBe(4);
+    expect(Object.keys(args)).toEqual(['1', '3']);
+  });
+});
+
 describe('round trip', () => {
   /** Element-for-element `===`: what a handler spread from the payload sees is what the creator was called with. */
   function sequenceEquals(left: readonly unknown[], right: readonly unknown[]): boolean {
-    return left.length === right.length && left.every((value, index) => value === right[index]);
+    return left.length === right.length
+      && Array.from(left.keys()).every((index) => index in left === index in right && left[index] === right[index]);
   }
 
   function roundTrips(...input: unknown[]): boolean {

@@ -11,14 +11,15 @@ export function setImmediateAsync(...args: any) {
   const signal = first instanceof AbortSignal ? first : undefined;
   const params = signal ? rest : args;
   return new Promise<any>((resolve, reject) => {
-    let token: any;
-    signal?.addEventListener('abort', (ev) => {
-      if (token) {
-        clearImmediate(token);
-        token = undefined;
-      }
-      reject('cancelled');
+    signal?.throwIfAborted();
+    const token = setImmediate(() => {
+      signal?.removeEventListener('abort', abort);
+      resolve(params.length <= 1 ? params[0] : params);
     });
-    token = setImmediate(() => resolve(params.length === 1 ? params[0] : args));
+    function abort() {
+      clearImmediate(token);
+      reject(signal!.reason);
+    }
+    signal?.addEventListener('abort', abort, { once: true });
   });
 }

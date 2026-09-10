@@ -9,19 +9,21 @@ export function setTimeoutAsync(timeout: number, ...args: any) {
   const signal = first instanceof AbortSignal ? first : undefined;
   const params = signal ? rest : args;
 
-  if ('__promisify__' in setTimeout) {
-    return (setTimeout as any).__promisify__(timeout, params.length === 1 ? params[0] : args);
+  // The platform's own promisified form takes no signal, so it is only reachable without one.
+  if (!signal && '__promisify__' in setTimeout) {
+    return (setTimeout as any).__promisify__(timeout, params.length <= 1 ? params[0] : params);
   }
 
   return new Promise<any>((resolve, reject) => {
-    let token: any;
-    signal?.addEventListener('abort', (ev) => {
-      if (token) {
-        clearTimeout(token);
-        token = undefined;
-      }
-      reject('cancelled');
-    });
-    token = setTimeout(() => resolve(params.length === 1 ? params[0] : args), timeout);
+    signal?.throwIfAborted();
+    const token = setTimeout(() => {
+      signal?.removeEventListener('abort', abort);
+      resolve(params.length <= 1 ? params[0] : params);
+    }, timeout);
+    function abort() {
+      clearTimeout(token);
+      reject(signal!.reason);
+    }
+    signal?.addEventListener('abort', abort, { once: true });
   });
 }

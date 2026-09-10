@@ -1,4 +1,6 @@
-import { hasMember, hasValue, isAllThere, isDefined, isFunction, isIteratorObject } from './index';
+import type { Func } from '@rhombus-toolkit/types';
+import { hasMember, hasValue, isAllThere, isArray, isAsyncGenerator, isDefined, isFunction, isGenerator, isIterable,
+  isIterator, isIteratorObject, isObject, isPromise, isPromiseLike, isReadonlyArray } from './index';
 
 declare function isAssignable<TActual extends TExpected, TExpected>(actual?: TActual, expected?: TExpected): void;
 declare function isAssignable<TExpected>(actual?: TExpected): void;
@@ -75,5 +77,101 @@ namespace isIteratorObjectKeepsTheElementTypeTest {
   if (isIteratorObject(value)) {
     // @ts-expect-no-error
     isAssignable<typeof value, IteratorObject<unknown>>;
+  }
+}
+
+// The mutable overload is listed first so a mutable array narrows to `T[]`,
+// not to the `readonly T[]` the second overload would hand back.
+namespace isAllThereKeepsMutabilityTest {
+  const items: Array<string | undefined> = [];
+  const frozen: ReadonlyArray<string | undefined> = [];
+
+  if (isAllThere(items)) {
+    // @ts-expect-no-error
+    isAssignable<typeof items, string[]>;
+    // @ts-expect-no-error
+    items.push('still writable');
+  }
+
+  if (isAllThere(frozen)) {
+    // @ts-expect-no-error
+    isAssignable<typeof frozen, readonly string[]>;
+    // @ts-expect-error - the readonly overload does not invent write access
+    frozen.push('never');
+  }
+}
+
+// The narrowed type is the permissive `Func`, not the union's own function member: enough to
+// call, with the return type `any`, so the guard never blocks a call whose shape the caller knows.
+namespace isFunctionNarrowsToACallableTest {
+  declare const value: string | Func<[number], string>;
+
+  if (isFunction(value)) {
+    // @ts-expect-no-error
+    isAssignable<typeof value, Func>;
+    // @ts-expect-no-error
+    value(1);
+    // @ts-expect-error - a string is not callable, so it is gone from the true branch
+    isAssignable<typeof value, string>;
+  }
+}
+
+namespace isObjectNarrowsAwayPrimitivesAndNullTest {
+  declare const value: string | null | { id: number; };
+
+  if (isObject(value)) {
+    // @ts-expect-no-error
+    isAssignable<typeof value, { id: number; }>;
+  } else {
+    // @ts-expect-no-error
+    isAssignable<typeof value, string | null>;
+  }
+}
+
+// A contract guard narrows `unknown` to the protocol's lib type and no further —
+// the element type is not knowable from a shape check.
+namespace contractGuardsNarrowUnknownToTheProtocolTest {
+  declare const value: unknown;
+
+  if (isIterable(value)) {
+    // @ts-expect-no-error
+    isAssignable<typeof value, Iterable<unknown>>;
+  }
+  if (isIterator(value)) {
+    // @ts-expect-no-error
+    isAssignable<typeof value, Iterator<unknown>>;
+  }
+  if (isPromiseLike(value)) {
+    // @ts-expect-no-error
+    isAssignable<typeof value, PromiseLike<unknown>>;
+  }
+  if (isPromise(value)) {
+    // @ts-expect-no-error
+    isAssignable<typeof value, Promise<unknown>>;
+  }
+  if (isGenerator(value)) {
+    // @ts-expect-no-error
+    isAssignable<typeof value, Generator<unknown>>;
+  }
+  if (isAsyncGenerator(value)) {
+    // @ts-expect-no-error
+    isAssignable<typeof value, AsyncGenerator<unknown>>;
+  }
+}
+
+// `isArray` narrows to a mutable array and `isReadonlyArray` to a readonly one,
+// so the two are not interchangeable at a `readonly` boundary.
+namespace arrayGuardsDifferOnlyInMutabilityTest {
+  declare const value: unknown;
+
+  if (isArray(value)) {
+    // @ts-expect-no-error
+    isAssignable<typeof value, unknown[]>;
+  }
+  if (isReadonlyArray(value)) {
+    // @ts-expect-no-error
+    isAssignable<typeof value, readonly unknown[]>;
+    // @ts-expect-error - readonly does not narrow to mutable
+    isAssignable<typeof value, unknown[]>;
   }
 }

@@ -134,14 +134,22 @@ export function zip<T1, T2, T3, T4, T5, T6, T7, T8, T9>(mode: 'outer', source1: 
     T8 | undefined, T9 | undefined]
 >;
 export function* zip(mode: 'inner' | 'outer', ...sources: ReadonlyArray<Iterable<unknown>>): Generator<unknown[]> {
+  if (!sources.length) {
+    return;
+  }
   const iterators = sources.map(source => Iterator.from(source));
-  while (true) {
-    const results = iterators.map(iterator => iterator.next());
-    const ended = mode === 'inner' ? results.some(result => result.done) : results.every(result => result.done);
-    if (ended) {
-      return;
+  try {
+    while (true) {
+      const results = iterators.map(iterator => iterator.next());
+      const ended = mode === 'inner' ? results.some(result => result.done) : results.every(result => result.done);
+      if (ended) {
+        return;
+      }
+      yield results.map(result => result.value);
     }
-    yield results.map(result => result.value);
+  } finally {
+    // Whichever way the walk stops, every source still open is closed, as the protocol asks of an early exit.
+    iterators.forEach(iterator => iterator.return?.());
   }
 }
 

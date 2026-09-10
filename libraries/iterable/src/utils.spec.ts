@@ -178,6 +178,47 @@ describe('zip', () => {
   it('yields nothing when a source is empty under inner', () => {
     expect([...zip('inner', [1, 2], [])]).toEqual([]);
   });
+
+  it('yields nothing for zero sources in either mode', () => {
+    const none: Iterable<number>[] = [];
+
+    expect([...zip('inner', ...(none as [Iterable<number>, Iterable<number>]))]).toEqual([]);
+    expect([...zip('outer', ...(none as [Iterable<number>, Iterable<number>]))]).toEqual([]);
+  });
+
+  it('closes the sources still open when inner ends on the shortest one', () => {
+    const closed: string[] = [];
+    function* tracked(name: string, count: number): Generator<number> {
+      try {
+        for (let i = 0; i < count; i++) {
+          yield i;
+        }
+      } finally {
+        closed.push(name);
+      }
+    }
+
+    expect([...zip('inner', tracked('short', 1), tracked('long', 3))]).toEqual([[0, 0]]);
+    expect(closed.sort()).toEqual(['long', 'short']);
+  });
+
+  it('closes every source when the consumer stops early', () => {
+    const closed: string[] = [];
+    function* tracked(name: string): Generator<number> {
+      try {
+        yield* [1, 2, 3];
+      } finally {
+        closed.push(name);
+      }
+    }
+
+    for (const pair of zip('outer', tracked('a'), tracked('b'))) {
+      if (pair[0] === 1) {
+        break;
+      }
+    }
+    expect(closed.sort()).toEqual(['a', 'b']);
+  });
 });
 
 describe('sequenceEquals', () => {

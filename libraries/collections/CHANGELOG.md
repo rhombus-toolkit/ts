@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/rhombus-toolkit/ts/compare/collections-v2.0.0...collections-v2.0.1) (2026-09-10)
+
+
+### Bug Fixes
+
+* **collections:** hide collected entries from every KindaWeakMap read ([dcf59aa](https://github.com/rhombus-toolkit/ts/commit/dcf59aa0717952ae24fa6a5eba9c29a6e54b7b18))
+
 ## [2.0.0](https://github.com/rhombus-toolkit/ts/compare/collections-v1.0.0...collections-v2.0.0) (2026-09-03)
 
 

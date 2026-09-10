@@ -52,8 +52,33 @@ namespace restifyTest {
   isAssignable<restify<number>, [number, number]>;
 }
 
-// Both directions round-trip.
+// The type contract in one line: what went into the creator comes out of restify unchanged.
+type RoundTrips<Args extends any[]> = Same<restify<unrestify<Args>>, Args>;
+
 namespace roundTripTest {
+  // @ts-expect-no-error
+  isExactly<RoundTrips<[]>, true>();
+  // @ts-expect-no-error
+  isExactly<RoundTrips<[string]>, true>();
+  // @ts-expect-no-error
+  isExactly<RoundTrips<[null]>, true>();
+  // @ts-expect-no-error
+  isExactly<RoundTrips<[string[]]>, true>();
+  // @ts-expect-no-error
+  isExactly<RoundTrips<[[string, number]]>, true>();
+  // @ts-expect-no-error
+  isExactly<RoundTrips<[{ a: 1; }]>, true>();
+  // @ts-expect-no-error
+  isExactly<RoundTrips<[string, number]>, true>();
+  // @ts-expect-no-error
+  isExactly<RoundTrips<[string[], { a: 1; }]>, true>();
+  // @ts-expect-no-error
+  isExactly<RoundTrips<[null, undefined, number]>, true>();
+  // the one lossy case, at the type level too
+  // @ts-expect-no-error
+  isExactly<RoundTrips<[undefined]>, false>();
+
+  // and the payload direction, for a payload that was produced by unrestify
   // @ts-expect-no-error
   isExactly<unrestify<restify<string>>, string>();
   // @ts-expect-no-error
@@ -62,14 +87,6 @@ namespace roundTripTest {
   isExactly<unrestify<restify<string[]>>, string[]>();
   // @ts-expect-no-error
   isExactly<unrestify<restify<void>>, void>();
-  // @ts-expect-no-error
-  isExactly<restify<unrestify<[]>>, []>();
-  // @ts-expect-no-error
-  isExactly<restify<unrestify<[string]>>, [string]>();
-  // @ts-expect-no-error
-  isExactly<restify<unrestify<[string[]]>>, [string[]]>();
-  // @ts-expect-no-error
-  isExactly<restify<unrestify<[string, number]>>, [string, number]>();
 }
 
 // The overloads agree with the aliases at the call site, and a creator typed through them is plainly callable.

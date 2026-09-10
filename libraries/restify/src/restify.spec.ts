@@ -130,24 +130,33 @@ describe('restify', () => {
 });
 
 describe('round trip', () => {
-  function roundTrip(...args: unknown[]): unknown[] {
-    return restify(unrestify(args));
+  /** Element-for-element `===`: what a handler spread from the payload sees is what the creator was called with. */
+  function sequenceEquals(left: readonly unknown[], right: readonly unknown[]): boolean {
+    return left.length === right.length && left.every((value, index) => value === right[index]);
+  }
+
+  function roundTrips(...input: unknown[]): boolean {
+    return sequenceEquals(input, restify(unrestify(input)));
   }
 
   it('hands a handler exactly the arguments the creator was called with', () => {
     const list = [1, 2];
     const value = { a: 1 };
 
-    expect(roundTrip()).toEqual([]);
-    expect(roundTrip('a')).toEqual(['a']);
-    expect(roundTrip(null)).toEqual([null]);
-    expect(roundTrip(list)[0]).toBe(list);
-    expect(roundTrip(value)[0]).toBe(value);
-    expect(roundTrip('a', 2)).toEqual(['a', 2]);
-    expect(roundTrip(list, value)).toEqual([list, value]);
+    expect(roundTrips()).toBe(true);
+    expect(roundTrips('a')).toBe(true);
+    expect(roundTrips(null)).toBe(true);
+    expect(roundTrips(0)).toBe(true);
+    expect(roundTrips(list)).toBe(true);
+    expect(roundTrips([])).toBe(true);
+    expect(roundTrips(value)).toBe(true);
+    expect(roundTrips('a', 2)).toBe(true);
+    expect(roundTrips(list, value)).toBe(true);
+    expect(roundTrips(null, undefined, 3)).toBe(true);
   });
 
   it('cannot tell an explicit undefined argument from none, which a handler cannot either', () => {
-    expect(roundTrip(undefined)).toEqual([]);
+    expect(roundTrips(undefined)).toBe(false);
+    expect(restify(unrestify([undefined]))).toEqual([]);
   });
 });

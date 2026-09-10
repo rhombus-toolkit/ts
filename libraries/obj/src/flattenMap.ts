@@ -1,5 +1,5 @@
 import { isFunction } from '@rhombus-toolkit/type-guards';
-import type { Cast, Dec, DeepDictionary, DeepDictionaryItem, DeepRecord, DeepRecordItem, Falsy, Func, Inc,
+import type { Dec, DeepDictionary, DeepDictionaryItem, DeepRecord, DeepRecordItem, Func, Inc,
   Store } from '@rhombus-toolkit/types';
 import { obj } from './obj';
 // type _flattenMap<T extends DeepDictionaryItem<Func>, prefix extends string = '', CurrentDepth extends number = 0> =
@@ -29,11 +29,14 @@ function join<S1 extends string, S2 extends string>(a: S1, b: S2) {
   return [a, b].filter(Boolean).join('.') as join<S1, S2>;
 }
 /** `A` and `B` dot-joined, either one being empty giving the other back on its own. */
-// Every arm is `string`-shaped, `Cast<B, string>` included: a `B` of `symbol` or `number` has no
-// literal spelling, so it widens to `string` rather than escaping as a non-string key — otherwise
-// the empty-`A` arm would hand a bare `PropertyKey` to `_flattenMap`'s `prefix extends string`.
-type join<A extends string, B extends PropertyKey> = A extends Falsy ? Cast<B, string>
-  : B extends Falsy ? A : `${A}.${Cast<B, string>}`;
+// Only `''` is empty, because the runtime `join` only ever sees the strings `Object.entries` hands
+// it: a numeric key arrives spelled (`0` as `'0'`), so it is kept, not dropped as falsy. Every arm
+// is `string`-shaped: a `symbol` key has no literal spelling, so it widens to `string` rather than
+// escaping as a non-string key — otherwise the empty-`A` arm would hand a bare `PropertyKey` to
+// `_flattenMap`'s `prefix extends string`.
+type join<A extends string, B extends PropertyKey> = B extends string | number
+  ? A extends '' ? `${B}` : B extends '' ? A : `${A}.${B}`
+  : join<A, string>;
 
 /** `T`'s leaves keyed by the dot-joined path each one sits at. */
 export type flattenMap<T extends DeepDictionary<any>, TLeaf = Func, MaxDepth extends number = 10> = obj.fromEntries<

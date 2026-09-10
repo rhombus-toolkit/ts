@@ -80,8 +80,8 @@ namespace maxDepthTest {
   isAssignable<{ c: Func; 'a.b': Func; }, flattenMap<Source, Func, 3>>;
 }
 
-// A key with no string literal spelling widens to `string` in the joined path,
-// so a numeric key costs the result its exact keys and a symbol key never appears.
+// A numeric key is spelled the way `Object.entries` spells it, so its path keeps
+// a literal; a symbol key has no spelling, widens to `string`, and never appears.
 namespace nonStringKeyTest {
   declare const symbolKey: unique symbol;
   type WithSymbolKey = flattenMap<{ [symbolKey]: Func; a: Func; }>;
@@ -93,11 +93,19 @@ namespace nonStringKeyTest {
   withSymbolKey[symbolKey];
 
   // @ts-expect-no-error
-  isAssignable<flattenMap<{ 0: Func; a: Func; }>, { [key: string]: Func; a: Func; }>;
+  isAssignable<flattenMap<{ 0: Func; a: Func; }>, { '0': Func; a: Func; }>;
   // @ts-expect-no-error
-  isAssignable<flattenMap<{ a: { 1: Func; }; }>, { [key: `a.${string}`]: Func; }>;
+  isAssignable<{ '0': Func; a: Func; }, flattenMap<{ 0: Func; a: Func; }>>;
+  // @ts-expect-no-error - a nested `0` is a key like any other, not an empty segment
+  isAssignable<flattenMap<{ a: { 0: Func; }; }>, { 'a.0': Func; }>;
   // @ts-expect-no-error
-  isAssignable<{ [key: `a.${string}`]: Func; }, flattenMap<{ a: { 1: Func; }; }>>;
-  // @ts-expect-no-error - spelled as a string the key keeps its literal
-  isAssignable<flattenMap<{ a: { '7': Func; }; }>, { 'a.7': Func; }>;
+  isAssignable<{ 'a.0': Func; }, flattenMap<{ a: { 0: Func; }; }>>;
+  // @ts-expect-error - the leaf under `0` does not land on the parent's key
+  isAssignable<flattenMap<{ a: { 0: Func; }; }>, { a: Func; }>;
+  // @ts-expect-no-error - spelled as a string the key reads the same
+  isAssignable<flattenMap<{ a: { '0': Func; }; }>, { 'a.0': Func; }>;
+  // @ts-expect-no-error
+  isAssignable<flattenMap<{ a: { 1: Func; }; }>, { 'a.1': Func; }>;
+  // @ts-expect-no-error
+  isAssignable<{ 'a.1': Func; }, flattenMap<{ a: { 1: Func; }; }>>;
 }

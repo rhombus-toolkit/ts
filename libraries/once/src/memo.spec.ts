@@ -1,3 +1,4 @@
+import type { Func } from '@rhombus-toolkit/types';
 import { describe, expect, it } from 'bun:test';
 import { memo } from './memo';
 
@@ -115,4 +116,177 @@ describe('memo', () => {
     expect(() => failing(first, second)).toThrow('nope');
     expect(calls).toBe(2);
   });
+
+  it('hands back the very object compute built', () => {
+    const built = { built: true };
+    const same = memo((_key: object) => built);
+
+    expect(same({})).toBe(built);
+  });
+
+  it('runs compute unbound', () => {
+    let seen: unknown = 'unset';
+    const record = memo(function(this: unknown, _key: object) {
+      seen = this;
+    });
+
+    record({});
+
+    expect(seen).toBeUndefined();
+  });
+
+  it('ignores the this a caller binds the memoized function to', () => {
+    let seen: unknown = 'unset';
+    const record = memo(function(this: unknown, _key: object) {
+      seen = this;
+    });
+
+    record.call({ bound: true }, {});
+
+    expect(seen).toBeUndefined();
+  });
+
+  it('accepts a function as a key', () => {
+    let calls = 0;
+    const nameOf = memo((key: Func<[], void>) => {
+      calls++;
+      return key.name;
+    });
+    const key = function named() {};
+
+    expect(nameOf(key)).toBe('named');
+    expect(nameOf(key)).toBe('named');
+    expect(calls).toBe(1);
+  });
+
+  it('accepts an unregistered symbol as a key', () => {
+    let calls = 0;
+    const describe = memo((key: symbol) => {
+      calls++;
+      return key.description;
+    });
+    const key = Symbol('unique');
+
+    expect(describe(key)).toBe('unique');
+    expect(describe(key)).toBe('unique');
+    expect(calls).toBe(1);
+  });
+
+  it('throws for a key that cannot be held weakly', () => {
+    const describe = memo((_key: symbol) => undefined);
+
+    expect(() => describe(Symbol.for('registered'))).toThrow(TypeError);
+    expect(() => describe(Symbol.for('registered'))).toThrow(TypeError);
+  });
+
+  it('caches a function compute answers with, calling it for nobody', () => {
+    let innerCalls = 0;
+    const handlerFor = memo((_key: object) => () => ++innerCalls);
+    const key = {};
+
+    expect(handlerFor(key)).toBe(handlerFor(key));
+    expect(innerCalls).toBe(0);
+  });
+
+  it('remembers a stored undefined under a key tuple', () => {
+    let calls = 0;
+    const nothing = memo((_first: object, _second: object) => {
+      calls++;
+      return undefined;
+    });
+    const first = {};
+    const second = {};
+
+    expect(nothing(first, second)).toBeUndefined();
+    expect(nothing(first, second)).toBeUndefined();
+    expect(calls).toBe(1);
+  });
+
+  it('remembers each tuple sharing a prefix on its own', () => {
+    let calls = 0;
+    const join = memo((left: { name: string; }, right: { name: string; }) => {
+      calls++;
+      return `${left.name}+${right.name}`;
+    });
+    const a = { name: 'a' };
+    const b = { name: 'b' };
+    const c = { name: 'c' };
+
+    expect(join(a, b)).toBe('a+b');
+    expect(join(a, c)).toBe('a+c');
+    expect(join(a, b)).toBe('a+b');
+    expect(join(a, c)).toBe('a+c');
+    expect(calls).toBe(2);
+  });
+
+  it('recomputes a tuple that threw without forgetting its siblings', () => {
+    let calls = 0;
+    const join = memo((left: { fails?: boolean; }, right: { fails?: boolean; }) => {
+      calls++;
+      if (right.fails) {
+        throw new Error('nope');
+      }
+      return calls;
+    });
+    const a = {};
+    const ok = {};
+    const bad = { fails: true };
+
+    expect(join(a, ok)).toBe(1);
+    expect(() => join(a, bad)).toThrow('nope');
+    expect(join(a, ok)).toBe(1);
+    expect(() => join(a, bad)).toThrow('nope');
+    expect(calls).toBe(3);
+  });
+
+  it('lets compute ask the memo for another key on the way to its own answer', () => {
+    let calls = 0;
+    const depth: Func<[Node], number> = memo((node: Node) => {
+      calls++;
+      return node.parent ? depth(node.parent) + 1 : 0;
+    });
+    const root: Node = {};
+    const child: Node = { parent: root };
+    const grandchild: Node = { parent: child };
+
+    expect(depth(grandchild)).toBe(2);
+    expect(depth(child)).toBe(1);
+    expect(calls).toBe(3);
+  });
+
+  it('remembers a promise, settled or not, as the answer', async () => {
+    let calls = 0;
+    const load = memo(async (_key: object) => {
+      calls++;
+      throw new Error('rejected');
+    });
+    const key = {};
+
+    const first = load(key);
+    await expect(first).rejects.toThrow('rejected');
+    expect(load(key)).toBe(first);
+    expect(calls).toBe(1);
+  });
+
+  it('forgets an answer along with its key once nothing else holds the key', async () => {
+    const lost = Promise.withResolvers<void>();
+    const registry = new FinalizationRegistry(() => lost.resolve());
+    const held = memo((_key: object) => new Array(10000).fill(0));
+
+    (() => {
+      const key = {};
+      registry.register(key, undefined);
+      held(key);
+    })();
+
+    await new Promise((resolve) => setTimeout(resolve));
+    Bun.gc(true);
+
+    await Promise.race([lost.promise,
+      new Promise((_, reject) => setTimeout(() => reject(new Error('the key was not collected')), 500))]);
+  });
 });
+
+interface Node {
+  readonly parent?: Node;
+}

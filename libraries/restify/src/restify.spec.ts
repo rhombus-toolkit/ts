@@ -36,22 +36,24 @@ describe('unrestify', () => {
     expect(unrestify([value])).toBe(value);
   });
 
-  it('turns several arguments into the tuple itself, marked in place', () => {
+  it('turns several arguments into a marked copy, leaving the tuple it was given untouched', () => {
     const args = ['a', 'b'];
     const payload = unrestify(args);
 
-    expect(payload).toBe(args as any);
+    expect(payload).toEqual(['a', 'b'] as any);
+    expect(payload).not.toBe(args as any);
     expect(Object.getOwnPropertySymbols(payload)).toEqual([marker]);
+    expect(Object.getOwnPropertySymbols(args)).toEqual([]);
   });
 
   it('hides the marker from enumeration', () => {
     expect(Object.keys(unrestify(['a', 'b']))).toEqual(['0', '1']);
   });
 
-  it('pins the marker as non-writable, non-enumerable and removable', () => {
+  it('pins the marker as non-writable, non-enumerable and non-configurable', () => {
     const descriptor = Object.getOwnPropertyDescriptor(unrestify(['a', 'b']), marker);
 
-    expect(descriptor).toEqual({ value: true, writable: false, enumerable: false, configurable: true });
+    expect(descriptor).toEqual({ value: true, writable: false, enumerable: false, configurable: false });
   });
 
   it('marks a tuple of arguments from another realm', () => {
@@ -111,18 +113,18 @@ describe('restify', () => {
     expect(restify(arrayLike)).toEqual([arrayLike] as any);
   });
 
-  it('gives a marked tuple back by identity, with the mark removed', () => {
+  it('gives a marked tuple back by identity, untouched, so the same payload can be reduced again', () => {
     const payload = unrestify(['a', 'b']);
-    const args = restify(payload);
 
-    expect(args).toBe(payload as any);
-    expect(Object.getOwnPropertySymbols(args)).toEqual([]);
+    expect(restify(payload)).toBe(payload as any);
+    expect(restify(payload)).toBe(payload as any);
+    expect(Object.getOwnPropertySymbols(payload)).toEqual([marker]);
   });
 
-  it('is not idempotent: a tuple already restified reads as one argument', () => {
-    const args = restify(unrestify(['a', 'b']));
+  it('is not idempotent: an argument list already built reads as one argument', () => {
+    const args = restify('a');
 
-    expect(restify(args)).toEqual([['a', 'b']] as any);
+    expect(restify(args)).toEqual([['a']] as any);
   });
 
   it('builds a fresh argument list for each call', () => {
@@ -162,28 +164,6 @@ describe('payload shape', () => {
   });
 });
 
-describe('unmark', () => {
-  it('is idempotent: restifying an unmarked array again does not throw and leaves it unmarked', () => {
-    const args = restify(unrestify(['a', 'b']));
-
-    expect(Object.getOwnPropertySymbols(args)).toEqual([]);
-    expect(Object.getOwnPropertySymbols(restify(args)[0]!)).toEqual([]);
-  });
-});
-
-describe('mark', () => {
-  it('is idempotent: marking a marked tuple again changes nothing and keeps identity', () => {
-    const args = ['a', 'b'];
-    const once = unrestify(args);
-    const twice = unrestify(once as any);
-
-    expect(twice).toBe(once);
-    expect(Object.getOwnPropertySymbols(twice)).toEqual([marker]);
-    expect(Object.getOwnPropertyDescriptor(twice, marker)).toEqual({ value: true, writable: false, enumerable: false,
-      configurable: true });
-  });
-});
-
 describe('holes', () => {
   it('keeps a hole in one sparse array argument, by identity', () => {
     const sparse = [, 'b'];
@@ -208,10 +188,10 @@ describe('holes', () => {
     expect(Object.keys(args)).toEqual(['1', '3']);
   });
 
-  it('hands the handler the very array the creator received', () => {
-    const args = ['a', 'b'];
+  it('hands the handler the payload array itself', () => {
+    const payload = unrestify(['a', 'b']);
 
-    expect(restify(unrestify(args))).toBe(args as any);
+    expect(restify(payload)).toBe(payload as any);
   });
 });
 

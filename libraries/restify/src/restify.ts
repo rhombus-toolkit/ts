@@ -11,7 +11,7 @@ export type restify<Œ> = Œ extends void | null | undefined ? mark<[]> : Œ ext
 
 export function restify<Ø>(arg: Ø): restify<Ø>;
 export function restify(arg: any) {
-  if (arg === undefined) {
+  if (arg === null || arg === undefined) {
     return mark([]);
   }
   if (Array.isArray(arg)) {

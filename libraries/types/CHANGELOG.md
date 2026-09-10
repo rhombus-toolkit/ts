@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.1](https://github.com/rhombus-toolkit/ts/compare/types-v4.0.0...types-v4.0.1) (2026-09-10)
+
+
+### Bug Fixes
+
+* **types:** link a $ nested inside a function or constructor type to the outer type parameter ([c0caeb5](https://github.com/rhombus-toolkit/ts/commit/c0caeb57d2eca4cd91e3dc8f9e3c0cfe2a845f24))
+
 ## [4.0.0](https://github.com/rhombus-toolkit/ts/compare/types-v3.0.1...types-v4.0.0) (2026-09-10)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.3](https://github.com/rhombus-toolkit/ts/compare/iterable-v1.2.2...iterable-v1.2.3) (2026-09-10)
+
+
+### Bug Fixes
+
+* **iterable:** end zip on zero sources and close the sources it leaves open ([c89c02c](https://github.com/rhombus-toolkit/ts/commit/c89c02c153a00a3e1b970356694d5225afdb685d))
+
 ## [1.2.2](https://github.com/rhombus-toolkit/ts/compare/iterable-v1.2.1...iterable-v1.2.2) (2026-09-07)
 
 

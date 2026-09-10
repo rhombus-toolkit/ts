@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/rhombus-toolkit/ts/compare/collections-v2.0.1...collections-v2.0.2) (2026-09-10)
+
+
+### Bug Fixes
+
+* **collections:** keep a re-set key in place and register each KindaWeakMap entry on its own ([8afb15a](https://github.com/rhombus-toolkit/ts/commit/8afb15ab137c2a819b2c323ee56212a0b2c10e47))
+
 ## [2.0.1](https://github.com/rhombus-toolkit/ts/compare/collections-v2.0.0...collections-v2.0.1) (2026-09-10)
 
 

@@ -240,14 +240,21 @@ describe('wrapResponse', () => {
 
     it('propagates a body error to the consumer without a complete event', async () => {
       const failure = new Error('boom');
-      const body = new ReadableStream<Uint8Array>({ start(controller) {
+      let pulls = 0;
+      const body = new ReadableStream<Uint8Array>({ pull(controller) {
+        if (pulls++) {
+          controller.error(failure);
+          return;
+        }
         controller.enqueue(new Uint8Array(4));
-        controller.error(failure);
       } });
       const wrapped = wrapResponse(new Response(body, { headers: { 'content-length': '8' } }));
       const log = progressLog(wrapped);
+      const reader = wrapped.body!.getReader();
+      await reader.read();
 
-      await expect(wrapped.arrayBuffer()).rejects.toBe(failure);
+      await expect(reader.read()).rejects.toBe(failure);
+      await expect(reader.closed).rejects.toBe(failure);
 
       expect(log.map(({ type }) => type)).toEqual(['progress']);
     });

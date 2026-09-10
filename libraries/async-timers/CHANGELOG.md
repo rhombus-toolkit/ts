@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.0.0](https://github.com/rhombus-toolkit/ts/compare/async-timers-v3.0.0...async-timers-v4.0.0) (2026-09-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* **async-timers:** an aborted timer rejects with `signal.reason` (an AbortError DOMException when none was given) instead of the string 'cancelled'.
+
+### Bug Fixes
+
+* **async-timers:** let the signal-first overload win when several values follow ([86bef27](https://github.com/rhombus-toolkit/ts/commit/86bef2771362f9f36c936d629914dd14448648d9))
+* **async-timers:** reject with the signal's reason and resolve the caller's values ([83cf05a](https://github.com/rhombus-toolkit/ts/commit/83cf05a0adeecf080ec460b81c9868d9e830bde3))
+
 ## [3.0.0](https://github.com/rhombus-toolkit/ts/compare/async-timers-v2.0.1...async-timers-v3.0.0) (2026-09-04)
 
 

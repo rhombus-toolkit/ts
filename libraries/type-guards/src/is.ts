@@ -171,13 +171,19 @@ export function isAsyncIterableIterator(value: any): value is AsyncIterableItera
 
 /**
  * PROTOTYPE. Whether `value` inherits `%IteratorPrototype%`, so the ES2025
- * iterator helpers (`map`, `filter`, `take`, `drop`, `toArray`, …) are present.
+ * iterator helpers (`map`, `filter`, `take`, `drop`, `toArray`, …) are present
+ * — and carries the `next` they pull through, so calling one works.
  *
  * @remarks
  * A hand-rolled `{ next() { … } }` is an {@link isIterator} but not this.
+ * `Object.create(Iterator.prototype)` and `class B extends Iterator {}` are the
+ * mirror case: they inherit the helpers with no `next` to drive them, and every
+ * helper throws, so they fail here too.
  */
-export function isIteratorObject(value: any): value is IteratorObject<unknown> {
-  return inheritsFrom(value, IteratorPrototype);
+export function isIteratorObject<T>(value: Iterator<T> | Iterable<T>): value is IteratorObject<T>;
+export function isIteratorObject(value: unknown): value is IteratorObject<unknown>;
+export function isIteratorObject(value: any) {
+  return inheritsFrom(value, IteratorPrototype) && isIterator(value);
 }
 
 /** PROTOTYPE. The async counterpart of {@link isIteratorObject}. */

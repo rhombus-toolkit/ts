@@ -1,4 +1,4 @@
-import { hasMember, hasValue, isAllThere, isDefined, isFunction } from './index';
+import { hasMember, hasValue, isAllThere, isDefined, isFunction, isIteratorObject } from './index';
 
 declare function isAssignable<TActual extends TExpected, TExpected>(actual?: TActual, expected?: TExpected): void;
 declare function isAssignable<TExpected>(actual?: TExpected): void;
@@ -58,4 +58,22 @@ namespace isFunctionTakesNoTypeArgumentsTest {
 
   // @ts-expect-error - the guard is not generic
   isFunction<[number], number>(value);
+}
+
+// The typed overload carries the element type through the narrowing, so a
+// caller who knew what the source yielded does not get it back as `unknown`.
+namespace isIteratorObjectKeepsTheElementTypeTest {
+  declare const source: Iterator<number> | Iterable<number>;
+
+  if (isIteratorObject(source)) {
+    // @ts-expect-no-error
+    isAssignable<typeof source, IteratorObject<number>>;
+  }
+
+  declare const value: unknown;
+
+  if (isIteratorObject(value)) {
+    // @ts-expect-no-error
+    isAssignable<typeof value, IteratorObject<unknown>>;
+  }
 }

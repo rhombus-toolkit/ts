@@ -1,3 +1,4 @@
+import type { Func } from '@rhombus-toolkit/types';
 import { describe, expect, test } from 'bun:test';
 import { hasValue, isAllThere, isArray, isAsyncGenerator, isAsyncGeneratorFunction, isAsyncIterable,
   isAsyncIterableIterator, isAsyncIteratorObject, isDefined, isFunction, isGenerator, isGeneratorFunction, isIterable,
@@ -21,6 +22,15 @@ const handRolledIterator = { next() {
 const handRolledIterable = { [Symbol.iterator]() {
   return handRolledIterator;
 } };
+
+/** `%IteratorPrototype%`, reached through the seed the way `is.ts` reaches it — the intrinsic has no global binding under this package's ES2018 lib. */
+const IteratorPrototype = Object.getPrototypeOf(Object.getPrototypeOf(genFn.prototype));
+
+/**
+ * The mirror of {@link handRolledIterator}: inherits every helper and has no `next` for them to
+ * pull. `Object.create(Iterator.prototype)` and `class B extends Iterator {}` both land here.
+ */
+const helpersWithoutNext: { next?: unknown; toArray?: Func<[], unknown>; } = Object.create(IteratorPrototype);
 
 const nothings = [null, undefined, 42, 'ab', {}, [], Object.create(null), 0, '', false, Symbol('s'), 10n, NaN];
 
@@ -120,6 +130,14 @@ describe('prototype guards', () => {
     expect(isIteratorObject(iterator)).toBe(true);
     expect(typeof (iterator as { map?: unknown; }).map).toBe('function');
     expect(typeof (handRolledIterator as { map?: unknown; }).map).toBe('undefined');
+  });
+
+  test('isIteratorObject rejects an inheritor with no next to drive the helpers', () => {
+    expect(helpersWithoutNext.next).toBeUndefined();
+    expect(typeof helpersWithoutNext.toArray).toBe('function');
+    expect(isIterator(helpersWithoutNext)).toBe(false);
+    expect(isIteratorObject(helpersWithoutNext)).toBe(false);
+    expect(() => helpersWithoutNext.toArray?.()).toThrow(TypeError);
   });
 
   test('isAsyncIteratorObject', () => {

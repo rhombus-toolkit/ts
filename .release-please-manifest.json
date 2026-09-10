@@ -10,5 +10,5 @@
   "libraries/set-immediate": "1.3.5",
   "libraries/once": "2.1.0",
   "libraries/type-guards": "4.0.0",
-  "libraries/types": "2.0.0"
+  "libraries/types": "3.0.0"
 }

@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/rhombus-toolkit/ts/compare/restify-v2.0.0...restify-v2.0.1) (2026-09-10)
+
+
+### Bug Fixes
+
+* **restify:** mark the rest-args tuple in place and unmark it on the way to the handler ([ff6158e](https://github.com/rhombus-toolkit/ts/commit/ff6158e76bf57d2410877ea3f41b4143d7581a72))
+
 ## [2.0.0](https://github.com/rhombus-toolkit/ts/compare/restify-v1.1.1...restify-v2.0.0) (2026-09-10)
 
 

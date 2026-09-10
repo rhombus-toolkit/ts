@@ -5,6 +5,7 @@ export type * from './Curry';
 export type * from './deep-record';
 export type * from './func';
 export type * from './Identity';
+export type * from './string';
 export type * from './truthy';
 export type * from './TypeName';
 export type * from './UnionToIntersection';

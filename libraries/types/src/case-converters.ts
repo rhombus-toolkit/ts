@@ -1,174 +1,293 @@
-import { Cast } from './Cast';
-import { UpperCaseChar } from './chars';
+import { DigitChar, LowerCaseChar, UpperCaseChar } from './chars';
 import { Join, Split } from './string-literals';
 
-type Replace<T, P extends string, R extends string> = T extends `${infer X}${P}${infer Y}`
-  ? `${X}${R}${Replace<Y, P, R>}`
-  : T;
+/** A tuple whose length is `N`, so `N` can be counted down by popping cells instead of by arithmetic. */
+type Budget<N extends number, Acc extends unknown[] = []> = Acc['length'] extends N ? Acc
+  : Budget<N, [...Acc, unknown]>;
 
-// type Upper<T extends string> =
-//     T extends `${infer X}a${infer Y}` ? `${Upper<X>}A${Upper<Y>}` :
-//     T extends `${infer X}b${infer Y}` ? `${Upper<X>}B${Upper<Y>}` :
-//     T extends `${infer X}c${infer Y}` ? `${Upper<X>}C${Upper<Y>}` :
-//     T extends `${infer X}d${infer Y}` ? `${Upper<X>}D${Upper<Y>}` :
-//     T extends `${infer X}e${infer Y}` ? `${Upper<X>}E${Upper<Y>}` :
-//     T extends `${infer X}f${infer Y}` ? `${Upper<X>}F${Upper<Y>}` :
-//     T extends `${infer X}g${infer Y}` ? `${Upper<X>}G${Upper<Y>}` :
-//     T extends `${infer X}h${infer Y}` ? `${Upper<X>}H${Upper<Y>}` :
-//     T extends `${infer X}i${infer Y}` ? `${Upper<X>}I${Upper<Y>}` :
-//     T extends `${infer X}j${infer Y}` ? `${Upper<X>}J${Upper<Y>}` :
-//     T extends `${infer X}k${infer Y}` ? `${Upper<X>}K${Upper<Y>}` :
-//     T extends `${infer X}l${infer Y}` ? `${Upper<X>}L${Upper<Y>}` :
-//     T extends `${infer X}m${infer Y}` ? `${Upper<X>}M${Upper<Y>}` :
-//     T extends `${infer X}n${infer Y}` ? `${Upper<X>}N${Upper<Y>}` :
-//     T extends `${infer X}o${infer Y}` ? `${Upper<X>}O${Upper<Y>}` :
-//     T extends `${infer X}p${infer Y}` ? `${Upper<X>}P${Upper<Y>}` :
-//     T extends `${infer X}q${infer Y}` ? `${Upper<X>}Q${Upper<Y>}` :
-//     T extends `${infer X}r${infer Y}` ? `${Upper<X>}R${Upper<Y>}` :
-//     T extends `${infer X}s${infer Y}` ? `${Upper<X>}S${Upper<Y>}` :
-//     T extends `${infer X}t${infer Y}` ? `${Upper<X>}T${Upper<Y>}` :
-//     T extends `${infer X}u${infer Y}` ? `${Upper<X>}U${Upper<Y>}` :
-//     T extends `${infer X}v${infer Y}` ? `${Upper<X>}V${Upper<Y>}` :
-//     T extends `${infer X}w${infer Y}` ? `${Upper<X>}W${Upper<Y>}` :
-//     T extends `${infer X}x${infer Y}` ? `${Upper<X>}X${Upper<Y>}` :
-//     T extends `${infer X}y${infer Y}` ? `${Upper<X>}Y${Upper<Y>}` :
-//     T extends `${infer X}z${infer Y}` ? `${Upper<X>}Z${Upper<Y>}` :
-//     T;
-// type Lower<T extends string> =
-//     T extends `${infer X}A${infer Y}` ? `${Lower<X>}a${Lower<Y>}` :
-//     T extends `${infer X}B${infer Y}` ? `${Lower<X>}b${Lower<Y>}` :
-//     T extends `${infer X}C${infer Y}` ? `${Lower<X>}c${Lower<Y>}` :
-//     T extends `${infer X}D${infer Y}` ? `${Lower<X>}d${Lower<Y>}` :
-//     T extends `${infer X}E${infer Y}` ? `${Lower<X>}e${Lower<Y>}` :
-//     T extends `${infer X}F${infer Y}` ? `${Lower<X>}f${Lower<Y>}` :
-//     T extends `${infer X}G${infer Y}` ? `${Lower<X>}g${Lower<Y>}` :
-//     T extends `${infer X}H${infer Y}` ? `${Lower<X>}h${Lower<Y>}` :
-//     T extends `${infer X}I${infer Y}` ? `${Lower<X>}i${Lower<Y>}` :
-//     T extends `${infer X}J${infer Y}` ? `${Lower<X>}j${Lower<Y>}` :
-//     T extends `${infer X}K${infer Y}` ? `${Lower<X>}k${Lower<Y>}` :
-//     T extends `${infer X}L${infer Y}` ? `${Lower<X>}l${Lower<Y>}` :
-//     T extends `${infer X}M${infer Y}` ? `${Lower<X>}m${Lower<Y>}` :
-//     T extends `${infer X}N${infer Y}` ? `${Lower<X>}n${Lower<Y>}` :
-//     T extends `${infer X}O${infer Y}` ? `${Lower<X>}o${Lower<Y>}` :
-//     T extends `${infer X}P${infer Y}` ? `${Lower<X>}p${Lower<Y>}` :
-//     T extends `${infer X}Q${infer Y}` ? `${Lower<X>}q${Lower<Y>}` :
-//     T extends `${infer X}R${infer Y}` ? `${Lower<X>}r${Lower<Y>}` :
-//     T extends `${infer X}S${infer Y}` ? `${Lower<X>}s${Lower<Y>}` :
-//     T extends `${infer X}T${infer Y}` ? `${Lower<X>}t${Lower<Y>}` :
-//     T extends `${infer X}U${infer Y}` ? `${Lower<X>}u${Lower<Y>}` :
-//     T extends `${infer X}V${infer Y}` ? `${Lower<X>}v${Lower<Y>}` :
-//     T extends `${infer X}W${infer Y}` ? `${Lower<X>}w${Lower<Y>}` :
-//     T extends `${infer X}X${infer Y}` ? `${Lower<X>}x${Lower<Y>}` :
-//     T extends `${infer X}Y${infer Y}` ? `${Lower<X>}y${Lower<Y>}` :
-//     T extends `${infer X}Z${infer Y}` ? `${Lower<X>}z${Lower<Y>}` :
-//     T;
-// type Cap<T extends string> =
-//     T extends `${Lower<infer X>}${infer Y}` ? `${Upper<X>}${Y}` : T;
+// #region the word tuple
 
-// type Uncap<T extends string> =
-//     T extends `${Upper<infer X>}${infer Y}` ? `${Lower<X>}${Y}` : T;
+/** A parsed identifier as its words, each keeping the casing it was written with. */
+export type Words = readonly string[];
 
-// type Stringable = string | number | bigint | boolean | null | undefined;
+// #endregion
 
-type J<T extends unknown[]> = T extends [] ? ''
-  : T extends [any] ? `${T[0]}` : T extends [any, ...infer Y] ? `${T[0]}${J<Y>}`
-  : never;
+// #region capital-boundary segmentation
 
-// type D2<T> = J<[T, T]>;
-// type D3<T> = J<[T, D2<T>]>;
-// type D4<T> = J<[T, D3<T>]>;
-// type D5<T> = J<[T, D4<T>]>;
-// type D6<T> = J<[T, D5<T>]>;
-// type D7<T> = J<[T, D6<T>]>;
-// type D8<T> = J<[T, D7<T>]>;
-// type D9<T> = J<[T, D8<T>]>;
-// type Many<T> = D2<T> | D3<T> | D4<T> | D5<T> | D6<T> | D7<T> | D8<T> | D9<T>;
-// type OneOrMany<T> = T | Many<T>;
-// type SingleLetter<T> = Tail<T> extends '' ? T : never;
-// type Gobble<T, U> = T extends J<[infer X, infer Y, infer Z]> ? (Y extends U ? X : J<[X, Gobble<J<[Y, Z]>, U>]>) : T;
-// type Gobble<T, U> =
-//     T extends `${infer X}${infer Y}${infer Z}`
-//     ? Y extends U
-//       ? X
-//       : `${X}${Gobble<`${T}${Z}`, U>}`
-//     : T;
+/** True when a word boundary falls before `C`, given the previous char `Prev` and the following chars `R`. */
+type IsBoundary<Prev extends string, C extends string, R extends string> = C extends UpperCaseChar
+  ? Prev extends LowerCaseChar ? true
+  : Prev extends UpperCaseChar | DigitChar ? R extends `${LowerCaseChar}${string}` ? true : false
+  : false
+  : C extends DigitChar ? Prev extends LowerCaseChar ? LeadsToAcronym<`${C}${R}`> extends true ? true : false : false
+  : false;
 
-// type HeadTail<T> = T extends `${infer THead}${infer TTail}` ? [THead, TTail] : never;
+/** True when the leading digit run of `S` is followed by an acronym rather than a lowercase-initial word. */
+type LeadsToAcronym<S extends string> = S extends `${DigitChar}${infer R}` ? LeadsToAcronym<R>
+  : S extends `${UpperCaseChar}${infer R2}` ? R2 extends `${LowerCaseChar}${string}` ? false : true
+  : false;
 
-// type Head<T> = HeadTail<T> extends [infer X, any] ? X : '';
-// type Tail<T> = HeadTail<T> extends [any, infer X] ? X : '';
+/** `S` with a space inserted before every word boundary. */
+type Scan<S extends string, Prev extends string = '', Acc extends string = ''> = S extends `${infer C}${infer R}`
+  ? Scan<R, C, IsBoundary<Prev, C, R> extends true ? `${Acc} ${C}` : `${Acc}${C}`>
+  : Acc;
 
-// type Train<T> = T extends string ? Train<ToCharArray<T>> : T extends [...infer TFront, infer TCaboose] ? [FromCharArray<TFront>, TCaboose] : never;
+/** True when `W` contains a lowercase letter, marking it a word to keep rather than an acronym run to chunk. */
+type HasLower<W extends string> = W extends `${string}${LowerCaseChar}${string}` ? true : false;
 
-// type Front<T> = Train<T> extends [infer X, any] ? X : '';
-// type Caboose<T> = Train<T> extends [any, infer X] ? X : '';
+/** Each segment kept as-is if it holds a lowercase letter, else chunked into acronym pieces. */
+type ChunkSegments<Segs extends readonly string[], N extends number> = Segs extends
+  readonly [infer H extends string, ...infer T extends string[]]
+  ? [...(HasLower<H> extends true ? [H] : ChunkRun<H, N>), ...ChunkSegments<T, N>]
+  : [];
 
-type ToCharArray<T> = T extends '' ? [] : T extends J<[infer X, infer Y]> ? [X, ...ToCharArray<Y>] : never;
-type FromCharArray<T extends unknown[]> = T extends [] ? ''
-  : T extends [string] ? T[0] : T extends [string, ...infer Y] ? J<[T[0], FromCharArray<Y>]>
-  : never;
+/** A capital run chunked greedily from the left into pieces of at most `N` letters, digits uncounted. */
+type ChunkRun<Run extends string, N extends number> = number extends N ? [Run]
+  : _ChunkRun<Run, Budget<N>, '', Budget<N>>;
 
-type Reverse<T> = T extends '' ? '' : T extends J<[infer X, infer Y]> ? J<[Reverse<Y>, X]> : never;
+type _ChunkRun<Run extends string, N extends unknown[], Acc extends string, Left extends unknown[]> = Run extends
+  `${infer C}${infer Rest}`
+  ? C extends DigitChar ? _ChunkRun<Rest, N, `${Acc}${C}`, Left>
+  : Left extends [unknown, ...infer LRest extends unknown[]] ? _ChunkRun<Rest, N, `${Acc}${C}`, LRest>
+  : [Acc, ..._ChunkRun<Rest, N, C, N extends [unknown, ...infer NRest extends unknown[]] ? NRest : []>]
+  : Acc extends '' ? []
+  : [Acc];
 
-/**
- * Inserts `TInsert` before every `TSearch` from the *second* character on.
- *
- * @remarks
- * Skipping the leading character is deliberate and is what makes a run of
- * capitals read as one word: `'ProperID4Form'` becomes `'Proper_ID4_Form'`, not
- * `'_Proper_I_D4_Form'`.
- */
-type InsertBefore<TInput, TSearch, TInsert> = TInput extends J<[infer X, infer Y, infer Z]>
-  ? Y extends TSearch ? J<[X, TInsert, Y, InsertBefore<Z, TSearch, TInsert>]>
-  : J<[X, InsertBefore<J<[Y, Z]>, TSearch, TInsert>]>
-  : TInput;
+// #endregion
 
-// type SnakeCase<T extends string> =
-//     T extends Lower<T> ? T :
+// #region capital-boundary parsers
 
-//     T extends `${Lower<infer X>}${Upper<infer Y>}${Cap<infer Z>}` ? SnakeCase<`${X}${Y}${Lowercase<Z>}`> :
-//     T extends `${Lower<infer X>}${Cap<infer Y>}` ? `${X}_${SnakeCase<Uncapitalize<Y>>}` :
-//     T extends `${Lower<infer X>}${Uncap<infer Y>}` ? `${X}${SnakeCase<Y>}` :
-//     T extends Cap<T> ? SnakeCase<Uncapitalize<T>> :
-//     1;
-// type DashCase<T extends string> = Replace<SnakeCase<T>, '_', '-'>;
+/** `'FooBar'` to `['Foo', 'Bar']`; a capital run before a lowercase gives its last capital away, the rest chunk by `N`. */
+export type FromPascalCase<S extends string, N extends number = 2> = ChunkSegments<Split<Scan<S>, ' '>, N>;
 
-/** `CONSTANT_CASE` — `ConstantCase<'fooBar'>` is `'FOO_BAR'`. */
-export type ConstantCase<T extends string> = Uppercase<InsertBefore<T, UpperCaseChar, '_'>>;
+/** {@link FromPascalCase} under its UpperCamel name. */
+export type FromUpperCamelCase<S extends string, N extends number = 2> = FromPascalCase<S, N>;
 
-/** `snake_case` — `SnakeCase<'fooBar'>` is `'foo_bar'`. */
-export type SnakeCase<T extends string> = Lowercase<InsertBefore<T, UpperCaseChar, '_'>>;
+/** {@link FromPascalCase} under its Studly name. */
+export type FromStudlyCase<S extends string, N extends number = 2> = FromPascalCase<S, N>;
 
-/** `dash-case` — `DashCase<'fooBar'>` is `'foo-bar'`. */
-export type DashCase<T extends string> = Lowercase<InsertBefore<T, UpperCaseChar, '-'>>;
+/** `'fooBar'` to `['foo', 'Bar']`; the leading lowercase run is the first word, then the {@link FromPascalCase} rules. */
+export type FromCamelCase<S extends string, N extends number = 2> = FromPascalCase<S, N>;
 
-/** `kebab-case`, the community name for {@link DashCase}. */
-export type KebabCase<T extends string> = DashCase<T>;
+/** {@link FromCamelCase} under its LowerCamel name. */
+export type FromLowerCamelCase<S extends string, N extends number = 2> = FromCamelCase<S, N>;
 
-/** The separators a compound name is already written with, before case boundaries are considered. */
-type Separated<T extends string> = Replace<Replace<T, '_', ' '>, '-', ' '>;
+/** {@link FromCamelCase} under its Dromedary name. */
+export type FromDromedaryCase<S extends string, N extends number = 2> = FromCamelCase<S, N>;
 
-/**
- * `T`'s words, lowercased.
- *
- * ```ts
- * Words<'fooBar'>        // -> ['foo', 'bar']
- * Words<'foo_bar-baz'>   // -> ['foo', 'bar', 'baz']
- * ```
- *
- * @remarks
- * Existing separators become spaces, then every case boundary becomes one too, and `Split` drops
- * the empties a doubled separator leaves behind.
- */
-type Words<T extends string> = Cast<Split<Lowercase<InsertBefore<Separated<T>, UpperCaseChar, ' '>>, ' '>, string[]>;
+// #endregion
 
-type CapitalizeWords<T extends readonly string[]> = { [K in keyof T]: Capitalize<T[K] & string>; };
+// #region separator parsers
 
-/** `PascalCase` — `PascalCase<'foo_bar'>` is `'FooBar'`. */
-export type PascalCase<T extends string> = Join<CapitalizeWords<Words<T>>, ''>;
+/** `'foo_bar'` to `['foo', 'bar']`; splits on `_`, drops empties, ignores casing. */
+export type FromSnakeCase<S extends string> = Split<S, '_'>;
 
-/** `camelCase` — `CamelCase<'foo_bar'>` is `'fooBar'`. */
-export type CamelCase<T extends string> = Uncapitalize<PascalCase<T>>;
+/** {@link FromSnakeCase} under its Pothole name. */
+export type FromPotholeCase<S extends string> = FromSnakeCase<S>;
 
-/** `Title Case` — `TitleCase<'fooBar'>` is `'Foo Bar'`. */
-export type TitleCase<T extends string> = Join<CapitalizeWords<Words<T>>, ' '>;
+/** `'FOO_BAR'` to `['FOO', 'BAR']`; splits on `_`, drops empties, ignores casing. */
+export type FromScreamingSnakeCase<S extends string> = Split<S, '_'>;
+
+/** {@link FromScreamingSnakeCase} under its Constant name. */
+export type FromConstantCase<S extends string> = FromScreamingSnakeCase<S>;
+
+/** {@link FromScreamingSnakeCase} under its Macro name. */
+export type FromMacroCase<S extends string> = FromScreamingSnakeCase<S>;
+
+/** {@link FromScreamingSnakeCase} under its UpperSnake name. */
+export type FromUpperSnakeCase<S extends string> = FromScreamingSnakeCase<S>;
+
+/** `'foo-bar'` to `['foo', 'bar']`; splits on `-`, drops empties, ignores casing. */
+export type FromKebabCase<S extends string> = Split<S, '-'>;
+
+/** {@link FromKebabCase} under its Dash name. */
+export type FromDashCase<S extends string> = FromKebabCase<S>;
+
+/** {@link FromKebabCase} under its Spinal name. */
+export type FromSpinalCase<S extends string> = FromKebabCase<S>;
+
+/** {@link FromKebabCase} under its Lisp name. */
+export type FromLispCase<S extends string> = FromKebabCase<S>;
+
+/** {@link FromKebabCase} under its Param name. */
+export type FromParamCase<S extends string> = FromKebabCase<S>;
+
+/** {@link FromKebabCase} under its Hyphen name. */
+export type FromHyphenCase<S extends string> = FromKebabCase<S>;
+
+/** `'Content-Type'` to `['Content', 'Type']`; splits on `-`, drops empties, ignores casing. */
+export type FromTrainCase<S extends string> = Split<S, '-'>;
+
+/** {@link FromTrainCase} under its HttpHeader name. */
+export type FromHttpHeaderCase<S extends string> = FromTrainCase<S>;
+
+/** {@link FromTrainCase} under its PascalKebab name. */
+export type FromPascalKebabCase<S extends string> = FromTrainCase<S>;
+
+/** `'FOO-BAR'` to `['FOO', 'BAR']`; splits on `-`, drops empties, ignores casing. */
+export type FromScreamingKebabCase<S extends string> = Split<S, '-'>;
+
+/** {@link FromScreamingKebabCase} under its Cobol name. */
+export type FromCobolCase<S extends string> = FromScreamingKebabCase<S>;
+
+/** {@link FromScreamingKebabCase} under its UpperKebab name. */
+export type FromUpperKebabCase<S extends string> = FromScreamingKebabCase<S>;
+
+/** `'Foo_Bar'` to `['Foo', 'Bar']`; splits on `_`, drops empties, ignores casing. */
+export type FromCamelSnakeCase<S extends string> = Split<S, '_'>;
+
+/** {@link FromCamelSnakeCase} under its PascalSnake name. */
+export type FromPascalSnakeCase<S extends string> = FromCamelSnakeCase<S>;
+
+/** {@link FromCamelSnakeCase} under its Ada name. */
+export type FromAdaCase<S extends string> = FromCamelSnakeCase<S>;
+
+/** `'foo.bar.baz'` to `['foo', 'bar', 'baz']`; splits on `.`, drops empties, ignores casing. */
+export type FromDotCase<S extends string> = Split<S, '.'>;
+
+/** `'foo/bar'` to `['foo', 'bar']`; splits on `/`, drops empties, ignores casing. */
+export type FromPathCase<S extends string> = Split<S, '/'>;
+
+// #endregion
+
+// #region best guess
+
+/** `S` with every separator normalized to `_`. */
+type ReplaceAll<S extends string, From extends string, To extends string> = S extends `${infer X}${From}${infer Y}`
+  ? `${X}${To}${ReplaceAll<Y, From, To>}`
+  : S;
+
+type ParseGuessPieces<Pieces extends readonly string[]> = Pieces extends
+  readonly [infer H extends string, ...infer T extends string[]]
+  ? [...FromPascalCase<H, number>, ...ParseGuessPieces<T>]
+  : [];
+
+/** Splits on every separator (`_ - . /`) and applies the unbounded capital-boundary rules to each piece. */
+export type FromBestGuessCase<S extends string> = ParseGuessPieces<
+  Split<ReplaceAll<ReplaceAll<ReplaceAll<S, '-', '_'>, '.', '_'>, '/', '_'>, '_'>
+>;
+
+// #endregion
+
+// #region per-word rendering
+
+/** True when `W`'s letters are all uppercase and number at most `N`, digits ignored. */
+type IsAcronym<W extends string, N extends number> = Uppercase<W> extends W ? FitsN<W, N> : false;
+
+type FitsN<W extends string, N extends number> = number extends N ? true : _FitsN<W, Budget<N>>;
+
+type _FitsN<W extends string, Left extends unknown[]> = W extends `${infer C}${infer R}`
+  ? C extends DigitChar ? _FitsN<R, Left>
+  : Left extends [unknown, ...infer LRest extends unknown[]] ? _FitsN<R, LRest> : false
+  : true;
+
+/** `W` lowercased with its first letter capitalized, leaving any leading digits in place. */
+type CapWord<W extends string> = W extends `${infer C}${infer R}`
+  ? C extends DigitChar ? `${C}${CapWord<R>}` : Capitalize<Lowercase<`${C}${R}`>>
+  : W;
+
+/** `W` kept verbatim when it is a short acronym, else normalized to its capitalized-word form. */
+type PascalWord<W extends string, N extends number> = IsAcronym<W, N> extends true ? W : CapWord<W>;
+
+type RenderPascalWords<W extends Words, N extends number> = { [K in keyof W]: PascalWord<W[K] & string, N>; };
+
+// #endregion
+
+// #region renderers
+
+/** `['Proper', 'ID4', 'Form']` to `'ProperID4Form'`; joins the per-word Pascal casing with no separator. */
+export type ToPascalCase<W extends Words, N extends number = 2> = Join<RenderPascalWords<W, N>, ''>;
+
+/** {@link ToPascalCase} under its UpperCamel name. */
+export type ToUpperCamelCase<W extends Words, N extends number = 2> = ToPascalCase<W, N>;
+
+/** {@link ToPascalCase} under its Studly name. */
+export type ToStudlyCase<W extends Words, N extends number = 2> = ToPascalCase<W, N>;
+
+/** `['Proper', 'ID4', 'Form']` to `'properID4Form'`; like {@link ToPascalCase} but the first word is always lowercase. */
+export type ToCamelCase<W extends Words, N extends number = 2> = W extends
+  readonly [infer H extends string, ...infer T extends string[]] ? `${Lowercase<H>}${Join<RenderPascalWords<T, N>, ''>}`
+  : '';
+
+/** {@link ToCamelCase} under its LowerCamel name. */
+export type ToLowerCamelCase<W extends Words, N extends number = 2> = ToCamelCase<W, N>;
+
+/** {@link ToCamelCase} under its Dromedary name. */
+export type ToDromedaryCase<W extends Words, N extends number = 2> = ToCamelCase<W, N>;
+
+/** `['Proper', 'ID4', 'Form']` to `'Proper-ID4-Form'`; joins the per-word Pascal casing with `-`. */
+export type ToTrainCase<W extends Words, N extends number = 2> = Join<RenderPascalWords<W, N>, '-'>;
+
+/** {@link ToTrainCase} under its HttpHeader name. */
+export type ToHttpHeaderCase<W extends Words, N extends number = 2> = ToTrainCase<W, N>;
+
+/** {@link ToTrainCase} under its PascalKebab name. */
+export type ToPascalKebabCase<W extends Words, N extends number = 2> = ToTrainCase<W, N>;
+
+/** `['Proper', 'ID4', 'Form']` to `'Proper_ID4_Form'`; joins the per-word Pascal casing with `_`. */
+export type ToCamelSnakeCase<W extends Words, N extends number = 2> = Join<RenderPascalWords<W, N>, '_'>;
+
+/** {@link ToCamelSnakeCase} under its PascalSnake name. */
+export type ToPascalSnakeCase<W extends Words, N extends number = 2> = ToCamelSnakeCase<W, N>;
+
+/** {@link ToCamelSnakeCase} under its Ada name. */
+export type ToAdaCase<W extends Words, N extends number = 2> = ToCamelSnakeCase<W, N>;
+
+/** `['Proper', 'ID4', 'Form']` to `'proper_id4_form'`; lowercases and joins with `_`. */
+export type ToSnakeCase<W extends Words> = Lowercase<Join<W, '_'>>;
+
+/** {@link ToSnakeCase} under its Pothole name. */
+export type ToPotholeCase<W extends Words> = ToSnakeCase<W>;
+
+/** `['Proper', 'ID4', 'Form']` to `'PROPER_ID4_FORM'`; uppercases and joins with `_`. */
+export type ToScreamingSnakeCase<W extends Words> = Uppercase<Join<W, '_'>>;
+
+/** {@link ToScreamingSnakeCase} under its Constant name. */
+export type ToConstantCase<W extends Words> = ToScreamingSnakeCase<W>;
+
+/** {@link ToScreamingSnakeCase} under its Macro name. */
+export type ToMacroCase<W extends Words> = ToScreamingSnakeCase<W>;
+
+/** {@link ToScreamingSnakeCase} under its UpperSnake name. */
+export type ToUpperSnakeCase<W extends Words> = ToScreamingSnakeCase<W>;
+
+/** `['Proper', 'ID4', 'Form']` to `'proper-id4-form'`; lowercases and joins with `-`. */
+export type ToKebabCase<W extends Words> = Lowercase<Join<W, '-'>>;
+
+/** {@link ToKebabCase} under its Dash name. */
+export type ToDashCase<W extends Words> = ToKebabCase<W>;
+
+/** {@link ToKebabCase} under its Spinal name. */
+export type ToSpinalCase<W extends Words> = ToKebabCase<W>;
+
+/** {@link ToKebabCase} under its Lisp name. */
+export type ToLispCase<W extends Words> = ToKebabCase<W>;
+
+/** {@link ToKebabCase} under its Param name. */
+export type ToParamCase<W extends Words> = ToKebabCase<W>;
+
+/** {@link ToKebabCase} under its Hyphen name. */
+export type ToHyphenCase<W extends Words> = ToKebabCase<W>;
+
+/** `['Proper', 'ID4', 'Form']` to `'PROPER-ID4-FORM'`; uppercases and joins with `-`. */
+export type ToScreamingKebabCase<W extends Words> = Uppercase<Join<W, '-'>>;
+
+/** {@link ToScreamingKebabCase} under its Cobol name. */
+export type ToCobolCase<W extends Words> = ToScreamingKebabCase<W>;
+
+/** {@link ToScreamingKebabCase} under its UpperKebab name. */
+export type ToUpperKebabCase<W extends Words> = ToScreamingKebabCase<W>;
+
+/** `['Proper', 'ID4', 'Form']` to `'proper.id4.form'`; lowercases and joins with `.`. */
+export type ToDotCase<W extends Words> = Lowercase<Join<W, '.'>>;
+
+/** `['Proper', 'ID4', 'Form']` to `'proper/id4/form'`; lowercases and joins with `/`. */
+export type ToPathCase<W extends Words> = Lowercase<Join<W, '/'>>;
+
+/** `['Proper', 'ID4', 'Form']` to `'properid4form'`; lowercases and joins with nothing. */
+export type ToFlatCase<W extends Words> = Lowercase<Join<W, ''>>;
+
+/** `['Proper', 'ID4', 'Form']` to `'PROPERID4FORM'`; uppercases and joins with nothing. */
+export type ToUpperFlatCase<W extends Words> = Uppercase<Join<W, ''>>;
+
+// #endregion

@@ -50,3 +50,63 @@ namespace multiElementRoundTrip {
   // @ts-expect-no-error
   isAssignable<[string, number], Subject>;
 }
+
+// `null` and `undefined` collapse to the same empty wrap, so both unwrap to void.
+namespace nullishRoundTrip {
+  type FromNull = unrestify<restify<null>>;
+  type FromUndefined = unrestify<restify<undefined>>;
+
+  // @ts-expect-no-error
+  isAssignable<FromNull, void>;
+  // @ts-expect-no-error
+  isAssignable<FromUndefined, void>;
+  // @ts-expect-no-error
+  isAssignable<restify<null>, []>;
+  // @ts-expect-no-error
+  isAssignable<restify<undefined>, []>;
+}
+
+// A wrap is a tuple of exactly the value, never a widened array.
+namespace scalarWrapIsAOneTuple {
+  // @ts-expect-no-error
+  isAssignable<restify<number>, [number]>;
+  // @ts-expect-error - a one-tuple is not a two-tuple
+  isAssignable<restify<number>, [number, number]>;
+  // @ts-expect-error - the marker keeps a plain literal from posing as a wrap
+  isAssignable<[number], restify<number>>;
+}
+
+// A plain array arrives spreadable and leaves `restify` as itself, marker-free.
+namespace arrayPassesThroughUnmarked {
+  // @ts-expect-no-error
+  isAssignable<restify<string[]>, string[]>;
+  // @ts-expect-no-error
+  isAssignable<string[], restify<string[]>>;
+  // @ts-expect-no-error
+  isAssignable<unrestify<string[]>, string[]>;
+  // @ts-expect-no-error
+  isAssignable<string[], unrestify<string[]>>;
+}
+
+// `unrestify` only takes arrays: a wrapped value is always one, so anything else is a caller error.
+namespace unrestifyRefusesNonArrays {
+  // @ts-expect-error
+  type Subject = unrestify<string>;
+}
+
+// The overloads agree with the type aliases at the call site.
+namespace callSitesMatchTheAliases {
+  const wrapped = restify('a' as string);
+  // @ts-expect-no-error
+  isAssignable<typeof wrapped, restify<string>>;
+
+  const unwrapped = unrestify(wrapped);
+  // @ts-expect-no-error
+  isAssignable<typeof unwrapped, string>;
+  // @ts-expect-no-error
+  isAssignable<string, typeof unwrapped>;
+
+  const empty = unrestify(restify(null));
+  // @ts-expect-no-error
+  isAssignable<typeof empty, void>;
+}

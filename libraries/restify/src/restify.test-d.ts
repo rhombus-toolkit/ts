@@ -19,10 +19,10 @@ namespace unrestifyTest {
   isExactly<unrestify<[string[]]>, string[]>();
   // @ts-expect-no-error
   isExactly<unrestify<[[string, number]]>, [string, number]>();
-  // several arguments keep their tuple, which carries the mark
+  // several arguments keep their tuple; the mark is optional in the type, so it reads as the plain tuple both ways
   // @ts-expect-no-error
   isAssignable<unrestify<[string, number]>, [string, number]>;
-  // @ts-expect-error - a plain tuple lacks the mark, so it cannot pose as a multi-argument payload
+  // @ts-expect-no-error
   isAssignable<[string, number], unrestify<[string, number]>>;
   // @ts-expect-error - only an argument list goes in
   type Rejected = unrestify<string>;
@@ -43,9 +43,14 @@ namespace restifyTest {
   isExactly<restify<string[]>, [string[]]>();
   // @ts-expect-no-error
   isExactly<restify<[string, number]>, [[string, number]]>();
-  // a marked tuple comes back as the plain tuple a caller can spread or be called with
+  // a marked tuple comes back as itself, which reads as the plain tuple a caller can spread or be called with
   // @ts-expect-no-error
   isExactly<restify<unrestify<[string, number]>>, [string, number]>();
+  // an object payload with no marker key is one argument, weak-type rules notwithstanding
+  // @ts-expect-no-error
+  isExactly<restify<{}>, [{}]>();
+  // @ts-expect-no-error
+  isExactly<restify<object>, [object]>();
   // @ts-expect-no-error
   isExactly<restify<unrestify<[string, number, boolean]>>, [string, number, boolean]>();
   // @ts-expect-error - a one-tuple is not a two-tuple

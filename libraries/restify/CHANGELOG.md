@@ -1,5 +1,18 @@
 # Changelog
 
+## [2.0.0](https://github.com/rhombus-toolkit/ts/compare/restify-v1.1.1...restify-v2.0.0) (2026-09-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* **restify:** restify wraps an unmarked array as one argument instead of passing it through, and unrestify unwraps any one-element array rather than only a marked one.
+
+### Bug Fixes
+
+* **restify:** keep a null argument as a payload ([188b4bb](https://github.com/rhombus-toolkit/ts/commit/188b4bb1c365e0a835ce1a17d94ed3630fd7ef3b))
+* **restify:** keep holes when copying a multi-argument tuple ([e6ac081](https://github.com/rhombus-toolkit/ts/commit/e6ac08137d19c13f0196563aabcff074c88af6cc))
+* **restify:** mark the multi-argument tuple so one array argument survives ([43e651e](https://github.com/rhombus-toolkit/ts/commit/43e651e4b75a196ea8114f274a257b99acae5a58))
+
 ## [1.1.1](https://github.com/rhombus-toolkit/ts/compare/restify-v1.1.0...restify-v1.1.1) (2026-09-10)
 
 

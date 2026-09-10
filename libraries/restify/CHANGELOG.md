@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1](https://github.com/rhombus-toolkit/ts/compare/restify-v1.1.0...restify-v1.1.1) (2026-09-10)
+
+
+### Bug Fixes
+
+* **restify:** map null to the empty tuple like the type says ([303ca2b](https://github.com/rhombus-toolkit/ts/commit/303ca2b1ae47a1965f7d8054015c2b87440340ca))
+
 ## [1.1.0](https://github.com/rhombus-toolkit/ts/compare/restify-v1.0.1...restify-v1.1.0) (2026-09-03)
 
 

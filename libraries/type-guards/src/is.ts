@@ -64,9 +64,9 @@ function inheritsFrom(value: unknown, prototype: object): boolean {
   return false;
 }
 
-/** Whether `value` carries a callable `key`. Boxing makes this safe on primitives; nullish is always false. */
-function hasMethod<K extends PropertyKey>(value: unknown, key: K): value is Record<K, Func<unknown[], unknown>> {
-  return hasMember(value, key) && isFunction(value[key]);
+/** Whether `value` carries a callable `key`; a primitive reads through its box, nullish reads nothing. */
+function hasMethod<K extends PropertyKey>(value: any, key: K): value is Record<K, Func<unknown[], unknown>> {
+  return isFunction(value?.[key]);
 }
 
 /**
@@ -95,7 +95,7 @@ function typeTag(value: unknown): string {
   return Object.prototype.toString.call(value).slice(8, -1);
 }
 export function isObject(value: any): value is object {
-  return hasValue(value) && typeof value === 'object';
+  return value !== null && typeof value === 'object';
 }
 export function isReadonlyArray(value: any): value is readonly unknown[] {
   return isArray(value);
@@ -113,7 +113,7 @@ export function isDefined<T>(p: T | undefined): p is T {
 }
 
 export function hasValue<T>(p: T | null | undefined): p is T {
-  return isDefined(p) && p !== null;
+  return p !== null && p !== undefined;
 }
 
 /** The function members of `T`, or a callable `T` when it names none; `Function` rather than `Func` because `Func`'s contravariant parameters would reject a `Func<[T], U>` member. */
@@ -129,12 +129,12 @@ export function isFunction<T>(value: T): value is T & FunctionOf<T> {
 
 /** CONTRACT. Whether `value` is thenable, whatever produced it. */
 export function isPromiseLike(value: any): value is PromiseLike<unknown> {
-  return isPromise(value) || hasMethod(value, 'then');
+  return hasMethod(value, 'then');
 }
 
 /** PROTOTYPE. Whether `value` is a real `Promise`, so `catch`/`finally` are present. A thenable from another realm reads as {@link isPromiseLike} only. */
 export function isPromise(value: any): value is Promise<unknown> {
-  return isObject(value) && value instanceof Promise;
+  return value instanceof Promise;
 }
 
 // `URL` is the single identifier in this file that lives in lib.dom, and naming
@@ -159,7 +159,7 @@ export function isIterable(value: any): value is Iterable<unknown> {
 
 /** CONTRACT. Whether `value` is an iterator that is also iterable, the shape a `for…of` accepts directly. */
 export function isIterableIterator(value: any): value is IterableIterator<unknown> {
-  return isDefined(value) && isIterator(value) && isIterable(value);
+  return isIterator(value) && isIterable(value);
 }
 
 /** CONTRACT. Whether `value` yields an async iterator when asked. */

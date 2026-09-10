@@ -1,5 +1,17 @@
 # Changelog
 
+## [4.1.0](https://github.com/rhombus-toolkit/ts/compare/type-guards-v4.0.0...type-guards-v4.1.0) (2026-09-10)
+
+
+### Features
+
+* **type-guards:** require a callable next in isIteratorObject ([c626fd1](https://github.com/rhombus-toolkit/ts/commit/c626fd1af4caf4ee294b158a908f2aea0305a42c))
+
+
+### Bug Fixes
+
+* **type-guards:** let assertNever report a symbol ([a56d57a](https://github.com/rhombus-toolkit/ts/commit/a56d57a1084ce5b07f961aa13e828672d6f34529))
+
 ## [4.0.0](https://github.com/rhombus-toolkit/ts/compare/type-guards-v3.1.0...type-guards-v4.0.0) (2026-09-04)
 
 

@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.2](https://github.com/rhombus-toolkit/ts/compare/restify-v2.0.1...restify-v2.0.2) (2026-09-10)
+
+
+### Bug Fixes
+
+* **restify:** never mutate a payload, so the same action can be reduced again ([25e338e](https://github.com/rhombus-toolkit/ts/commit/25e338e3bca355536e48c5e498f0bffa04a2ec87))
+
 ## [2.0.1](https://github.com/rhombus-toolkit/ts/compare/restify-v2.0.0...restify-v2.0.1) (2026-09-10)
 
 

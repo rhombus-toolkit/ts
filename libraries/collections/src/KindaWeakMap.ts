@@ -1,4 +1,4 @@
-export class KindaWeakMap<K, V extends object> /*implements Map<K, V>*/ {
+export class KindaWeakMap<K, V extends WeakKey> /*implements Map<K, V>*/ {
   readonly #map = new Map<K, WeakRef<V>>();
   readonly #registry = new FinalizationRegistry((key: K) => {
     if (this.#map.get(key)?.deref() === undefined) {
@@ -6,29 +6,29 @@ export class KindaWeakMap<K, V extends object> /*implements Map<K, V>*/ {
     }
   });
   set(key: K, value: V): this {
-    if (this.has(key)) {
-      this.delete(key);
-    }
+    this.delete(key);
     this.#registry.register(value, key, value);
     this.#map.set(key, new WeakRef(value));
     return this;
   }
 
   delete(key: K): boolean {
-    const val = this.get(key);
-    if (val !== undefined) {
-      this.#registry.unregister(val);
+    const value = this.get(key);
+    this.#map.delete(key);
+    if (value === undefined) {
+      return false;
     }
-    return this.#map.delete(key);
+    this.#registry.unregister(value);
+    return true;
   }
   get(key: K): V | undefined {
     return this.#map.get(key)?.deref();
   }
   has(key: K): boolean {
-    return this.#map.has(key);
+    return this.get(key) !== undefined;
   }
   clear(): void {
-    this.values().filter(Boolean).forEach(p => this.#registry.unregister(p!));
+    this.values().forEach(value => this.#registry.unregister(value));
     this.#map.clear();
   }
   forEach(callbackfn: (value: V, key: K, map: this) => void, thisArg?: any): void {
@@ -36,17 +36,19 @@ export class KindaWeakMap<K, V extends object> /*implements Map<K, V>*/ {
       callbackfn.call(thisArg, value, key, this);
     }
   }
+  /** Counts only entries whose value is still alive, so it walks every ref. */
   get size() {
-    return this.#map.size;
+    return this.entries().reduce(count => count + 1, 0);
   }
   entries(): MapIterator<[K, V]> {
-    return this.#map.entries().map(([key, ref]) => [key, ref.deref()] as [K, V]);
+    const held = this.#map.entries().map(([key, ref]): [K, V | undefined] => [key, ref.deref()]);
+    return held.filter((entry): entry is [K, V] => entry[1] !== undefined);
   }
   keys(): MapIterator<K> {
-    return this.#map.keys();
+    return this.entries().map(([key]) => key);
   }
-  values(): MapIterator<V | undefined> {
-    return this.#map.values().map((ref) => ref.deref());
+  values(): MapIterator<V> {
+    return this.entries().map(([, value]) => value);
   }
   [Symbol.iterator](): MapIterator<[K, V]> {
     return this.entries();

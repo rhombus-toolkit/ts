@@ -50,17 +50,23 @@ describe('KindaWeakMap', () => {
     expect(m.get('k')).toBe(v2);
   });
 
-  it('values() admits undefined for entries collected but not yet finalized', async () => {
+  it('every read skips an entry collected but not yet finalized', async () => {
     const m = new KindaWeakMap<string, object>();
-    m.set('k', { v: 1 });
+    m.set('gone', { v: 1 });
+    const kept = { v: 2 };
+    m.set('kept', kept);
 
     await endJob();
     Bun.gc(true);
 
     // Synchronous observation: the cleanup callback has not run, so the map
-    // still holds the dead ref -- the window the V | undefined type admits.
-    expect(m.has('k')).toBe(true);
-    expect([...m.values()]).toEqual([undefined]);
+    // still holds the dead ref -- and no read may let it show through.
+    expect(m.has('gone')).toBe(false);
+    expect(m.size).toBe(1);
+    expect([...m.keys()]).toEqual(['kept']);
+    expect([...m.values()]).toEqual([kept]);
+    expect([...m.entries()]).toEqual([['kept', kept]]);
+    expect(m.delete('gone')).toBe(false);
   });
 
   it('clear() empties the map even across dead entries', async () => {

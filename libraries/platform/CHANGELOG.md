@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.2.0](https://github.com/rhombus-toolkit/ts/compare/platform-v1.1.0...platform-v1.2.0) (2026-09-10)
+
+
+### Features
+
+* **platform:** add owned Event and ProgressEvent lookups ([0e3ecac](https://github.com/rhombus-toolkit/ts/commit/0e3ecacf0e2ac0e7159982aaa656f35637861f2f))
+
 ## [1.1.0](https://github.com/rhombus-toolkit/ts/compare/platform-v1.0.0...platform-v1.1.0) (2026-08-27)
 
 

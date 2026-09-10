@@ -46,8 +46,7 @@ type ChunkRun<Run extends string, N extends number> = number extends N ? [Run]
   : _ChunkRun<Run, Budget<N>, '', Budget<N>>;
 
 type _ChunkRun<Run extends string, N extends unknown[], Acc extends string, Left extends unknown[]> = Run extends
-  `${infer C}${infer Rest}`
-  ? C extends DigitChar ? _ChunkRun<Rest, N, `${Acc}${C}`, Left>
+  `${infer C}${infer Rest}` ? C extends DigitChar ? _ChunkRun<Rest, N, `${Acc}${C}`, Left>
   : Left extends [unknown, ...infer LRest extends unknown[]] ? _ChunkRun<Rest, N, `${Acc}${C}`, LRest>
   : [Acc, ..._ChunkRun<Rest, N, C, N extends [unknown, ...infer NRest extends unknown[]] ? NRest : []>]
   : Acc extends '' ? []
@@ -178,7 +177,8 @@ type FitsN<W extends string, N extends number> = number extends N ? true : _Fits
 
 type _FitsN<W extends string, Left extends unknown[]> = W extends `${infer C}${infer R}`
   ? C extends DigitChar ? _FitsN<R, Left>
-  : Left extends [unknown, ...infer LRest extends unknown[]] ? _FitsN<R, LRest> : false
+  : Left extends [unknown, ...infer LRest extends unknown[]] ? _FitsN<R, LRest>
+  : false
   : true;
 
 /** `W` lowercased with its first letter capitalized, leaving any leading digits in place. */

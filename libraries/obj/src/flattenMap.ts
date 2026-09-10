@@ -50,8 +50,7 @@ export type flattenMap<T extends DeepDictionary<any>, TLeaf = Func, MaxDepth ext
 // depth". `Store<MaxDepth>` does the number-to-tuple conversion once, at the public entry, so the
 // depth stays a plain number for a caller.
 type _flattenMap<T extends DeepDictionary<any>, Leaf, prefix extends string, Budget extends readonly any[]> =
-  Budget extends readonly [any, ...infer Rest]
-    ? T extends Leaf ? [prefix, T]
+  Budget extends readonly [any, ...infer Rest] ? T extends Leaf ? [prefix, T]
     : T extends Record<any, any> ? { [K in keyof T]: _flattenMap<T[K], Leaf, join<prefix, K>, Rest>; }[keyof T]
     : never
     : never;

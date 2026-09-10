@@ -9,7 +9,9 @@
  * A union distributes, so `TypeName<string | number>` is `'string' | 'number'`.
  */
 export type TypeName<T> = T extends string ? 'string'
-  : T extends number ? 'number' : T extends bigint ? 'bigint' : T extends boolean ? 'boolean'
+  : T extends number ? 'number'
+  : T extends bigint ? 'bigint'
+  : T extends boolean ? 'boolean'
   : T extends symbol ? 'symbol'
   : T extends undefined ? 'undefined'
   // `Function` and not `Func<any[], any>`: a class constructor is `typeof

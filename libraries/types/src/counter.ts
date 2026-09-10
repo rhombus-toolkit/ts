@@ -14,7 +14,8 @@ type ExpandArrayToLength<counter extends CounterArray, length extends number> = 
 //     _Counter<length, Next<counter>>;
 
 type _Counter<length extends number> = length extends 0 ? []
-  : length extends 1 ? [never] : ExpandArrayToLength<[], length>;
+  : length extends 1 ? [never]
+  : ExpandArrayToLength<[], length>;
 type Counter<length extends number> = Cast<_Counter<length>, CounterArray>;
 
 export type Store<value extends number> = Counter<value>;

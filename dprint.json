@@ -13,7 +13,9 @@
     "semiColons": "always",
     "singleBodyPosition": "nextLine",
     "preferHanging": true,
-    "preferSingleLine": true
+    "preferSingleLine": true,
+    "conditionalType.preferSingleLine": false,
+    "typeLiteral.preferSingleLine": false
   },
   "json": {},
   "markdown": {},

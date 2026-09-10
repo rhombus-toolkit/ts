@@ -2,8 +2,8 @@ export function setTimeoutAsync(timeout: number): Promise<void>;
 export function setTimeoutAsync(timeout: number, signal: AbortSignal): Promise<void>;
 export function setTimeoutAsync<T>(timeout: number, arg: T): Promise<T>;
 export function setTimeoutAsync<T>(timeout: number, signal: AbortSignal, arg: T): Promise<T>;
-export function setTimeoutAsync<T extends any[]>(timeout: number, ...args: T): Promise<T>;
 export function setTimeoutAsync<T extends any[]>(timeout: number, signal: AbortSignal, ...args: T): Promise<T>;
+export function setTimeoutAsync<T extends any[]>(timeout: number, ...args: T): Promise<T>;
 export function setTimeoutAsync(timeout: number, ...args: any) {
   const [first, ...rest] = args;
   const signal = first instanceof AbortSignal ? first : undefined;

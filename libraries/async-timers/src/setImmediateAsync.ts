@@ -4,8 +4,8 @@ export function setImmediateAsync(): Promise<void>;
 export function setImmediateAsync(signal: AbortSignal): Promise<void>;
 export function setImmediateAsync<T>(arg: T): Promise<T>;
 export function setImmediateAsync<T>(signal: AbortSignal, arg: T): Promise<T>;
-export function setImmediateAsync<T extends any[]>(...args: T): Promise<T>;
 export function setImmediateAsync<T extends any[]>(signal: AbortSignal, ...args: T): Promise<T>;
+export function setImmediateAsync<T extends any[]>(...args: T): Promise<T>;
 export function setImmediateAsync(...args: any) {
   const [first, ...rest] = args;
   const signal = first instanceof AbortSignal ? first : undefined;

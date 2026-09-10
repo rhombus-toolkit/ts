@@ -53,13 +53,17 @@ namespace definednessNarrowingTest {
   isAssignable<typeof present, string[]>;
 }
 
-// `isFunction` takes no type arguments -- `typeof` witnesses callability and
-// nothing about the signature, so naming one would be an unchecked assertion.
-namespace isFunctionTakesNoTypeArgumentsTest {
+// `isFunction`'s type argument is inferred from the value, so naming one is never an unchecked
+// assertion: a signature the value does not already have is rejected at the call.
+namespace isFunctionTypeArgumentRestatesTheValueTest {
   declare const value: unknown;
 
-  // @ts-expect-error - the guard is not generic
-  isFunction<[number], number>(value);
+  // @ts-expect-error - unknown is not a Func<[number], number>
+  isFunction<Func<[number], number>>(value);
+  if (isFunction(value)) {
+    // @ts-expect-no-error
+    isAssignable<typeof value, Func>;
+  }
 }
 
 // The typed overload carries the element type through the narrowing, so a
@@ -101,19 +105,36 @@ namespace isAllThereKeepsMutabilityTest {
   }
 }
 
-// The narrowed type is the permissive `Func`, not the union's own function member: enough to
-// call, with the return type `any`, so the guard never blocks a call whose shape the caller knows.
-namespace isFunctionNarrowsToACallableTest {
+// The narrowed type is the union's own function member, so the return type survives, and the
+// false branch drops it.
+namespace isFunctionNarrowsToTheMemberTest {
   declare const value: string | Func<[number], string>;
 
   if (isFunction(value)) {
     // @ts-expect-no-error
-    isAssignable<typeof value, Func>;
+    isAssignable<typeof value, Func<[number], string>>;
     // @ts-expect-no-error
-    value(1);
+    isAssignable<string>(value(1));
+    // @ts-expect-error - the argument is checked against the member's signature
+    value('one');
     // @ts-expect-error - a string is not callable, so it is gone from the true branch
     isAssignable<typeof value, string>;
+  } else {
+    // @ts-expect-no-error
+    isAssignable<typeof value, string>;
+    // @ts-expect-error - the function member is gone from the false branch
+    isAssignable<typeof value, Func<[number], string>>;
   }
+
+  declare const plain: object;
+  if (isFunction(plain)) {
+    // @ts-expect-no-error
+    isAssignable<typeof plain, Func>;
+  }
+
+  declare const list: (string | Func<[], number>)[];
+  // @ts-expect-no-error
+  isAssignable<Func<[], number>[]>(list.filter(isFunction));
 }
 
 namespace isObjectNarrowsAwayPrimitivesAndNullTest {

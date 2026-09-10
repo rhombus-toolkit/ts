@@ -116,11 +116,14 @@ export function hasValue<T>(p: T | null | undefined): p is T {
   return isDefined(p) && p !== null;
 }
 
-/** Whether `value` is callable. Takes no type arguments — a caller who needs a signature spells the cast out. */
-// `Func`'s permissive default is what the narrowing needs: a stricter `Func<unknown[], unknown>`
-// is contravariant in its parameters, so narrowing a `U | Func<[T], U>` by it can't pick the
-// function member and yields a call signature returning `unknown`, losing `U`.
-export function isFunction(value: unknown): value is Func {
+/** The function members of `T`, or a callable `T` when it names none; `Function` rather than `Func` because `Func`'s contravariant parameters would reject a `Func<[T], U>` member. */
+type FunctionOf<T> = Extract<T, Function> extends infer F ? [F] extends [never] ? T & Func
+  : Function extends F ? F & Func
+  : F
+  : never;
+
+/** Whether `value` is callable; a type argument can only restate what `value` already is. */
+export function isFunction<T>(value: T): value is T & FunctionOf<T> {
   return typeof value === 'function';
 }
 
@@ -169,6 +172,10 @@ export function isAsyncIterableIterator(value: any): value is AsyncIterableItera
   return isIterator(value) && isAsyncIterable(value);
 }
 
+/** The `Symbol.toStringTag` of every built-in sync iterator kind, the cross-realm fallback of {@link isIteratorObject}. */
+const IteratorTags: ReadonlySet<string> = new Set(['Iterator', 'Array Iterator', 'Map Iterator', 'Set Iterator',
+  'String Iterator', 'RegExp String Iterator', 'Iterator Helper', 'Generator']);
+
 /**
  * PROTOTYPE. Whether `value` inherits `%IteratorPrototype%`, so the ES2025
  * iterator helpers (`map`, `filter`, `take`, `drop`, `toArray`, …) are present
@@ -178,17 +185,18 @@ export function isAsyncIterableIterator(value: any): value is AsyncIterableItera
  * A hand-rolled `{ next() { … } }` is an {@link isIterator} but not this.
  * `Object.create(Iterator.prototype)` and `class B extends Iterator {}` are the
  * mirror case: they inherit the helpers with no `next` to drive them, and every
- * helper throws, so they fail here too.
+ * helper throws, so they fail here too. A built-in iterator from another realm
+ * is recognised by its tag, as {@link isGenerator} does.
  */
 export function isIteratorObject<T>(value: Iterator<T> | Iterable<T>): value is IteratorObject<T>;
 export function isIteratorObject(value: unknown): value is IteratorObject<unknown>;
 export function isIteratorObject(value: any) {
-  return inheritsFrom(value, IteratorPrototype) && isIterator(value);
+  return (inheritsFrom(value, IteratorPrototype) || IteratorTags.has(typeTag(value))) && isIterator(value);
 }
 
-/** PROTOTYPE. The async counterpart of {@link isIteratorObject}. */
+/** PROTOTYPE. The async counterpart of {@link isIteratorObject}; across realms only an async generator carries a tag to fall back on. */
 export function isAsyncIteratorObject(value: any): value is AsyncIteratorObject<unknown> {
-  return inheritsFrom(value, AsyncIteratorPrototype);
+  return inheritsFrom(value, AsyncIteratorPrototype) || typeTag(value) === 'AsyncGenerator';
 }
 
 /** PROTOTYPE. Whether `value` is a generator *object* — what calling a generator function returns, not the function itself. */

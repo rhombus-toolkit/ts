@@ -599,13 +599,19 @@ describe('cross-realm values', () => {
     expect(isIterator(foreignGenFn())).toBe(true);
   });
 
-  test("isIteratorObject is bound to this realm's %IteratorPrototype% and has no tag fallback", () => {
+  test('isIteratorObject recognises a foreign built-in iterator by its tag, as the generator guards do', () => {
     expect(typeof foreignArrayIterator.map).toBe('function');
-    expect(isIteratorObject(foreignArrayIterator)).toBe(false);
-    expect(isIteratorObject(foreignGenFn())).toBe(false);
+    expect(isIteratorObject(foreignArrayIterator)).toBe(true);
+    expect(isIteratorObject(foreignGenFn())).toBe(true);
+    expect(isIteratorObject(runInNewContext('new Map().entries().map((entry) => entry)'))).toBe(true);
+    expect(isIteratorObject(runInNewContext('Iterator.from({ next() { return { done: true }; } })'))).toBe(true);
+    // a foreign %IteratorPrototype% carries the tag but no next, so it still fails
+    expect(isIteratorObject(runInNewContext('Iterator.prototype'))).toBe(false);
+    // a spoofed tag without next fails; with next it passes, the same weakness isGenerator accepts
+    expect(isIteratorObject({ [Symbol.toStringTag]: 'Array Iterator' })).toBe(false);
   });
 
-  test("isAsyncIteratorObject is bound to this realm's %AsyncIteratorPrototype% likewise", () => {
-    expect(isAsyncIteratorObject(foreignAsyncGenFn())).toBe(false);
+  test('isAsyncIteratorObject recognises a foreign async generator by its tag', () => {
+    expect(isAsyncIteratorObject(foreignAsyncGenFn())).toBe(true);
   });
 });

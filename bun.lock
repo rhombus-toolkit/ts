@@ -70,9 +70,6 @@
     "libraries/restify": {
       "name": "@rhombus-toolkit/restify",
       "version": "1.1.0",
-      "dependencies": {
-        "@rhombus-toolkit/types": "workspace:*",
-      },
     },
     "libraries/set-immediate": {
       "name": "@rhombus-toolkit/set-immediate",

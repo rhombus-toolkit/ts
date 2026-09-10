@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.1](https://github.com/rhombus-toolkit/ts/compare/types-v3.0.0...types-v3.0.1) (2026-09-10)
+
+
+### Bug Fixes
+
+* **types:** strip the optional modifier in WritableKeys like ReadonlyKeys does ([455fcc4](https://github.com/rhombus-toolkit/ts/commit/455fcc4ed14ca69b52da0479d12a624b249687e3))
+
 ## [3.0.0](https://github.com/rhombus-toolkit/ts/compare/types-v2.0.0...types-v3.0.0) (2026-09-10)
 
 

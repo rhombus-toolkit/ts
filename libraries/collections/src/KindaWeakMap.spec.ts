@@ -144,6 +144,31 @@ describe('KindaWeakMap', () => {
     expect([...m]).toEqual([...m.entries()]);
   });
 
+  it('keeps an existing key in its place when set again, as Map does', () => {
+    const m = new KindaWeakMap<string, object>();
+    m.set('one', { n: 1 }).set('two', { n: 2 }).set('three', { n: 3 });
+    const replacement = { n: 11 };
+    m.set('one', replacement);
+
+    expect([...m.keys()]).toEqual(['one', 'two', 'three']);
+    expect(m.get('one')).toBe(replacement);
+  });
+
+  it('keeps a value collected under one key finalizing the other key too', async () => {
+    const m = new KindaWeakMap<string, object>();
+    m.set('a', { shared: true });
+    m.set('b', m.get('a')!);
+    m.delete('a');
+
+    await endJob();
+    Bun.gc(true);
+    await new Promise((resolve) => setTimeout(resolve, 50));
+
+    // The finalizer for 'b' still fires: deleting 'a' unregistered only 'a'.
+    expect(m.has('b')).toBe(false);
+    expect([...m.keys()]).toEqual([]);
+  });
+
   it('hands out iterators that carry the iterator helpers', () => {
     const m = new KindaWeakMap<string, { n: number; }>();
     m.set('one', { n: 1 }).set('two', { n: 2 });

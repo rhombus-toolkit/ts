@@ -117,3 +117,73 @@ describe('repeatable', () => {
     expect([...sequence]).toEqual([]);
   });
 });
+
+describe('repeatable, the source and the cache', () => {
+  it('stays empty on every walk over a source that was already consumed', () => {
+    const { source } = counted([1, 2, 3]);
+    [...source];
+    const sequence = repeatable(source);
+
+    expect([...sequence]).toEqual([]);
+    expect([...sequence]).toEqual([]);
+  });
+
+  it('starts from the first element on a walk begun after another has finished', () => {
+    const sequence = repeatable(counted([1, 2, 3]).source);
+    [...sequence];
+    const later = sequence[Symbol.iterator]();
+
+    expect(later.next().value).toBe(1);
+  });
+
+  it('hands every walk the same element objects, not copies', () => {
+    const elements = [{ id: 1 }, { id: 2 }];
+    const sequence = repeatable(counted(elements).source);
+    const [firstWalk] = [...sequence];
+    const [secondWalk] = [...sequence];
+
+    expect(firstWalk).toBe(elements[0]);
+    expect(secondWalk).toBe(firstWalk);
+  });
+
+  it('lets a lagging walk catch up from the cache without touching the source', () => {
+    const { reads, source } = counted([1, 2, 3, 4]);
+    const sequence = repeatable(source);
+    const lagging = sequence[Symbol.iterator]();
+    [...sequence];
+    expect(reads.count).toBe(4);
+
+    expect([...lagging]).toEqual([1, 2, 3, 4]);
+    expect(reads.count).toBe(4);
+  });
+
+  it('does not cache the value a source returns alongside done', () => {
+    let calls = 0;
+    const iterator: Iterator<string, string> = { next: () => {
+      calls++;
+      return calls === 1 ? { done: false, value: 'kept' } : { done: true, value: 'dropped' };
+    } };
+    const sequence = repeatable(iterator);
+
+    expect([...sequence]).toEqual(['kept']);
+    expect([...sequence]).toEqual(['kept']);
+  });
+
+  it('surfaces a throwing source in the walk that pulled it and keeps what was cached', () => {
+    function* faulty(): Generator<number> {
+      yield 1;
+      throw new Error('boom');
+    }
+    const sequence = repeatable(faulty());
+
+    expect(() => [...sequence]).toThrow('boom');
+    expect([...sequence]).toEqual([1]);
+  });
+
+  it('accepts a next-only object under Iterator.from without a Symbol.iterator of its own', () => {
+    const nextOnly = { next: () => ({ done: true as const, value: undefined }) };
+    expect(Symbol.iterator in nextOnly).toBe(false);
+
+    expect([...repeatable(nextOnly)]).toEqual([]);
+  });
+});

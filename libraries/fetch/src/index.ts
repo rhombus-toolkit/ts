@@ -1,6 +1,9 @@
+import { ProgressEvent } from '@rhombus-toolkit/platform';
+
 export interface FetchEventMap {
   progress: ProgressEvent;
   complete: ProgressEvent;
+  cancelled: ProgressEvent;
 }
 export interface ProgressEventTarget extends EventTarget {
   addEventListener<K extends keyof FetchEventMap>(type: K,
@@ -45,14 +48,10 @@ export function wrapResponse(response: Response) {
     progress(total - loaded);
     emitter.dispatchEvent(new ProgressEvent('complete', { lengthComputable, loaded, total }));
   }
-  const reader = response.body!.getReader();
+  const reader = response.body.getReader();
   let cancelled = false;
 
   const stream = new ReadableStream({ async start(controller) {
-    if (cancelled) {
-      controller.close();
-      return;
-    }
     // void async function pushit() {
     try {
       while (true) {
@@ -61,10 +60,12 @@ export function wrapResponse(response: Response) {
           controller.close();
           break;
         }
-        progress(value!.byteLength);
+        progress(value.byteLength);
         controller.enqueue(value);
       }
-      complete();
+      if (!cancelled) {
+        complete();
+      }
     } catch (error) {
       controller.error(error);
     }
@@ -77,7 +78,7 @@ export function wrapResponse(response: Response) {
   return Object.assign(new Response(stream, response), { progress: emitter, cancel: () => {
     cancelled = true;
     emitter.dispatchEvent(new ProgressEvent('cancelled', { lengthComputable, loaded, total }));
-    return reader?.cancel() ?? Promise.resolve();
+    return reader.cancel();
   } });
   // return obj.assignDeep(new Response(stream, response), emitter);
 }

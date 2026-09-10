@@ -1,5 +1,16 @@
 # Changelog
 
+## [4.0.0](https://github.com/rhombus-toolkit/ts/compare/types-v3.0.1...types-v4.0.0) (2026-09-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* **types:** the one-step case converters (PascalCase, CamelCase, SnakeCase, ConstantCase, DashCase, KebabCase, TitleCase) are gone; compose a To* renderer over a From* parser instead.
+
+### Features
+
+* **types:** parse and render identifier cases through a Words tuple ([8a7c77e](https://github.com/rhombus-toolkit/ts/commit/8a7c77e548aff5600f9785744fe92148e33619a7))
+
 ## [3.0.1](https://github.com/rhombus-toolkit/ts/compare/types-v3.0.0...types-v3.0.1) (2026-09-10)
 
 

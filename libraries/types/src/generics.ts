@@ -1,6 +1,9 @@
 import { AbstractCtor as _ACtor, Ctor as _Ctor, Func as _Func } from './func';
 export declare const $: unique symbol;
 export type $ = typeof $;
+/** Slot on a generic signature that keeps its un-substituted `[Args, Return]`, so an enclosing {@link Replace} can link a nested `$` to the outer type parameter; never present at runtime. */
+declare const Γ: unique symbol;
+type Template<Args extends readonly any[], Return> = { readonly [Γ]?: [Args, Return]; };
 
 type Replace<T, R> = T extends $ ? R
   : T extends string ? T
@@ -21,11 +24,19 @@ type Replace<T, R> = T extends $ ? R
   : T extends WeakSet<infer X> ? WeakSet<Replace<X, R> & WeakKey>
   : T extends Iterable<infer X> ? Iterable<Replace<X, R>>
   : T extends AsyncIterable<infer X> ? AsyncIterable<Replace<X, R>>
+  : typeof Γ extends keyof T ? ReplaceTemplate<T, R>
   : T extends _Ctor<infer X, infer Y> ? _Ctor<ReplaceArray<X, R>, Replace<Y, R>>
   : T extends _ACtor<infer X, infer Y> ? _ACtor<ReplaceArray<X, R>, Replace<Y, R>>
   : T extends _Func<infer X, infer Y> ? _Func<ReplaceArray<X, R>, Replace<Y, R>>
   : T extends Record<any, any> ? { [K in keyof T as Replace<K, R> & PropertyKey]: Replace<T[K], R>; }
   : T;
+
+/** A nested generic signature re-opened: its template substituted with the outer `R`, as the plain shape it came from. */
+type ReplaceTemplate<T, R> = T extends Template<infer Args, infer Return>
+  ? T extends _ACtor<any, any> ? _ACtor<ReplaceArray<Args, R>, Replace<Return, R>>
+  : T extends _Ctor<any, any> ? _Ctor<ReplaceArray<Args, R>, Replace<Return, R>>
+  : _Func<ReplaceArray<Args, R>, Replace<Return, R>>
+  : never;
 
 type ReplaceArray<Arr extends readonly any[], R, done extends readonly any[] = []> =
   // Arr extends [infer item, ...infer rest] ? [Replace<item, R>, ...ReplaceArray<rest, R>] : Arr
@@ -38,9 +49,9 @@ type ReplaceArray<Arr extends readonly any[], R, done extends readonly any[] = [
 
 type _ = { readonly _: unique symbol; };
 
-type _FuncG<Args extends readonly any[], Return, Constraint> = _ extends Constraint // see if Constraint is 'any'
+type _FuncG<Args extends readonly any[], Return, Constraint> = (_ extends Constraint // see if Constraint is 'any'
   ? <T>(...args: Replace<Args, T>) => Replace<Return, T>
-  : <T extends Constraint>(...args: Replace<Args, T>) => Replace<Return, T>;
+  : <T extends Constraint>(...args: Replace<Args, T>) => Replace<Return, T>) & Template<Args, Return>;
 
 export type Func<Args extends readonly any[] = any[], Return = any, Constraint = any> =
   Replace<[Args, Return], 'asdf'> extends Replace<[Args, Return], 'qwer'> // see if there are any placeholders for generic usage
@@ -56,10 +67,12 @@ export type AsyncAction<Args extends readonly any[] = any[], Constraint = any> =
 export type Sub<Args extends readonly any[] = any[], Constraint = any> = Action<Args, Constraint>;
 export type AsyncSub<Args extends readonly any[] = any[], Constraint = any> = AsyncAction<Args, Constraint>;
 
-type _CtorG<Args extends readonly any[], Instance, Constraint> = _ extends Constraint
-  ? { new<T>(...args: Replace<Args, T>): Replace<Instance, T>; readonly prototype: Replace<Instance, any>; }
-  : { new<T extends Constraint>(...args: Replace<Args, T>): Replace<Instance, T>;
-    readonly prototype: Replace<Instance, any>; };
+type _CtorG<Args extends readonly any[], Instance, Constraint> =
+  & (_ extends Constraint
+    ? { new<T>(...args: Replace<Args, T>): Replace<Instance, T>; readonly prototype: Replace<Instance, any>; }
+    : { new<T extends Constraint>(...args: Replace<Args, T>): Replace<Instance, T>;
+      readonly prototype: Replace<Instance, any>; })
+  & Template<Args, Instance>;
 
 export type Ctor<Args extends readonly any[] = any[], Instance = any, Constraint = any> =
   Replace<[Args, Instance], 'asdf'> extends Replace<[Args, Instance], 'qwer'> ? _Ctor<Args, Instance>
@@ -80,8 +93,8 @@ interface _ACtorGConstrained<Args extends readonly any[], Instance, Constraint>
   readonly prototype: Replace<Instance, any>;
 }
 
-type _ACtorG<Args extends readonly any[], Instance, Constraint> = _ extends Constraint ? _ACtorGAny<Args, Instance>
-  : _ACtorGConstrained<Args, Instance, Constraint>;
+type _ACtorG<Args extends readonly any[], Instance, Constraint> = (_ extends Constraint ? _ACtorGAny<Args, Instance>
+  : _ACtorGConstrained<Args, Instance, Constraint>) & Template<Args, Instance>;
 
 export type AbstractCtor<Args extends readonly any[] = any[], Instance = any, Constraint = any> =
   Replace<[Args, Instance], 'asdf'> extends Replace<[Args, Instance], 'qwer'> ? _ACtor<Args, Instance>

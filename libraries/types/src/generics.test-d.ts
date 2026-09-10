@@ -83,13 +83,26 @@ namespace nestedPlaceholderTest {
   // @ts-expect-error
   isAssignable<Box<string>>(box(true));
 
-  // a placeholder inside a nested function type is lost: the inner signature
-  // resolves to `Func<readonly [unknown], unknown>` rather than linking to `T`
+  // a placeholder inside a nested function type links to the same `T` as the outer ones
   declare const apply: Func<[Func<[$], $>, $], $>;
-  // @ts-expect-error
-  isAssignable<number>(apply((n: number) => n + 1, 1)); // TODO known-wrong: the inner `$` becomes `unknown`
   // @ts-expect-no-error
-  isAssignable<number>(apply((n: unknown) => n, 1));
+  isAssignable<number>(apply((n: number) => n + 1, 1));
+  // @ts-expect-error - the callback's parameter and the value must agree
+  apply((n: string) => n.length, 1);
+  // @ts-expect-no-error
+  isAssignable<number>(apply((n: unknown) => n as number, 1));
+
+  // two levels down still links
+  declare const compose: Func<[Func<[$], $>, Func<[$], $>, $], $>;
+  // @ts-expect-no-error
+  isAssignable<number>(compose((n: number) => n + 1, (n: number) => n * 2, 1));
+
+  // a nested constructor links too
+  declare const build: Func<[Ctor<[$], Box<$>>, $], Box<$>>;
+  // @ts-expect-no-error
+  isAssignable<Box<number>>(build(class implements Box<number> {
+    constructor(public value: number) {}
+  }, 1));
 
   // a string literal is never mistaken for a placeholder
   declare const tagged: Func<[$], 'fixed'>;

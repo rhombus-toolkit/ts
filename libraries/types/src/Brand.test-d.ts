@@ -45,3 +45,34 @@ namespace flavorTest {
   // @ts-expect-error
   isAssignable<OrderId, UserId>;
 }
+
+/** A symbol scope works the same as a string one. */
+namespace symbolScopeTest {
+  declare const scope: unique symbol;
+  type Id = Brand<number, typeof scope>;
+
+  // @ts-expect-no-error
+  isAssignable<Id, number>;
+  // @ts-expect-error
+  isAssignable<number, Id>;
+  // @ts-expect-error
+  isAssignable<Brand<number, 'other'>, Id>;
+}
+
+/** The brand is the stricter of the pair: it satisfies the flavor of its scope, not the reverse. */
+namespace brandMeetsFlavorTest {
+  // @ts-expect-no-error
+  isAssignable<Brand<string, 'UserId'>, Flavor<string, 'UserId'>>;
+  // @ts-expect-error
+  isAssignable<Flavor<string, 'UserId'>, Brand<string, 'UserId'>>;
+  // @ts-expect-error
+  isAssignable<Brand<string, 'OrderId'>, Flavor<string, 'UserId'>>;
+}
+
+/** The scope must be a property key that can sit in the marker slot. */
+namespace scopeConstraintTest {
+  // @ts-expect-error
+  type Numeric = Brand<string, 1>;
+  // @ts-expect-error
+  type Wide = Flavor<string, object>;
+}

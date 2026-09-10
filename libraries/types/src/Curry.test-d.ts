@@ -48,3 +48,27 @@ namespace gapTest {
   // @ts-expect-no-error
   isAssignable<number>(gapped('asdf', date));
 }
+
+/** Each argument is checked in its own position; nothing applied gives the same function back. */
+namespace argumentTypesTest {
+  // @ts-expect-error
+  curried(1);
+  // @ts-expect-error
+  curried('asdf', 'not a boolean');
+
+  const same = curried();
+  // @ts-expect-no-error
+  isAssignable<number>(same('asdf', true, date));
+
+  // one at a time
+  // @ts-expect-no-error
+  isAssignable<number>(curried('asdf')(true)(date));
+  // @ts-expect-error
+  curried('asdf')(date);
+}
+
+/** Only functions can be curried. */
+namespace constraintTest {
+  // @ts-expect-error
+  type NotAFunction = Curry<number>;
+}

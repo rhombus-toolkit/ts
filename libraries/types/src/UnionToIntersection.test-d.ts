@@ -46,3 +46,15 @@ namespace funcTest {
   // @ts-expect-error
   isAssignable<string>(f('a'));
 }
+
+/** A single member intersects to itself; disjoint members intersect to nothing. */
+namespace degenerateTest {
+  // @ts-expect-no-error
+  isAssignable<UnionToIntersection<'a'>, 'a'>;
+  // @ts-expect-no-error
+  isAssignable<'a', UnionToIntersection<'a'>>;
+  // @ts-expect-no-error
+  isAssignable<UnionToIntersection<boolean>, never>;
+  // @ts-expect-no-error
+  isAssignable<UnionToIntersection<'a' | 'b'>, never>;
+}

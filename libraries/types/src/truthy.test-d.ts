@@ -71,3 +71,31 @@ namespace isFalsyIsTruthyTest {
   // @ts-expect-no-error
   isAssignable<IsFalsy<false>, true>;
 }
+
+/** The `If`s distribute over a union; wide primitives are truthy because `Falsy` holds literals. */
+namespace distributionTest {
+  // @ts-expect-no-error
+  isAssignable<IfFalsy<0 | 1>, boolean>;
+  // @ts-expect-no-error
+  isAssignable<boolean, IfFalsy<0 | 1>>;
+  // @ts-expect-no-error
+  isAssignable<IsTruthy<'' | 'a'>, boolean>;
+  // @ts-expect-no-error
+  isAssignable<boolean, IsTruthy<'' | 'a'>>;
+
+  // @ts-expect-no-error
+  isAssignable<Truthy<string>, string>;
+  // @ts-expect-no-error
+  isAssignable<string, Truthy<string>>;
+  // @ts-expect-no-error
+  isAssignable<IsFalsy<number>, false>;
+  // @ts-expect-no-error
+  isAssignable<IsTruthy<number>, true>;
+
+  // @ts-expect-no-error
+  isAssignable<Truthy<null | undefined | 'a'>, 'a'>;
+  // @ts-expect-no-error
+  isAssignable<'a', Truthy<null | undefined | 'a'>>;
+  // @ts-expect-no-error
+  isAssignable<Truthy<Falsy>, never>;
+}

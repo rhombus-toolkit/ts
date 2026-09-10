@@ -1,4 +1,4 @@
-import { Body, Head, Last, Length, Skip, Slice, SplitArray, Tail, Take } from './array';
+import { Body, Head, Last, Length, PartialList, Skip, Slice, SplitArray, Tail, Take } from './array';
 
 declare function isAssignable<TActual extends TExpected, TExpected>(actual?: TActual, expected?: TExpected): void;
 declare function isAssignable<TExpected>(actual?: TExpected): void;
@@ -104,4 +104,88 @@ namespace headTailBodyLastTest {
   isAssignable<Body<Five>, [0, 1, 2, 3]>;
   // @ts-expect-no-error
   isAssignable<Length<Five>, 5>;
+}
+
+/** Every prefix of the list, the empty one included -- never a suffix, never longer. */
+namespace partialListTest {
+  type Subject = PartialList<[0, 1, 2]>;
+
+  // @ts-expect-no-error
+  isAssignable<[0, 1, 2], Subject>;
+  // @ts-expect-no-error
+  isAssignable<[0, 1], Subject>;
+  // @ts-expect-no-error
+  isAssignable<[0], Subject>;
+  // @ts-expect-no-error
+  isAssignable<[], Subject>;
+  // @ts-expect-no-error
+  isAssignable<Subject, [0, 1, 2] | [0, 1] | [0] | []>;
+
+  // @ts-expect-error
+  isAssignable<[1], Subject>;
+  // @ts-expect-error
+  isAssignable<[1, 2], Subject>;
+  // @ts-expect-error
+  isAssignable<[0, 1, 2, 3], Subject>;
+
+  // @ts-expect-no-error
+  isAssignable<PartialList<[]>, []>;
+}
+
+/** The empty tuple has no head, tail, body or last -- and a length of zero. */
+namespace emptyTupleTest {
+  // @ts-expect-no-error
+  isAssignable<Head<[]>, never>;
+  // @ts-expect-no-error
+  isAssignable<Tail<[]>, never>;
+  // @ts-expect-no-error
+  isAssignable<Body<[]>, never>;
+  // @ts-expect-no-error
+  isAssignable<Last<[]>, never>;
+  // @ts-expect-no-error
+  isAssignable<Length<[]>, 0>;
+
+  // a single element is its own head and last, with nothing around it
+  // @ts-expect-no-error
+  isAssignable<Head<[7]>, 7>;
+  // @ts-expect-no-error
+  isAssignable<Last<[7]>, 7>;
+  // @ts-expect-no-error
+  isAssignable<Tail<[7]>, []>;
+  // @ts-expect-no-error
+  isAssignable<Body<[7]>, []>;
+}
+
+/** Counts past the end are clamped, never an error. */
+namespace pastTheEndTest {
+  // @ts-expect-no-error
+  isAssignable<Take<9, Five>, Five>;
+  // @ts-expect-no-error
+  isAssignable<Five, Take<9, Five>>;
+  // @ts-expect-no-error
+  isAssignable<Skip<9, Five>, []>;
+  // @ts-expect-no-error
+  isAssignable<[], Skip<9, Five>>;
+  // @ts-expect-no-error
+  isAssignable<Take<3, []>, []>;
+  // @ts-expect-no-error
+  isAssignable<Skip<3, []>, []>;
+  // @ts-expect-no-error
+  isAssignable<SplitArray<Five, 9>, [Five, []]>;
+}
+
+/** `Slice` defaults: from the start, to the end. */
+namespace sliceDefaultsTest {
+  // @ts-expect-no-error
+  isAssignable<Slice<Five>, Five>;
+  // @ts-expect-no-error
+  isAssignable<Five, Slice<Five>>;
+  // @ts-expect-no-error
+  isAssignable<Slice<Five, 2>, [2, 3, 4]>;
+  // @ts-expect-no-error
+  isAssignable<[2, 3, 4], Slice<Five, 2>>;
+  // @ts-expect-no-error
+  isAssignable<Slice<Five, 1, 0>, []>;
+  // @ts-expect-error
+  isAssignable<Slice<Five, 1, 3>, [0, 1, 2]>;
 }

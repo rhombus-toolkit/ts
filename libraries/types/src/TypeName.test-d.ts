@@ -45,3 +45,27 @@ namespace unionDistributesTest {
   // @ts-expect-no-error
   isAssignable<'string' | 'number', TypeName<string | number>>;
 }
+
+/** A class constructor is a `'function'` at runtime, though it carries no call signature. */
+namespace constructorTest {
+  class Thing {}
+
+  // @ts-expect-no-error
+  isAssignable<TypeName<typeof Thing>, 'function'>;
+  // @ts-expect-error
+  isAssignable<TypeName<typeof Thing>, 'object'>;
+  // @ts-expect-error
+  isAssignable<TypeName<Func<[], void>>, 'object'>;
+}
+
+/** Everything else structured is an `'object'`. */
+namespace objectShapesTest {
+  // @ts-expect-no-error
+  isAssignable<TypeName<Date>, 'object'>;
+  // @ts-expect-no-error
+  isAssignable<TypeName<number[]>, 'object'>;
+  // @ts-expect-no-error
+  isAssignable<TypeName<object>, 'object'>;
+  // @ts-expect-error
+  isAssignable<TypeName<number[]>, 'array'>;
+}

@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.3](https://github.com/rhombus-toolkit/ts/compare/restify-v2.0.2...restify-v2.0.3) (2026-09-10)
+
+
+### Bug Fixes
+
+* **restify:** hand the handler an unmarked copy so the mark never leaves a payload ([d3f65ae](https://github.com/rhombus-toolkit/ts/commit/d3f65aef947f5f9a974ef3ef0abb6da4025ab254))
+
 ## [2.0.2](https://github.com/rhombus-toolkit/ts/compare/restify-v2.0.1...restify-v2.0.2) (2026-09-10)
 
 

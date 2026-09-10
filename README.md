@@ -17,7 +17,6 @@ A publish pipeline is not wired up yet.
 | `AnyChar`                    | `@rhombus-toolkit/types`            |
 | `AnyEntry`                   | `@rhombus-toolkit/obj`              |
 | `AnyOf`                      | `@rhombus-toolkit/typed-pluralizer` |
-| `AssertNeverError`           | `@rhombus-toolkit/types`            |
 | `assign`                     | `@rhombus-toolkit/obj`              |
 | `AsString`                   | `@rhombus-toolkit/types`            |
 | `AsyncAction`                | `@rhombus-toolkit/types`            |
@@ -66,7 +65,6 @@ A publish pipeline is not wired up yet.
 | `IndexAccessed`              | `@rhombus-toolkit/proxy-base`       |
 | `Indexed`                    | `@rhombus-toolkit/proxy-base`       |
 | `InferEventType`             | `@rhombus-toolkit/async-timers`     |
-| `InvalidTypeArgError`        | `@rhombus-toolkit/types`            |
 | `IsFalsy`                    | `@rhombus-toolkit/types`            |
 | `IsTruthy`                   | `@rhombus-toolkit/types`            |
 | `IsUncountable`              | `@rhombus-toolkit/typed-pluralizer` |
@@ -133,7 +131,6 @@ A publish pipeline is not wired up yet.
 | `Truthy`                     | `@rhombus-toolkit/types`            |
 | `TupleToUnion`               | `@rhombus-toolkit/types`            |
 | `TypeName`                   | `@rhombus-toolkit/types`            |
-| `TypesError`                 | `@rhombus-toolkit/types`            |
 | `UncountableWord`            | `@rhombus-toolkit/typed-pluralizer` |
 | `UnionToIntersection`        | `@rhombus-toolkit/types`            |
 | `UnionToTuple`               | `@rhombus-toolkit/types`            |

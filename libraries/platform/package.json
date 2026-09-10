@@ -25,7 +25,8 @@
   ],
   "scripts": {
     "build": "bun ../../scripts/build-lib.ts",
-    "lint": "bun x tsc --noEmit -p tsconfig.ci.json && bun x tsc --noEmit -p tsconfig.compat.json"
+    "lint": "bun x tsc --noEmit -p tsconfig.ci.json && bun x tsc --noEmit -p tsconfig.compat.json",
+    "test": "bun test src/"
   },
   "keywords": [],
   "author": "Thomas Butler",

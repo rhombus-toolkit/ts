@@ -4,5 +4,6 @@
   "compilerOptions": {
     "lib": ["ES5", "ES2015.Symbol"]
   },
-  "include": ["src/**/*"]
+  "include": ["src/**/*"],
+  "exclude": ["src/**/*.spec.ts"]
 }

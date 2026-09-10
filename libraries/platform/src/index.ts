@@ -4,8 +4,10 @@
 // `@types/node`, no bun-types anywhere in the graph.
 
 export * from './abort';
+export * from './Event';
 export * from './ImmediateHandle';
 export * from './process';
+export * from './ProgressEvent';
 export type * from './ReadableStream';
 export * from './single-instance-guard';
 export * from './TimeoutHandle';

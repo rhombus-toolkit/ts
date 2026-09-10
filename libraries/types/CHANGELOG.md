@@ -1,5 +1,16 @@
 # Changelog
 
+## [3.0.0](https://github.com/rhombus-toolkit/ts/compare/types-v2.0.0...types-v3.0.0) (2026-09-10)
+
+
+### ⚠ BREAKING CHANGES
+
+* **types:** AssertNeverError is no longer exported; use never for an unreachable conditional-type arm.
+
+### Features
+
+* **types:** drop the type-level error objects ([4e0064f](https://github.com/rhombus-toolkit/ts/commit/4e0064ffdd4fac2b89828878bb4b61594d4bd48d))
+
 ## [2.0.0](https://github.com/rhombus-toolkit/ts/compare/types-v1.0.1...types-v2.0.0) (2026-09-03)
 
 

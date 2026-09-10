@@ -33,7 +33,7 @@ type IfEquals<X, Y, A, B> =
 */
 
 export type WritableKeys<T> = {
-  [K in keyof T]: IfEquals<{ [Q in K]: T[K]; }, { -readonly [Q in K]: T[K]; }, K>;
+  [K in keyof T]-?: IfEquals<{ [Q in K]: T[K]; }, { -readonly [Q in K]: T[K]; }, K>;
 }[keyof T];
 
 export type ReadonlyKeys<T> = {

@@ -186,9 +186,9 @@ namespace writableKeysOptionalTest {
     readonly b: number;
   }
 
-  // @ts-expect-error
-  isAssignable<WritableKeys<Loose>, 'a'>; // TODO known-wrong: produces 'a' | undefined
   // @ts-expect-no-error
+  isAssignable<WritableKeys<Loose>, 'a'>;
+  // @ts-expect-error
   isAssignable<undefined, WritableKeys<Loose>>;
   // the read-only side is unaffected
   // @ts-expect-no-error

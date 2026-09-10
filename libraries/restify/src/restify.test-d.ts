@@ -52,6 +52,23 @@ namespace restifyTest {
   isAssignable<restify<number>, [number, number]>;
 }
 
+// One non-array argument never becomes an array; one array argument stays that array.
+namespace payloadShapeTest {
+  type IsArray<T> = T extends readonly any[] ? true : false;
+  // @ts-expect-no-error
+  isExactly<IsArray<unrestify<[string]>>, false>();
+  // @ts-expect-no-error
+  isExactly<IsArray<unrestify<[null]>>, false>();
+  // @ts-expect-no-error
+  isExactly<IsArray<unrestify<[{ a: 1; }]>>, false>();
+  // @ts-expect-no-error
+  isExactly<IsArray<unrestify<[]>>, false>();
+  // @ts-expect-no-error
+  isExactly<IsArray<unrestify<[string[]]>>, true>();
+  // @ts-expect-no-error
+  isExactly<IsArray<unrestify<[string, number]>>, true>();
+}
+
 // The type contract in one line: what went into the creator comes out of restify unchanged.
 type RoundTrips<Args extends any[]> = Same<restify<unrestify<Args>>, Args>;
 

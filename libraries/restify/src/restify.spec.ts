@@ -129,6 +129,33 @@ describe('restify', () => {
   });
 });
 
+describe('payload shape', () => {
+  /** Every non-array value a creator could be called with as its one argument. */
+  const nonArrays: unknown[] = ['a', '', 0, NaN, false, null, undefined, 1n, Symbol('s'), { a: 1 }, { length: 1,
+    0: 'a' }, () => {}, new Map(), new Set(), new Date(0), /x/];
+
+  it('never turns one non-array argument into an array', () => {
+    for (const value of nonArrays) {
+      expect(Array.isArray(unrestify([value]))).toBe(false);
+    }
+  });
+
+  it('turns one array argument into that array, unmarked', () => {
+    const list = [1, 2];
+    const payload = unrestify([list]);
+
+    expect(Array.isArray(payload)).toBe(true);
+    expect(Object.getOwnPropertySymbols(payload)).toEqual([]);
+  });
+
+  it('turns several arguments into a marked array', () => {
+    const payload = unrestify(['a', 'b']);
+
+    expect(Array.isArray(payload)).toBe(true);
+    expect(Object.getOwnPropertySymbols(payload)).toEqual([marker]);
+  });
+});
+
 describe('round trip', () => {
   /** Element-for-element `===`: what a handler spread from the payload sees is what the creator was called with. */
   function sequenceEquals(left: readonly unknown[], right: readonly unknown[]): boolean {

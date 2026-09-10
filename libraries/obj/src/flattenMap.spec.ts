@@ -65,3 +65,124 @@ describe('flattenMap (runtime)', () => {
     expect(result.constructor).toBe(Object);
   });
 });
+
+describe('flattenMap (what counts as a branch)', () => {
+  it('walks own enumerable string keys only, skipping symbol, non-enumerable and inherited members', () => {
+    const own = (): void => undefined;
+    const map = Object.create({ inherited: (): void => undefined }) as Record<PropertyKey, unknown>;
+    map.own = own;
+    map[Symbol('hidden')] = (): void => undefined;
+    Object.defineProperty(map, 'hiddenByFlag', { value: (): void => undefined, enumerable: false });
+    const result = flattenMap(map as any) as any;
+
+    expect(Object.keys(result)).toEqual(['own']);
+    expect(result.own).toBe(own);
+  });
+
+  it('descends into a null-prototype branch', () => {
+    const leaf = (): void => undefined;
+    const branch = Object.assign(Object.create(null), { leaf });
+    const result = flattenMap({ branch } as any) as any;
+
+    expect(result['branch.leaf']).toBe(leaf);
+  });
+
+  it('descends into a class instance, keying by its own fields', () => {
+    class Branch {
+      leaf = (): void => undefined;
+      method(): void {}
+    }
+    const branch = new Branch();
+    const result = flattenMap({ branch } as any) as any;
+
+    expect(Object.keys(result)).toEqual(['branch.leaf']);
+    expect(result['branch.leaf']).toBe(branch.leaf);
+  });
+
+  it('descends into an array, keying leaves by index', () => {
+    const first = (): void => undefined;
+    const second = (): void => undefined;
+    const result = flattenMap({ list: [first, second] } as any) as any;
+
+    expect(Object.keys(result).sort()).toEqual(['list.0', 'list.1']);
+    expect(result['list.0']).toBe(first);
+    expect(result['list.1']).toBe(second);
+  });
+
+  it('reads a frozen map without touching it', () => {
+    const leaf = (): void => undefined;
+    const map = Object.freeze({ branch: Object.freeze({ leaf }) });
+    const result = flattenMap(map) as any;
+
+    expect(result['branch.leaf']).toBe(leaf);
+    expect(map).toEqual({ branch: { leaf } });
+  });
+
+  it('places no depth limit on the runtime walk', () => {
+    const leaf = (): void => undefined;
+    const map = Array.from({ length: 12 }).reduce<object>(inner => ({ level: inner }), { leaf });
+    const result = flattenMap(map as any) as any;
+
+    expect(Object.keys(result)).toEqual([`${Array.from({ length: 12 }, () => 'level').join('.')}.leaf`]);
+    expect(result[Object.keys(result)[0]!]).toBe(leaf);
+  });
+
+  it('drops an empty key from the joined path, so an empty-keyed branch aliases its parent', () => {
+    const rootLeaf = (): void => undefined;
+    const nestedLeaf = (): void => undefined;
+    const result = flattenMap({ '': { root: rootLeaf }, a: { '': nestedLeaf } } as any) as any;
+
+    expect(Object.keys(result).sort()).toEqual(['a', 'root']);
+    expect(result.root).toBe(rootLeaf);
+    expect(result.a).toBe(nestedLeaf);
+  });
+});
+
+describe('flattenMap (what counts as a leaf)', () => {
+  it('treats every callable as a leaf by default, class constructors and bound functions included', () => {
+    class Leaf {}
+    const bound = function(this: unknown): void {}.bind(null);
+    async function asyncLeaf(): Promise<void> {}
+    function* generatorLeaf(): Generator<never> {}
+    const result = flattenMap({ Leaf, bound, asyncLeaf, generatorLeaf }) as any;
+
+    expect(result.Leaf).toBe(Leaf);
+    expect(result.bound).toBe(bound);
+    expect(result.asyncLeaf).toBe(asyncLeaf);
+    expect(result.generatorLeaf).toBe(generatorLeaf);
+  });
+
+  it('lets `leafPredicate` decide what a leaf is, so arrays can stop the descent', () => {
+    const list = [1, 2];
+    const result = flattenMap({ a: { list }, b: [3] }, (p): p is number[] => Array.isArray(p));
+
+    expect(result).toEqual({ 'a.list': list, b: [3] });
+    expect(result['a.list']).toBe(list);
+  });
+
+  it('descends into a function when `leafPredicate` says it is not a leaf', () => {
+    const branch = Object.assign((): void => undefined, { inner: 1 });
+    const result = flattenMap({ branch }, (p): p is number => typeof p === 'number');
+
+    expect(result).toEqual({ 'branch.inner': 1 });
+  });
+
+  it('asks `leafPredicate` about every value it reaches, branches included', () => {
+    const seen: unknown[] = [];
+    const inner = { leaf: 1 };
+    flattenMap({ inner, other: 2 }, (p): p is number => {
+      seen.push(p);
+      return typeof p === 'number';
+    });
+
+    expect(seen).toEqual(expect.arrayContaining([inner, 1, 2]));
+    expect(seen).toHaveLength(3);
+  });
+
+  it('keeps a `null` or `undefined` leaf when the predicate claims it', () => {
+    const result = flattenMap({ a: { b: null }, c: undefined }, (p): p is null | undefined => p == null);
+
+    expect(result).toEqual({ 'a.b': null, c: undefined });
+    expect('c' in result).toBe(true);
+  });
+});

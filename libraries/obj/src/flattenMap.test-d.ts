@@ -35,3 +35,69 @@ namespace deepTest {
   // @ts-expect-no-error
   isAssignable<Expected, Subject>;
 }
+
+// `TLeaf` (or the predicate overload) picks what the descent stops at; the
+// default only ever stops at a function.
+namespace leafTypeTest {
+  type Subject = flattenMap<{ a: { b: number; }; c: number; }, number>;
+  type Expected = { 'a.b': number; c: number; };
+
+  // @ts-expect-no-error
+  isAssignable<Subject, Expected>;
+  // @ts-expect-no-error
+  isAssignable<Expected, Subject>;
+
+  const viaPredicate = flattenMap({ a: { b: 1 }, c: 2 }, (p): p is number => typeof p === 'number');
+
+  // @ts-expect-no-error
+  isAssignable<typeof viaPredicate, Expected>;
+  // @ts-expect-no-error
+  isAssignable<Expected, typeof viaPredicate>;
+
+  // @ts-expect-error - a non-function leaf needs a predicate to be admitted
+  flattenMap({ a: { b: 1 } });
+}
+
+// `MaxDepth` is spent one cell per object entered, the root included: a leaf
+// sitting `n` objects deep needs `MaxDepth` of at least `n + 1`, and anything
+// deeper falls out of the result rather than erroring.
+namespace maxDepthTest {
+  type Source = { a: { b: Func; }; c: Func; };
+
+  // @ts-expect-no-error
+  isAssignable<flattenMap<Source, Func, 1>, {}>;
+  // @ts-expect-error - the root spends the only cell, so even `c` is out of budget
+  isAssignable<flattenMap<Source, Func, 1>, { c: Func; }>;
+
+  // @ts-expect-no-error
+  isAssignable<flattenMap<Source, Func, 2>, { c: Func; }>;
+  // @ts-expect-error - `a.b` sits one object deeper than the budget reaches
+  isAssignable<flattenMap<Source, Func, 2>, { c: Func; 'a.b': Func; }>;
+
+  // @ts-expect-no-error
+  isAssignable<flattenMap<Source, Func, 3>, { c: Func; 'a.b': Func; }>;
+  // @ts-expect-no-error
+  isAssignable<{ c: Func; 'a.b': Func; }, flattenMap<Source, Func, 3>>;
+}
+
+// A key with no string literal spelling widens to `string` in the joined path,
+// so a numeric key costs the result its exact keys and a symbol key never appears.
+namespace nonStringKeyTest {
+  declare const symbolKey: unique symbol;
+  type WithSymbolKey = flattenMap<{ [symbolKey]: Func; a: Func; }>;
+
+  // @ts-expect-no-error
+  isAssignable<WithSymbolKey, { a: Func; }>;
+  declare const withSymbolKey: WithSymbolKey;
+  // @ts-expect-error - the symbol key is not in the result
+  withSymbolKey[symbolKey];
+
+  // @ts-expect-no-error
+  isAssignable<flattenMap<{ 0: Func; a: Func; }>, { [key: string]: Func; a: Func; }>;
+  // @ts-expect-no-error
+  isAssignable<flattenMap<{ a: { 1: Func; }; }>, { [key: `a.${string}`]: Func; }>;
+  // @ts-expect-no-error
+  isAssignable<{ [key: `a.${string}`]: Func; }, flattenMap<{ a: { 1: Func; }; }>>;
+  // @ts-expect-no-error - spelled as a string the key keeps its literal
+  isAssignable<flattenMap<{ a: { '7': Func; }; }>, { 'a.7': Func; }>;
+}

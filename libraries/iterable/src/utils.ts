@@ -155,7 +155,7 @@ export function sequenceEquals<T>(source1: Iterable<T>, source2: Iterable<T>,
     const first = left.next();
     const second = right.next();
     if (first.done || second.done) {
-      return (first.done ?? false) === (second.done ?? false);
+      return !first.done === !second.done;
     }
     if (!equals(first.value, second.value)) {
       return false;

@@ -1,6 +1,6 @@
 {
   "name": "@rhombus-toolkit/types",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Type-level utilities: the Func family, arrays, string literals, counters and brands. No runtime.",
   "repository": {
     "type": "git",

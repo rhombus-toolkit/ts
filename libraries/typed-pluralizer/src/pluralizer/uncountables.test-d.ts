@@ -1,4 +1,4 @@
-import { IsUncountable } from './uncountables';
+import { IsUncountable, UncountableWord } from './uncountables';
 
 // Type-level assertions for the uncountable rules, generated from the verified
 // dataset (oracle = blakeembrey/pluralize v8.0.0 checkWord semantics; resolved
@@ -561,4 +561,30 @@ namespace control_wax {
 namespace control_tax {
   // @ts-expect-no-error
   isAssignable<IsUncountable<'tax'>, false>;
+}
+
+// --- The exact-word union on its own: the string entries, never the regex arms. ---
+namespace uncountableWordTest {
+  // @ts-expect-no-error
+  isAssignable<'advice' | 'news' | 'you' | 'series', UncountableWord>;
+  // @ts-expect-no-error
+  isAssignable<UncountableWord, string>;
+  // @ts-expect-no-error
+  isAssignable<IsUncountable<UncountableWord>, true>;
+
+  // regex-only uncountables are not words in the union, though the gate still says yes
+  // @ts-expect-error
+  isAssignable<'sheep', UncountableWord>;
+  // @ts-expect-no-error
+  isAssignable<IsUncountable<'sheep'>, true>;
+  // @ts-expect-error
+  isAssignable<'chinese', UncountableWord>;
+
+  // lowercase only, countables out
+  // @ts-expect-error
+  isAssignable<'Advice', UncountableWord>;
+  // @ts-expect-error
+  isAssignable<'cat', UncountableWord>;
+  // @ts-expect-error
+  isAssignable<'', UncountableWord>;
 }

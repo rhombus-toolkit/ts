@@ -51,19 +51,23 @@ namespace multiElementRoundTrip {
   isAssignable<[string, number], Subject>;
 }
 
-// `null` and `undefined` collapse to the same empty wrap, so both unwrap to void.
+// Only `undefined` is an absent argument; `null` is a value a handler must still receive.
 namespace nullishRoundTrip {
   type FromNull = unrestify<restify<null>>;
   type FromUndefined = unrestify<restify<undefined>>;
 
   // @ts-expect-no-error
-  isAssignable<FromNull, void>;
+  isAssignable<FromNull, null>;
+  // @ts-expect-no-error
+  isAssignable<null, FromNull>;
   // @ts-expect-no-error
   isAssignable<FromUndefined, void>;
   // @ts-expect-no-error
-  isAssignable<restify<null>, []>;
+  isAssignable<restify<null>, [null]>;
   // @ts-expect-no-error
   isAssignable<restify<undefined>, []>;
+  // @ts-expect-error
+  isAssignable<restify<null>, []>;
 }
 
 // A wrap is a tuple of exactly the value, never a widened array.
@@ -106,7 +110,7 @@ namespace callSitesMatchTheAliases {
   // @ts-expect-no-error
   isAssignable<string, typeof unwrapped>;
 
-  const empty = unrestify(restify(null));
+  const empty = unrestify(restify(undefined));
   // @ts-expect-no-error
   isAssignable<typeof empty, void>;
 }

@@ -5,12 +5,12 @@ function mark<T extends object>(target: T): mark<T> {
   return target as any;
 }
 
-/** Wraps a value into a marked tuple: nullish becomes `[]`, anything else a one-element tuple; arrays pass through unmarked. */
-export type restify<Œ> = Œ extends void | null | undefined ? mark<[]> : Œ extends any[] ? Œ : mark<[Œ]>;
+/** Wraps a value into a marked tuple: `undefined` becomes `[]`, anything else (`null` included) a one-element tuple; arrays pass through unmarked. */
+export type restify<Œ> = Œ extends void | undefined ? mark<[]> : Œ extends any[] ? Œ : mark<[Œ]>;
 
 export function restify<Ø>(arg: Ø): restify<Ø>;
 export function restify(arg: any) {
-  if (arg === null || arg === undefined) {
+  if (arg === undefined) {
     return mark([]);
   }
   if (Array.isArray(arg)) {

@@ -23,8 +23,8 @@ describe('restify', () => {
     expect(Object.keys(restify('a'))).toEqual(['0']);
   });
 
-  it('turns null into an empty array', () => {
-    expect(restify(null)).toEqual([] as any);
+  it('wraps null as an argument rather than treating it as absent', () => {
+    expect(restify(null)).toEqual([null] as any);
   });
 
   it('wraps a falsy scalar rather than treating it as nullish', () => {
@@ -99,8 +99,8 @@ describe('unrestify', () => {
     expect(Object.getOwnPropertySymbols(unrestify(wrapped))).toEqual([]);
   });
 
-  it('unwraps a wrapped null back to undefined', () => {
-    expect(unrestify(restify(null))).toBeUndefined();
+  it('unwraps a wrapped null back to null', () => {
+    expect(unrestify(restify(null))).toBeNull();
   });
 
   it('unwraps a wrapped falsy scalar to that scalar', () => {

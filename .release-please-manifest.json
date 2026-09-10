@@ -1,7 +1,7 @@
 {
   "libraries/async-timers": "3.0.0",
   "libraries/collections": "2.0.0",
-  "libraries/fetch": "2.0.0",
+  "libraries/fetch": "2.0.1",
   "libraries/iterable": "1.2.2",
   "libraries/obj": "3.0.1",
   "libraries/platform": "1.1.0",

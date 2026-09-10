@@ -7,6 +7,10 @@ function mark<T extends any[]>(target: T): mark<T> {
   Reflect.defineProperty(target, Ξ, { configurable: false, enumerable: false, writable: false, value: true });
   return target as any;
 }
+/** An unmarked copy; slice, not spread, so a hole stays a hole. */
+function unmark<T extends any[]>(target: mark<T>): T {
+  return target.slice() as T;
+}
 
 /** Turns a rest-args tuple into a payload: none is `void`, one is that argument itself (an array included), several is a marked copy of the tuple so {@link restify} can tell it from one array argument. Never mutates `args`. */
 export type unrestify<Ω extends any[]> = Ω extends [] ? void
@@ -28,7 +32,7 @@ export function unrestify(args: any) {
   }
 }
 
-/** Turns a payload back into its rest-args tuple: `undefined` is `[]`, a tuple {@link unrestify} marked is itself, anything else (an array included) is one argument. Never mutates `payload`, so the same action can be reduced again. */
+/** Turns a payload back into its rest-args tuple: `undefined` is `[]`, a tuple {@link unrestify} marked is an unmarked copy, anything else (an array included) is one argument. Never mutates `payload`, so the same action can be reduced again, and the mark never leaves the payload. */
 export type restify<Œ> = typeof Ξ extends keyof Œ ? Œ
   : Œ extends void | undefined ? []
   : [Œ];
@@ -36,7 +40,7 @@ export type restify<Œ> = typeof Ξ extends keyof Œ ? Œ
 export function restify<Ø>(payload: Ø): restify<Ø>;
 export function restify(payload: any) {
   if (payload?.[Ξ]) {
-    return payload;
+    return unmark(payload);
   }
   if (payload === undefined) {
     return [];

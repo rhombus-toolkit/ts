@@ -113,12 +113,23 @@ describe('restify', () => {
     expect(restify(arrayLike)).toEqual([arrayLike] as any);
   });
 
-  it('gives a marked tuple back by identity, untouched, so the same payload can be reduced again', () => {
+  it('turns a marked tuple into an unmarked copy, leaving the payload untouched for the next reduce', () => {
     const payload = unrestify(['a', 'b']);
+    const args = restify(payload);
 
-    expect(restify(payload)).toBe(payload as any);
-    expect(restify(payload)).toBe(payload as any);
+    expect(args).toEqual(['a', 'b'] as any);
+    expect(args).not.toBe(payload as any);
+    expect(Object.getOwnPropertySymbols(args)).toEqual([]);
     expect(Object.getOwnPropertySymbols(payload)).toEqual([marker]);
+    expect(restify(payload)).toEqual(['a', 'b'] as any);
+  });
+
+  /** The mark must never leave a payload: a tuple that escapes restify and comes back as one argument stays one argument. */
+  it('lets its result be forwarded as a single argument without being spread again', () => {
+    const args = restify(unrestify(['a', 'b']));
+    const forwarded = unrestify([args]);
+
+    expect(restify(forwarded)).toEqual([['a', 'b']] as any);
   });
 
   it('is not idempotent: an argument list already built reads as one argument', () => {
@@ -188,10 +199,10 @@ describe('holes', () => {
     expect(Object.keys(args)).toEqual(['1', '3']);
   });
 
-  it('hands the handler the payload array itself', () => {
+  it('hands the handler a fresh array each time', () => {
     const payload = unrestify(['a', 'b']);
 
-    expect(restify(payload)).toBe(payload as any);
+    expect(restify(payload)).not.toBe(restify(payload) as any);
   });
 });
 

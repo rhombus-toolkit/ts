@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.1](https://github.com/rhombus-toolkit/ts/compare/fetch-v2.0.0...fetch-v2.0.1) (2026-09-10)
+
+
+### Bug Fixes
+
+* **fetch:** stop reporting a cancelled download as complete ([c8894a9](https://github.com/rhombus-toolkit/ts/commit/c8894a9634f5a2ff90385f9f8b905adf08c2618a))
+
 ## [2.0.0](https://github.com/rhombus-toolkit/ts/compare/fetch-v1.3.9...fetch-v2.0.0) (2026-08-16)
 
 

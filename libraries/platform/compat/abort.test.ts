@@ -3,7 +3,8 @@
 // Compiled by ../tsconfig.compat.json (lib: ["ES2022", "DOM"]), never by the
 // package's own tsconfig.ci.json.
 
-import { AbortController as OwnedAbortController, AbortSignal as OwnedAbortSignal, neverSignal } from '../src/abort';
+import { AbortController as OwnedAbortController, AbortControllerConstructor, AbortSignal as OwnedAbortSignal,
+  neverSignal } from '../src/abort';
 
 declare function isAssignable<TActual extends TExpected, TExpected>(actual?: TActual, expected?: TExpected): void;
 
@@ -20,6 +21,12 @@ namespace abortControllerAssignsToOwned {
   // a real DOM AbortController assigns to the owned structural type
   // @ts-expect-no-error
   isAssignable<AbortController, OwnedAbortController>;
+}
+
+namespace abortControllerConstructorAssignsToOwned {
+  // the real DOM constructor assigns to the owned constructor shape, which is how the value export is typed
+  // @ts-expect-no-error
+  isAssignable<typeof AbortController, AbortControllerConstructor>;
 }
 
 namespace neverSignalCrossesToReal {

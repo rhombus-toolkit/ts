@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.1](https://github.com/rhombus-toolkit/ts/compare/type-guards-v4.1.0...type-guards-v4.1.1) (2026-09-10)
+
+
+### Bug Fixes
+
+* **type-guards:** narrow isFunction to the union's own member and recognise foreign iterators ([4b57f54](https://github.com/rhombus-toolkit/ts/commit/4b57f544738fba0b514dc0f7e7f7417ecc096ec5))
+
 ## [4.1.0](https://github.com/rhombus-toolkit/ts/compare/type-guards-v4.0.0...type-guards-v4.1.0) (2026-09-10)
 
 

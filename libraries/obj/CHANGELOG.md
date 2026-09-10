@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.0.2](https://github.com/rhombus-toolkit/ts/compare/obj-v3.0.1...obj-v3.0.2) (2026-09-10)
+
+
+### Bug Fixes
+
+* **obj:** keep a numeric 0 key in flattenMap's typed path ([4d60cba](https://github.com/rhombus-toolkit/ts/commit/4d60cbaebe1d0e2b5d350963fd76d73a11533bf7))
+
 ## [3.0.1](https://github.com/rhombus-toolkit/ts/compare/obj-v3.0.0...obj-v3.0.1) (2026-09-04)
 
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.1.0](https://github.com/rhombus-toolkit/ts/compare/collections-v2.0.2...collections-v2.1.0) (2026-09-11)
+
+
+### Features
+
+* **collections:** add AutoStack, whose entries leave with their scope ([99631c2](https://github.com/rhombus-toolkit/ts/commit/99631c2a1f7d3c628e8897eb97b99611fa59b01c))
+* **collections:** report how many entries an AutoStack holds ([dc47203](https://github.com/rhombus-toolkit/ts/commit/dc47203553e205ef74be5f5e0dfd11b485c58051))
+
 ## [2.0.2](https://github.com/rhombus-toolkit/ts/compare/collections-v2.0.1...collections-v2.0.2) (2026-09-10)
 
 

@@ -7,6 +7,11 @@
 export class AutoStack<T> implements Iterable<T> {
   readonly #items: T[] = [];
 
+  /** How many entries the stack holds. */
+  get length(): number {
+    return this.#items.length;
+  }
+
   /** Adds `item`; disposing the return truncates back to the pre-push depth, so an outer scope's dispose also drops what an inner one left. */
   push(item: T): Disposable {
     const pos = this.#items.length;

@@ -38,6 +38,25 @@ describe('AutoStack', () => {
     expect([...stack]).toEqual([]);
   });
 
+  it('counts down as scopes unwind', () => {
+    const stack = new AutoStack<string>();
+    expect(stack.length).toBe(0);
+
+    {
+      using _a = stack.push('a');
+      expect(stack.length).toBe(1);
+
+      {
+        using _b = stack.push('b');
+        expect(stack.length).toBe(2);
+      }
+
+      expect(stack.length).toBe(1);
+    }
+
+    expect(stack.length).toBe(0);
+  });
+
   it('finds an entry at any depth', () => {
     const stack = new AutoStack<string>();
     using _a = stack.push('a');

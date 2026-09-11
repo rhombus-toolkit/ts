@@ -22,6 +22,7 @@ A publish pipeline is not wired up yet.
 | `AsyncAction`                | `@rhombus-toolkit/types`            |
 | `AsyncFunc`                  | `@rhombus-toolkit/types`            |
 | `AsyncSub`                   | `@rhombus-toolkit/types`            |
+| `AutoStack`                  | `@rhombus-toolkit/collections`      |
 | `Body`                       | `@rhombus-toolkit/types`            |
 | `Brand`                      | `@rhombus-toolkit/types`            |
 | `ButNot`                     | `@rhombus-toolkit/types`            |

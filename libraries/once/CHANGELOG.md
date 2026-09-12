@@ -1,5 +1,13 @@
 # Changelog
 
+## [2.2.0](https://github.com/rhombus-toolkit/ts/compare/once-v2.1.0...once-v2.2.0) (2026-09-12)
+
+
+### Features
+
+* **once:** add intern, and memo keyed by what selectKeys picks from the arguments ([16f75b8](https://github.com/rhombus-toolkit/ts/commit/16f75b80b7d715f7b643e13ef183dd6fa9b6c37f))
+* **once:** intern descends into plain objects and arrays ([bceaae0](https://github.com/rhombus-toolkit/ts/commit/bceaae0fe7f6fe655848df2ac0454849a5738371))
+
 ## [2.1.0](https://github.com/rhombus-toolkit/ts/compare/once-v2.0.0...once-v2.1.0) (2026-09-09)
 
 

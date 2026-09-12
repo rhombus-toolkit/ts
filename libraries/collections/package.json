@@ -1,7 +1,7 @@
 {
   "name": "@rhombus-toolkit/collections",
   "version": "2.1.0",
-  "description": "Collection data structures: AutoStack (entries leave with their scope), ImmutableLinkedList (persistent, both ends known), KindaWeakMap (strong keys, weak values).",
+  "description": "Collection data structures: AutoStack (entries leave with their scope), ImmutableLinkedList (persistent, both ends known), KindaWeakMap (weak where it can, strong otherwise).",
   "repository": {
     "type": "git",
     "url": "https://github.com/rhombus-toolkit/ts.git",
@@ -30,6 +30,9 @@
   },
   "keywords": [],
   "author": "Thomas Butler",
+  "dependencies": {
+    "@rhombus-toolkit/types": "workspace:*"
+  },
   "publishConfig": {
     "access": "public",
     "provenance": true,

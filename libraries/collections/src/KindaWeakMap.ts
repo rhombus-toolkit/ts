@@ -1,64 +1,86 @@
-export class KindaWeakMap<K, V extends WeakKey> /*implements Map<K, V>*/ {
-  readonly #map = new Map<K, WeakRef<V>>();
-  /** Each entry registers under its own ref, so a value shared by two keys has two independent registrations. */
-  readonly #registry = new FinalizationRegistry(({ key, ref }: { key: K; ref: WeakRef<V>; }) => {
-    if (this.#map.get(key) === ref) {
-      this.#map.delete(key);
+import type { Func } from '@rhombus-toolkit/types';
+
+/** Whether a `WeakMap` can hold `key`: an object, a function, or a symbol outside the global registry. */
+function isWeaklyHoldable(key: unknown): key is WeakKey {
+  const type = typeof key;
+  if (type === 'object') {
+    return key !== null;
+  }
+  if (type === 'function') {
+    return true;
+  }
+  if (type === 'symbol') {
+    return Symbol.keyFor(key as symbol) === undefined;
+  }
+  return false;
+}
+
+/**
+ * A map that holds each key weakly when it can: objects, functions, and unregistered symbols go
+ * in a `WeakMap`; everything else goes in a `Map`.
+ *
+ * @remarks
+ * An entry under a weakly held key goes when the key is collected; one under any other key lives
+ * as long as the map.
+ */
+export class KindaWeakMap<in out K = unknown, in out V = unknown> {
+  readonly #weak = new WeakMap<WeakKey, V>();
+
+  /** Made on the first key that cannot be held weakly. */
+  #strong: Map<K, V> | undefined;
+
+  get [Symbol.toStringTag](): string {
+    return 'KindaWeakMap';
+  }
+
+  get(key: K): V | undefined {
+    if (isWeaklyHoldable(key)) {
+      return this.#weak.get(key);
     }
-  });
-  /** An existing key keeps its place in iteration order, as with `Map`. */
+    return this.#strong?.get(key);
+  }
+
+  has(key: K): boolean {
+    if (isWeaklyHoldable(key)) {
+      return this.#weak.has(key);
+    }
+    return this.#strong?.has(key) ?? false;
+  }
+
   set(key: K, value: V): this {
-    const held = this.#map.get(key);
-    if (held) {
-      this.#registry.unregister(held);
+    if (isWeaklyHoldable(key)) {
+      this.#weak.set(key, value);
+    } else {
+      (this.#strong ??= new Map()).set(key, value);
     }
-    const ref = new WeakRef(value);
-    this.#registry.register(value, { key, ref }, ref);
-    this.#map.set(key, ref);
     return this;
   }
 
   delete(key: K): boolean {
-    const held = this.#map.get(key);
-    if (!held) {
-      return false;
+    if (isWeaklyHoldable(key)) {
+      return this.#weak.delete(key);
     }
-    this.#map.delete(key);
-    this.#registry.unregister(held);
-    return held.deref() !== undefined;
-  }
-  get(key: K): V | undefined {
-    return this.#map.get(key)?.deref();
-  }
-  has(key: K): boolean {
-    return this.get(key) !== undefined;
-  }
-  clear(): void {
-    this.#map.forEach(ref => this.#registry.unregister(ref));
-    this.#map.clear();
-  }
-  forEach(callbackfn: (value: V, key: K, map: this) => void, thisArg?: any): void {
-    for (const [key, value] of this) {
-      callbackfn.call(thisArg, value, key, this);
-    }
-  }
-  /** Counts only entries whose value is still alive, so it walks every ref. */
-  get size() {
-    return this.entries().reduce(count => count + 1, 0);
-  }
-  entries(): MapIterator<[K, V]> {
-    const held = this.#map.entries().map(([key, ref]): [K, V | undefined] => [key, ref.deref()]);
-    return held.filter((entry): entry is [K, V] => entry[1] !== undefined);
-  }
-  keys(): MapIterator<K> {
-    return this.entries().map(([key]) => key);
-  }
-  values(): MapIterator<V> {
-    return this.entries().map(([, value]) => value);
-  }
-  [Symbol.iterator](): MapIterator<[K, V]> {
-    return this.entries();
+    return this.#strong?.delete(key) ?? false;
   }
 
-  readonly [Symbol.toStringTag] = 'KindaWeakMap' as const;
+  /** The entry under `key`, storing `value` there first when there is none. */
+  getOrInsert(key: K, value: V): V {
+    const existing = this.get(key);
+    if (existing !== undefined || this.has(key)) {
+      return existing as V;
+    }
+    this.set(key, value);
+    return value;
+  }
+
+  /** The entry under `key`, storing what `compute` answers there first when there is none. A throw stores nothing. */
+  getOrInsertComputed(key: K, compute: Func<[K], V>): V {
+    const existing = this.get(key);
+    if (existing !== undefined || this.has(key)) {
+      return existing as V;
+    }
+    const value = compute(key);
+    this.set(key, value);
+    return value;
+  }
 }

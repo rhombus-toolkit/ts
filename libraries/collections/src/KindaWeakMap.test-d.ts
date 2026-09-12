@@ -1,72 +1,49 @@
-// Type-level probes for KindaWeakMap: the value type is what the map can hold weakly, and the
-// map's own views come back with the iterator helpers attached.
+// Type-level probes for KindaWeakMap: defaults are unbounded, a primitive key is accepted, and
+// get/set/getOrInsertComputed carry the map's own K and V.
 
 import { KindaWeakMap } from './KindaWeakMap';
 
 declare function isAssignable<TActual extends TExpected, TExpected>(actual?: TActual, expected?: TExpected): void;
 
-// Only a WeakKey can sit behind a WeakRef, so the value type is bounded by it.
-namespace valueMustBeWeaklyHoldableTest {
+namespace defaultsAreUnknownTest {
+  const map = new KindaWeakMap();
+
   // @ts-expect-no-error
-  new KindaWeakMap<string, object>();
+  map.set({}, 1);
   // @ts-expect-no-error
-  new KindaWeakMap<string, WeakKey>();
-  // @ts-expect-error - a number cannot be held weakly
+  map.set('k', 'v');
+  // @ts-expect-no-error
+  isAssignable<ReturnType<typeof map.get>, unknown>;
+}
+
+namespace primitiveKeyIsAcceptedTest {
+  // @ts-expect-no-error
   new KindaWeakMap<string, number>();
-  // @ts-expect-error - a string cannot be held weakly
-  new KindaWeakMap<string, string>();
+  // @ts-expect-no-error
+  new KindaWeakMap<number, number>();
 }
 
-// Keys are held strongly, so anything at all can be one.
-namespace keyIsUnboundedTest {
-  // @ts-expect-no-error
-  new KindaWeakMap<number, object>();
-  // @ts-expect-no-error
-  new KindaWeakMap<string | undefined, object>();
-}
-
-// `set` answers the map so calls chain and a subclass keeps its own type.
-namespace setAnswersThisTest {
-  declare const map: KindaWeakMap<string, object>;
-
-  // @ts-expect-no-error
-  isAssignable<ReturnType<typeof map.set>, KindaWeakMap<string, object>>;
-
-  class Tagged extends KindaWeakMap<string, object> {
-    tag = 'tagged';
-  }
-  declare const tagged: Tagged;
-
-  // @ts-expect-no-error
-  isAssignable<ReturnType<typeof tagged.set>, Tagged>;
-}
-
-// Every view is a MapIterator, so the ES2025 helpers are on it.
-namespace viewsCarryTheIteratorHelpersTest {
+namespace getReturnsValueOrUndefinedTest {
   declare const map: KindaWeakMap<string, { n: number; }>;
 
   // @ts-expect-no-error
-  isAssignable<ReturnType<typeof map.entries>, MapIterator<[string, { n: number; }]>>;
-  // @ts-expect-no-error
-  isAssignable<ReturnType<typeof map.keys>, MapIterator<string>>;
-  // @ts-expect-no-error
-  isAssignable<ReturnType<typeof map.values>, MapIterator<{ n: number; }>>;
-  // @ts-expect-no-error
-  isAssignable<ReturnType<typeof map[typeof Symbol.iterator]>, MapIterator<[string, { n: number; }]>>;
-  // @ts-expect-no-error
-  isAssignable<ReturnType<ReturnType<typeof map.values>['map']>, IteratorObject<unknown>>;
+  isAssignable<ReturnType<typeof map.get>, { n: number; } | undefined>;
 }
 
-// forEach hands the callback the value first, then the key, then the map.
-namespace forEachArgumentOrderTest {
-  declare const map: KindaWeakMap<string, { n: number; }>;
+namespace setRejectsAWrongValueTypeTest {
+  declare const map: KindaWeakMap<string, number>;
 
-  map.forEach((value, key, self) => {
-    // @ts-expect-no-error
-    isAssignable<typeof value, { n: number; }>;
-    // @ts-expect-no-error
-    isAssignable<typeof key, string>;
-    // @ts-expect-no-error
-    isAssignable<typeof self, KindaWeakMap<string, { n: number; }>>;
-  });
+  // @ts-expect-no-error
+  map.set('k', 1);
+  // @ts-expect-error - the value type is the map's
+  map.set('k', 'not a number');
+}
+
+namespace computeReceivesTheKeyTest {
+  declare const map: KindaWeakMap<string, number>;
+
+  // @ts-expect-no-error
+  map.getOrInsertComputed('k', (key: string) => key.length);
+  // @ts-expect-error - compute answers with the map's value type
+  map.getOrInsertComputed('k', (key: string): string => key);
 }

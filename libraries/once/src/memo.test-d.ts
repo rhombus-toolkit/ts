@@ -58,3 +58,23 @@ namespace answerTypeFlowsThroughTest {
   // @ts-expect-error - the answer is not narrowed past what compute declares
   isAssignable<ReturnType<typeof maybe>, string>;
 }
+
+namespace selectKeysAdmitsAPrimitiveArgumentTest {
+  // @ts-expect-no-error
+  memo((n: number) => n, (n) => [n]);
+  // @ts-expect-error - without selectKeys, a number cannot key a WeakMap
+  memo((n: number) => n);
+  // @ts-expect-error - selectKeys has to answer an array of keys
+  memo((n: number) => n, (n) => n);
+}
+
+namespace selectKeysOverloadKeepsArgsAndValueTest {
+  const idOf = memo((person: { id: number; }) => person.id, (person) => [person.id]);
+
+  // @ts-expect-no-error
+  isAssignable<Parameters<typeof idOf>, [{ id: number; }]>;
+  // @ts-expect-no-error
+  isAssignable<ReturnType<typeof idOf>, number>;
+  // @ts-expect-error - the key's shape is compute's argument, not a loose object
+  idOf({});
+}

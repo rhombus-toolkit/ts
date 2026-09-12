@@ -290,6 +290,43 @@ describe('memo', () => {
     await Promise.race([lost.promise,
       new Promise((_, reject) => setTimeout(() => reject(new Error('the key was not collected')), 500))]);
   });
+
+  it('computes once per distinct tuple selectKeys picks', () => {
+    let calls = 0;
+    const idOf = memo((person: { id: number; }) => {
+      calls++;
+      return person.id;
+    }, (person) => [person.id]);
+
+    expect(idOf({ id: 1 })).toBe(1);
+    expect(idOf({ id: 1 })).toBe(1);
+    expect(calls).toBe(1);
+  });
+
+  it('passes the arguments to compute, not the picked keys', () => {
+    const seen: Array<{ id: number; }> = [];
+    const record = memo((person: { id: number; }) => {
+      seen.push(person);
+      return person.id;
+    }, (person) => [person.id]);
+
+    const person = { id: 1 };
+    record(person);
+
+    expect(seen).toEqual([person]);
+  });
+
+  it('holds an answer under a picked primitive key', () => {
+    let calls = 0;
+    const square = memo((n: number) => {
+      calls++;
+      return n * n;
+    }, (n) => [n]);
+
+    expect(square(3)).toBe(9);
+    expect(square(3)).toBe(9);
+    expect(calls).toBe(1);
+  });
 });
 
 interface Node {

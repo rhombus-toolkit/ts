@@ -1,7 +1,7 @@
 {
   "name": "@rhombus-toolkit/once",
   "version": "2.1.0",
-  "description": "The create-once family: Lazy (keyed by nothing), Singleton (keyed by class), memo (keyed by WeakKey).",
+  "description": "The create-once family: Lazy (keyed by nothing), Singleton (keyed by class), memo (keyed by WeakKey), intern (keyed by structure).",
   "repository": {
     "type": "git",
     "url": "https://github.com/rhombus-toolkit/ts.git",

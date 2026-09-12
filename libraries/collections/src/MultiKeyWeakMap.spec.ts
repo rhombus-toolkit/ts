@@ -142,7 +142,7 @@ describe('MultiKeyWeakMap', () => {
     const map = new MultiKeyWeakMap<[object, object], string>();
     const a = {};
     const b = {};
-    const seen: (readonly object[])[] = [];
+    const seen: Array<readonly object[]> = [];
 
     const first = map.getOrInsertComputed([a, b], (keys) => {
       seen.push(keys);

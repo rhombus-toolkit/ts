@@ -274,8 +274,10 @@ describe('memo', () => {
   });
 
   it('forgets an answer along with its key once nothing else holds the key', async () => {
-    const lost = Promise.withResolvers<void>();
-    const registry = new FinalizationRegistry(() => lost.resolve());
+    let collected = false;
+    const registry = new FinalizationRegistry(() => {
+      collected = true;
+    });
     const held = memo((_key: object) => new Array(10000).fill(0));
 
     (() => {
@@ -284,11 +286,15 @@ describe('memo', () => {
       held(key);
     })();
 
-    await new Promise((resolve) => setTimeout(resolve));
-    Bun.gc(true);
+    // A single Bun.gc(true) can miss an object a stale native-stack slot still references
+    // (the collector scans the stack conservatively), so keep collecting until it lets go.
+    const deadline = Date.now() + 2000;
+    while (!collected && Date.now() < deadline) {
+      Bun.gc(true);
+      await new Promise((resolve) => setTimeout(resolve, 10));
+    }
 
-    await Promise.race([lost.promise,
-      new Promise((_, reject) => setTimeout(() => reject(new Error('the key was not collected')), 500))]);
+    expect(collected).toBe(true);
   });
 
   it('computes once per distinct tuple selectKeys picks', () => {

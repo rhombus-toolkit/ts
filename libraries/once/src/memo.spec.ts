@@ -172,11 +172,16 @@ describe('memo', () => {
     expect(calls).toBe(1);
   });
 
-  it('throws for a key that cannot be held weakly', () => {
-    const describe = memo((_key: symbol) => undefined);
+  it('accepts a registered symbol as a key', () => {
+    let calls = 0;
+    const describe = memo((key: symbol) => {
+      calls++;
+      return key.description;
+    });
 
-    expect(() => describe(Symbol.for('registered'))).toThrow(TypeError);
-    expect(() => describe(Symbol.for('registered'))).toThrow(TypeError);
+    expect(describe(Symbol.for('registered'))).toBe('registered');
+    expect(describe(Symbol.for('registered'))).toBe('registered');
+    expect(calls).toBe(1);
   });
 
   it('caches a function compute answers with, calling it for nobody', () => {

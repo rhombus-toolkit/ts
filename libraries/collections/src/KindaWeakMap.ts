@@ -26,8 +26,20 @@ function isWeaklyHoldable(key: unknown): key is WeakKey {
 export class KindaWeakMap<in out K = unknown, in out V = unknown> {
   readonly #weak = new WeakMap<WeakKey, V>();
 
+  /** Weakly held entries not yet known to be collected; a `FinalizationRegistry` lowers it after collection. */
+  #weakSize = 0;
+
+  readonly #collected = new FinalizationRegistry<undefined>(() => {
+    this.#weakSize--;
+  });
+
   /** Made on the first key that cannot be held weakly. */
   #strong: Map<K, V> | undefined;
+
+  /** Entries held right now; a collected key still counts until its cleanup has run, so this can read high, never low. */
+  get size(): number {
+    return (this.#strong?.size ?? 0) + this.#weakSize;
+  }
 
   get [Symbol.toStringTag](): string {
     return 'KindaWeakMap';
@@ -49,6 +61,10 @@ export class KindaWeakMap<in out K = unknown, in out V = unknown> {
 
   set(key: K, value: V): this {
     if (isWeaklyHoldable(key)) {
+      if (!this.#weak.has(key)) {
+        this.#weakSize++;
+        this.#collected.register(key, undefined, key);
+      }
       this.#weak.set(key, value);
     } else {
       (this.#strong ??= new Map()).set(key, value);
@@ -58,7 +74,12 @@ export class KindaWeakMap<in out K = unknown, in out V = unknown> {
 
   delete(key: K): boolean {
     if (isWeaklyHoldable(key)) {
-      return this.#weak.delete(key);
+      if (!this.#weak.delete(key)) {
+        return false;
+      }
+      this.#weakSize--;
+      this.#collected.unregister(key);
+      return true;
     }
     return this.#strong?.delete(key) ?? false;
   }

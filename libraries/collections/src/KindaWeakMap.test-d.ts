@@ -47,3 +47,12 @@ namespace computeReceivesTheKeyTest {
   // @ts-expect-error - compute answers with the map's value type
   map.getOrInsertComputed('k', (key: string): string => key);
 }
+
+namespace sizeIsAReadOnlyNumberTest {
+  declare const map: KindaWeakMap<string, number>;
+
+  // @ts-expect-no-error
+  isAssignable<typeof map.size, number>;
+  // @ts-expect-error - size is read-only
+  map.size = 1;
+}

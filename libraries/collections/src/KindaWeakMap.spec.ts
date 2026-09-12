@@ -168,4 +168,67 @@ describe('KindaWeakMap', () => {
     await Promise.race([lost.promise,
       new Promise((_, reject) => setTimeout(() => reject(new Error('the key was not collected')), 500))]);
   });
+
+  it('counts strong and weak entries together in size', () => {
+    const map = new KindaWeakMap<unknown, number>();
+
+    map.set('a', 1);
+    map.set({}, 2);
+
+    expect(map.size).toBe(2);
+  });
+
+  it('lowers size on delete of either kind', () => {
+    const map = new KindaWeakMap<unknown, number>();
+    const key = {};
+    map.set('a', 1);
+    map.set(key, 2);
+
+    map.delete('a');
+    expect(map.size).toBe(1);
+
+    map.delete(key);
+    expect(map.size).toBe(0);
+  });
+
+  it('does not raise size when a weak key is set again', () => {
+    const map = new KindaWeakMap<object, number>();
+    const key = {};
+
+    map.set(key, 1);
+    map.set(key, 2);
+
+    expect(map.size).toBe(1);
+  });
+
+  it('counts a weak key once through a delete and re-set', () => {
+    const map = new KindaWeakMap<object, number>();
+    const key = {};
+
+    map.set(key, 1);
+    map.delete(key);
+    map.set(key, 2);
+
+    expect(map.size).toBe(1);
+  });
+
+  it('lowers size once a weakly held key is collected', async () => {
+    const map = new KindaWeakMap<object, number[]>();
+
+    (() => {
+      map.set({}, new Array(10000).fill(0));
+    })();
+
+    expect(map.size).toBe(1);
+
+    await new Promise((resolve) => setTimeout(resolve));
+    Bun.gc(true);
+
+    const deadline = Date.now() + 500;
+    while (map.size !== 0 && Date.now() < deadline) {
+      await new Promise((resolve) => setTimeout(resolve));
+    }
+
+    expect(map.size).toBe(0);
+  });
 });

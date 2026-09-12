@@ -19,18 +19,19 @@ class Node<Value> {
 export class MultiKeyWeakMap<in out Keys extends readonly unknown[] = unknown[], in out Value = unknown>
   implements WeakMap<Keys, Value>
 {
-  readonly #root = new Node<Value>();
+  /** @internal The spec reads it to see pruning. */
+  readonly _root = new Node<Value>();
 
   get [Symbol.toStringTag](): string {
     return 'MultiKeyWeakMap';
   }
 
   #findNodeAt(keys: Keys): Node<Value> | undefined {
-    return keys.reduce<Node<Value> | undefined>((node, key) => node?.next.get(key), this.#root);
+    return keys.reduce<Node<Value> | undefined>((node, key) => node?.next.get(key), this._root);
   }
 
   #ensureNodeAt(keys: Keys): Node<Value> {
-    return keys.reduce<Node<Value>>((node, key) => node.next.getOrInsertComputed(key, () => new Node()), this.#root);
+    return keys.reduce<Node<Value>>((node, key) => node.next.getOrInsertComputed(key, () => new Node()), this._root);
   }
 
   get(keys: Keys): Value | undefined {
@@ -46,13 +47,29 @@ export class MultiKeyWeakMap<in out Keys extends readonly unknown[] = unknown[],
     return this;
   }
 
-  /** Longer tuples through `keys` keep their entries. */
+  /** Longer tuples through `keys` keep their entries; a prefix left holding nothing is released. */
   delete(keys: Keys): boolean {
-    const node = this.#findNodeAt(keys);
-    if (node?.entry === undefined) {
+    // Root first, then one node per key; a missing step ends the walk with a shorter path.
+    const path: Array<Node<Value>> = [this._root];
+    for (const key of keys) {
+      const next = path[path.length - 1].next.get(key);
+      if (!next) {
+        return false;
+      }
+      path.push(next);
+    }
+    const leaf = path[path.length - 1];
+    if (leaf.entry === undefined) {
       return false;
     }
-    node.entry = undefined;
+    leaf.entry = undefined;
+    for (let depth = keys.length; depth > 0; depth--) {
+      const node = path[depth];
+      if (node.entry !== undefined || node.next.size) {
+        break;
+      }
+      path[depth - 1].next.delete(keys[depth - 1]);
+    }
     return true;
   }
 

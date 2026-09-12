@@ -207,4 +207,63 @@ describe('MultiKeyWeakMap', () => {
     await Promise.race([lost.promise,
       new Promise((_, reject) => setTimeout(() => reject(new Error('the key was not collected')), 500))]);
   });
+
+  it('releases a primitive prefix once the only tuple through it is deleted', () => {
+    const map = new MultiKeyWeakMap<[number, number], string>();
+
+    map.set([1, 2], 'a');
+    map.delete([1, 2]);
+
+    expect(map._root.next.size).toBe(0);
+  });
+
+  it('keeps a shorter tuple through the deleted keys and its node', () => {
+    const map = new MultiKeyWeakMap<number[], string>();
+
+    map.set([1], 'short');
+    map.set([1, 2], 'long');
+    map.delete([1, 2]);
+
+    expect(map.get([1])).toBe('short');
+    expect(map._root.next.size).toBe(1);
+  });
+
+  it("keeps a sibling tuple sharing the deleted tuple's prefix", () => {
+    const map = new MultiKeyWeakMap<[number, string | object], string>();
+    const obj = {};
+
+    map.set([1, obj], 'kept');
+    map.set([1, 'x'], 'gone');
+    map.delete([1, 'x']);
+
+    expect(map.get([1, obj])).toBe('kept');
+  });
+
+  it('deletes a tuple and lets it be set again', () => {
+    const map = new MultiKeyWeakMap<[number, number], string>();
+
+    map.set([1, 2], 'a');
+    map.delete([1, 2]);
+    map.set([1, 2], 'b');
+
+    expect(map.get([1, 2])).toBe('b');
+  });
+
+  it('prunes nothing when deleting a tuple that was never set', () => {
+    const map = new MultiKeyWeakMap<[number, number], string>();
+
+    map.set([1, 2], 'a');
+
+    expect(map.delete([1, 3])).toBe(false);
+    expect(map.get([1, 2])).toBe('a');
+  });
+
+  it('deletes the empty tuple without touching the root', () => {
+    const map = new MultiKeyWeakMap<[], string>();
+
+    map.set([], 'a');
+
+    expect(map.delete([])).toBe(true);
+    expect(map.get([])).toBeUndefined();
+  });
 });

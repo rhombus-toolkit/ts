@@ -1,5 +1,19 @@
 # Changelog
 
+## [3.0.0](https://github.com/rhombus-toolkit/ts/compare/collections-v2.1.0...collections-v3.0.0) (2026-09-12)
+
+
+### ⚠ BREAKING CHANGES
+
+* **collections:** KindaWeakMap no longer holds values weakly under strong keys; it holds keys weakly where a WeakMap can, and strongly otherwise.
+
+### Features
+
+* **collections:** add MultiKeyWeakMap, a KindaWeakMap keyed by a tuple ([9e11b20](https://github.com/rhombus-toolkit/ts/commit/9e11b20a0aca8ebfb2842762e52ec0d7c0858d4c))
+* **collections:** prune emptied prefixes on delete, and KindaWeakMap reports its size ([fb68b2e](https://github.com/rhombus-toolkit/ts/commit/fb68b2eafaf40c2ab72e7995e8de443a6e49d734))
+* **collections:** replace KindaWeakMap with a map weak only where it can be ([5a7bfed](https://github.com/rhombus-toolkit/ts/commit/5a7bfedb53277080d5e75b81a5103ca40f87218f))
+* **once:** add intern, and memo keyed by what selectKeys picks from the arguments ([16f75b8](https://github.com/rhombus-toolkit/ts/commit/16f75b80b7d715f7b643e13ef183dd6fa9b6c37f))
+
 ## [2.1.0](https://github.com/rhombus-toolkit/ts/compare/collections-v2.0.2...collections-v2.1.0) (2026-09-11)
 
 

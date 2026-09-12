@@ -79,24 +79,113 @@ describe('intern', () => {
     expect(second).toBe(first);
   });
 
+  it('does not re-key the kept instance when it is changed after interning', () => {
+    class Custom {}
+
+    const kept = intern({ a: 1 });
+    Object.setPrototypeOf(kept, Custom.prototype);
+    (kept as { a: number; b?: number; }).b = 2;
+
+    const fresh = intern({ a: 1 });
+
+    expect(fresh).toBe(kept);
+  });
+
   it('counts an object-valued field by identity', () => {
-    const kept = intern({ inner: {} });
-    const otherFreshInner = intern({ inner: {} });
+    // A plain inner value would now be descended into by structure rather than counted by
+    // identity, so this uses a class instance -- a non-plain value stays identity-keyed.
+    class Thing {}
+
+    const kept = intern({ inner: new Thing() });
+    const otherFreshInner = intern({ inner: new Thing() });
 
     expect(otherFreshInner).not.toBe(kept);
 
-    const sharedInner = {};
+    const sharedInner = new Thing();
     const withShared = intern({ inner: sharedInner });
     const alsoWithShared = intern({ inner: sharedInner });
 
     expect(alsoWithShared).toBe(withShared);
 
-    const first = intern({ x: 1 });
-    const second = intern({ x: 1 });
+    const first = intern(new Thing());
+    const second = intern(new Thing());
     const withInterned = intern({ inner: first });
     const alsoWithInterned = intern({ inner: second });
 
     expect(alsoWithInterned).toBe(withInterned);
+  });
+
+  it('interns nested plain objects by structure', () => {
+    const first = intern({ p: { x: 1 } });
+    const second = intern({ p: { x: 1 } });
+
+    expect(second).toBe(first);
+  });
+
+  it('interns nested arrays by structure', () => {
+    const first = intern({ items: [1, 2] });
+    const second = intern({ items: [1, 2] });
+
+    expect(second).toBe(first);
+  });
+
+  it('keeps two objects with the same fields at different nesting depths apart', () => {
+    const shallow = intern({ a: { b: 1 }, c: 2 });
+    const nested = intern({ a: { b: 1, c: 2 } });
+
+    expect(shallow).not.toBe(nested);
+  });
+
+  it('counts a nested class instance by identity', () => {
+    class Thing {
+      x = 1;
+    }
+
+    const a = intern({ inner: new Thing() });
+    const b = intern({ inner: new Thing() });
+
+    expect(a).not.toBe(b);
+
+    const shared = new Thing();
+    const withShared = intern({ inner: shared });
+    const alsoWithShared = intern({ inner: shared });
+
+    expect(alsoWithShared).toBe(withShared);
+  });
+
+  it('matches a nested array of class instances element by element by identity', () => {
+    class Thing {}
+
+    const shared = new Thing();
+    const first = intern({ items: [shared, new Thing()] });
+    const second = intern({ items: [shared, new Thing()] });
+
+    expect(second).not.toBe(first);
+
+    const third = intern({ items: [shared] });
+    const fourth = intern({ items: [shared] });
+
+    expect(fourth).toBe(third);
+  });
+
+  it('counts a nested Date by identity', () => {
+    const a = intern({ when: new Date(2020, 0, 1) });
+    const b = intern({ when: new Date(2020, 0, 1) });
+
+    expect(a).not.toBe(b);
+  });
+
+  it('throws when a value reaches itself through plain containers', () => {
+    const cyclic: { self?: unknown; } = {};
+    cyclic.self = cyclic;
+
+    expect(() => intern(cyclic)).toThrow(TypeError);
+  });
+
+  it('does not treat the same inner object reached from two fields as a cycle', () => {
+    const shared = { x: 1 };
+
+    expect(() => intern({ a: shared, b: shared })).not.toThrow();
   });
 
   it('treats a function as its own instance', () => {
@@ -109,13 +198,17 @@ describe('intern', () => {
   });
 
   it('forgets an instance holding an object once that object is unreachable', async () => {
+    // A plain dying value would be descended into and described entirely by primitives, leaving
+    // nothing weakly held anywhere on its path -- so this uses a class instance, held by identity.
+    class Thing {}
+
     let collected = false;
     const registry = new FinalizationRegistry(() => {
       collected = true;
     });
 
     (() => {
-      const dying = {};
+      const dying = new Thing();
       registry.register(dying, undefined);
       intern({ ref: dying });
     })();

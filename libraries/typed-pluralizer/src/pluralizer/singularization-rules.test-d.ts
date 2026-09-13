@@ -3,10 +3,10 @@ import { SingularizationRules } from './singularization-rules';
 declare function isAssignable<TActual extends TExpected, TExpected>(actual?: TActual, expected?: TExpected): void;
 declare function isAssignable<TExpected>(actual?: TExpected): void;
 
-// Coverage for the singularization rule set, grouped by rule arm. Every case was
-// verified against a node oracle replicating blakeembrey/pluralize v8.0.0
-// `sanitizeWord` over the `singularRules` array (rules layer only). Oracle and
-// type agree on every case, so all assertions are @ts-expect-no-error.
+// Coverage for the singularization rule set, grouped by rule arm. Every case
+// matches a node oracle replicating blakeembrey/pluralize v8.0.0 `sanitizeWord`
+// over the `singularRules` array (rules layer only). Oracle and type agree on
+// every case, so all assertions are @ts-expect-no-error.
 
 namespace menRule {
   // [/men$/i, "man"] — highest priority

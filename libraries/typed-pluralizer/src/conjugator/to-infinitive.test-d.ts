@@ -4,8 +4,8 @@ declare function isAssignable<TActual extends TExpected, TExpected>(actual?: TAc
 declare function isAssignable<TExpected>(actual?: TExpected): void;
 
 // Locks ToInfinitive (past-tense -> infinitive) rule behavior in as type tests.
-// Each assertion was resolved empirically via the tsc sentinel-assignment probe
-// and cross-checked against a node oracle that replays the comment regexes
+// Each assertion matches the resolved TS literal via the tsc sentinel-assignment
+// probe, cross-checked against a node oracle that replays the comment regexes
 // first-match-wins. Outputs are the REGEX-FAITHFUL values: where the rule is
 // linguistically wrong (rolled -> rolle, toed -> too, curved -> curve via the
 // strip-ed-append-e arm) the assertion pins the regex output, since the per-arm
@@ -42,7 +42,7 @@ namespace spilled {
   isAssignable<ToInfinitive<'spilled'>, 'spill'>;
 }
 
-// (..[^aeiou])ed => $1e  [FIX: strip ed + append e, was dropping the e]
+// (..[^aeiou])ed => $1e  [strips ed and appends e; a naive rewrite would drop the e]
 namespace rolled {
   // @ts-expect-no-error
   isAssignable<ToInfinitive<'rolled'>, 'rolle'>;

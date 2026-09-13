@@ -77,9 +77,9 @@ namespace fend {
 }
 
 // --- Verified rule-fidelity dataset (regression gate) ---
-// Each assertion below was resolved empirically via the tsc sentinel-assignment
-// probe and cross-checked against a node oracle that replays the comment regexes
-// first-match-wins. Outputs are the REGEX-FAITHFUL values: where the rule is
+// Each assertion below matches the resolved TS literal via the tsc
+// sentinel-assignment probe, cross-checked against a node oracle that replays
+// the comment regexes first-match-wins. Outputs are the REGEX-FAITHFUL values: where the rule is
 // linguistically wrong (home -> hame, snow -> snew, rolled-path words) the
 // assertion still pins the regex output, because the per-arm comments are the
 // spec, not English. Arm labels group the words by the rule that matched.
@@ -210,7 +210,7 @@ namespace hurry {
   isAssignable<FromInfinitive<'hurry'>, 'hurried'>;
 }
 
-// ([td]er)$ => $1ed  [FIX: append ed, was rewriting r->d]
+// ([td]er)$ => $1ed  [appends ed; a naive rewrite would turn r into d]
 namespace water {
   // @ts-expect-no-error
   isAssignable<FromInfinitive<'water'>, 'watered'>;

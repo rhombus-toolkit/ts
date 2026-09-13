@@ -9,9 +9,9 @@ declare function isAssignable<TExpected>(actual?: TExpected): void;
 // real blakeembrey/pluralize v8.0.0 library used as an oracle:
 //   node -e "const p=require('/tmp/pluralize-npm/pluralize.js');
 //            console.log(p.plural(w), p.singular(w))"
-// The full curated dataset (343 words, 686 directional cases) was probed via the
-// tsc sentinel-assignment technique and compared to the lowercased oracle output:
-// 684/686 agree; the 2 disagreements are the documented digit-ending divergence
+// The full curated dataset (343 words, 686 directional cases) matches the
+// lowercased oracle output via the tsc sentinel-assignment technique on
+// 684/686 cases; the 2 disagreements are the documented digit-ending divergence
 // pinned in `documentedDivergences` below. The cases here are the
 // layer-by-layer + collision + classic-family subset that locks the gate order.
 //

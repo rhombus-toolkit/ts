@@ -55,7 +55,7 @@ namespace replaceTest {
   isAssignable<Replace<'abx', 'x', 'y'>, 'aby'>;
 }
 
-/** `ExtractEnding` hands back the ending itself when the word carries it, `never` otherwise. */
+/** `ExtractEnding` resolves to the ending itself when the word carries it, `never` otherwise. */
 namespace extractEndingTest {
   // @ts-expect-no-error
   isAssignable<ExtractEnding<'running', 'ing'>, 'ing'>;

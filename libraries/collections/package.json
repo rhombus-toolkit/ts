@@ -1,6 +1,6 @@
 {
   "name": "@rhombus-toolkit/collections",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Collection data structures: AutoStack (entries leave with their scope), ImmutableLinkedList (persistent, both ends known), KindaWeakMap (weak where it can, strong otherwise), MultiKeyWeakMap (a KindaWeakMap keyed by a tuple), WeakValuedMap (values held weakly).",
   "repository": {
     "type": "git",

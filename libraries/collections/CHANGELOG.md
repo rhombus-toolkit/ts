@@ -1,5 +1,12 @@
 # Changelog
 
+## [3.1.0](https://github.com/rhombus-toolkit/ts/compare/collections-v3.0.0...collections-v3.1.0) (2026-09-13)
+
+
+### Features
+
+* **collections:** add WeakValuedMap, a Map whose values are held weakly ([0b76b96](https://github.com/rhombus-toolkit/ts/commit/0b76b962b38876def075d3d9f7444db92c9422eb))
+
 ## [3.0.0](https://github.com/rhombus-toolkit/ts/compare/collections-v2.1.0...collections-v3.0.0) (2026-09-12)
 
 

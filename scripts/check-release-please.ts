@@ -5,9 +5,8 @@
 // independence is what keeps a release shippable when a release PR is stuck --
 // and it is also what lets the two silently separate: with release PRs left
 // unmerged, packages go live while `.release-please-manifest.json` still records
-// the version before them, and release-please keeps proposing releases that are
-// already published. Eight of twelve packages had drifted that way, one by a
-// full major, before this check existed.
+// an earlier version, and release-please keeps proposing releases that are
+// already published. This check catches exactly that drift.
 //
 // Three assertions, all offline -- npm is never consulted, so this runs in
 // `lint` alongside derive-publish-config.ts rather than in the release job:
@@ -18,12 +17,11 @@
 //                  outside release-please. That is the drift itself.
 //   2. COVERAGE -- every publishable library has a release-please-config.json
 //                  entry AND a manifest entry, and neither file names a package
-//                  that is no longer a publishable library.
+//                  that is not a publishable library.
 //   3. NO PINS  -- no `release-as` anywhere in the config. A pin there is
 //                  PERMANENT, not one-shot: release-please re-proposes that exact
-//                  version on every subsequent release. Four packages carried one
-//                  left over from the reorg, and it froze obj at 1.0.0 -- a
-//                  breaking change would have re-released the same version.
+//                  version on every subsequent release, so a breaking change
+//                  re-releases the same version instead of bumping past it.
 //
 // One mode, mirroring derive-publish-config.ts:
 //   --check   exit non-zero listing every problem found.

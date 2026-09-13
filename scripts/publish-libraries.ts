@@ -45,9 +45,9 @@
 //   --publish   pnpm pack + npm publish each package whose version isn't live
 //
 // A failure does NOT abandon the rest of the run. Every package is attempted and
-// the failures are reported together at the end, non-zero -- one broken package
-// used to strand every package behind it in the topological order, packages with
-// nothing wrong with them. The single exception is a package that DEPENDS on one
+// the failures are reported together at the end, non-zero -- an unhandled failure
+// would otherwise strand every package behind it in the topological order, packages
+// with nothing wrong with them. The single exception is a package that DEPENDS on one
 // that failed: its tarball pins the version that never landed, so publishing it
 // would install as a hard resolution failure in a consumer's project. Those are
 // skipped, and reported apart from the ordinary already-live skip.

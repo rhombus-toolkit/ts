@@ -124,7 +124,7 @@ describe('restify', () => {
     expect(restify(payload)).toEqual(['a', 'b'] as any);
   });
 
-  /** The mark must never leave a payload: a tuple that escapes restify and comes back as one argument stays one argument. */
+  /** The mark does not persist past one restify call: its unmarked result, forwarded as a single argument, reads back as one argument, not several. */
   it('lets its result be forwarded as a single argument without being spread again', () => {
     const args = restify(unrestify(['a', 'b']));
     const forwarded = unrestify([args]);
@@ -207,7 +207,7 @@ describe('holes', () => {
 });
 
 describe('round trip', () => {
-  /** Element-for-element `===`: what a handler spread from the payload sees is what the creator was called with. */
+  /** Element-for-element `===`: the arguments a handler receives, spread from the payload, match what the creator was called with. */
   function sequenceEquals(left: readonly unknown[], right: readonly unknown[]): boolean {
     return left.length === right.length
       && Array.from(left.keys()).every((index) => index in left === index in right && left[index] === right[index]);
@@ -233,7 +233,7 @@ describe('round trip', () => {
     expect(roundTrips(null, undefined, 3)).toBe(true);
   });
 
-  it('cannot tell an explicit undefined argument from none, which a handler cannot either', () => {
+  it('does not distinguish an explicit undefined argument from none, matching what a handler receives', () => {
     expect(roundTrips(undefined)).toBe(false);
     expect(restify(unrestify([undefined]))).toEqual([]);
   });

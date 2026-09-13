@@ -12,7 +12,7 @@ function unmark<T extends any[]>(target: mark<T>): T {
   return target.slice() as T;
 }
 
-/** Turns a rest-args tuple into a payload: none is `void`, one is that argument itself (an array included), several is a marked copy of the tuple so {@link restify} can tell it from one array argument. Never mutates `args`. */
+/** Turns a rest-args tuple into a payload: none is `void`, one is that argument itself (an array included), several is a marked copy of the tuple, distinguishable in {@link restify} from one array argument. Never mutates `args`. */
 export type unrestify<Ω extends any[]> = Ω extends [] ? void
   : Ω extends [infer φ] ? φ
   : mark<Ω>;

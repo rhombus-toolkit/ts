@@ -17,7 +17,7 @@ function createHandler(self: object, proto: object): ProxyHandler<object> {
     // get/set walk the prototype chain, so they fire here whenever a lookup
     // misses the instance's own properties and the entire real chain. The
     // miss-check restores ordinary behavior for real members, so the
-    // indexer only ever sees true misses.
+    // indexer only ever fires for true misses.
     get(target, property, receiver) {
       if (Reflect.has(target, property)) {
         return Reflect.get(target, property, receiver);
@@ -53,7 +53,7 @@ function createHandler(self: object, proto: object): ProxyHandler<object> {
  * consult the indexer.
  *
  * When narrowing `Key` to a literal union, exclude the class's own member names —
- * they resolve as real members, so the indexer never sees them. Do this via a
+ * they resolve as real members, so the indexer never fires for them. Do this via a
  * separate members interface (`Exclude<Keys, keyof EnvApi>`); writing
  * `Exclude<Keys, keyof Env>` directly in `Env`'s own `extends` clause is a
  * TS2310 recursive base-class reference.

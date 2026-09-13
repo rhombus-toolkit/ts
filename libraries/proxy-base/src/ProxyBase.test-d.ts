@@ -72,7 +72,7 @@ namespace overrideSignaturesTest {
   }
 
   class WrongReturn extends ProxyBase {
-    // @ts-expect-error - the has hook answers a boolean
+    // @ts-expect-error - the has hook returns a boolean
     protected override _has(): string {
       return 'yes';
     }

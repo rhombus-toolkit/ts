@@ -6,7 +6,7 @@ function attachedProxy(instance: object): object {
   return Object.getPrototypeOf(instance) as object;
 }
 
-/** Every hook, recording each call as `[name, ...args]` and answering with the default. */
+/** Every hook, recording each call as `[name, ...args]` and delegating to the default implementation. */
 class Recording extends ProxyBase {
   readonly calls: unknown[][] = [];
 
@@ -104,7 +104,7 @@ describe('prototype chain', () => {
     expect(Recording.prototype.isPrototypeOf(instance)).toBe(true);
   });
 
-  it('answers instanceof through _getPrototypeOf', () => {
+  it('routes instanceof through _getPrototypeOf', () => {
     const instance = new Recording();
     instance.calls.length = 0;
 
@@ -183,7 +183,7 @@ describe('get', () => {
     expect(instance.calls).toEqual([]);
   });
 
-  it('keeps inherited Object.prototype members working even when _get answers every miss', () => {
+  it('keeps inherited Object.prototype members working even when _get returns a value for every miss', () => {
     const instance = new Fallback();
 
     expect(instance.toString).toBe(Object.prototype.toString);
@@ -213,7 +213,7 @@ describe('get', () => {
     expect(instance.answer).toBe(42);
   });
 
-  it('lets await resolve the instance, since the then probe is a miss answered with undefined', async () => {
+  it('lets await resolve the instance, since the then probe is a miss that returns undefined by default', async () => {
     const instance = new Recording();
 
     expect(await instance).toBe(instance);
@@ -326,7 +326,7 @@ describe('has', () => {
     expect(instance.calls).toEqual([['_has', 'anything']]);
   });
 
-  it('answers true for an own or real chain property without consulting _has', () => {
+  it('reports true for an own or real chain property without consulting _has', () => {
     const instance = new Recording() as Recording & Record<string, unknown>;
     instance.own = 1;
     instance.calls.length = 0;
@@ -337,7 +337,7 @@ describe('has', () => {
     expect(instance.calls).toEqual([]);
   });
 
-  it('reports a virtual property present when _has says so', () => {
+  it('reports a virtual property present when _has returns true for it', () => {
     class Virtual extends ProxyBase {
       protected override _has(property: PropertyKey): boolean {
         return property === 'virtual';

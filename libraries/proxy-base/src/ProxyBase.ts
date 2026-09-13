@@ -27,7 +27,7 @@ function createHandler(self: ProxyBase, proto: object): ProxyHandler<object> {
     // get/set/has walk the prototype chain, so they fire here whenever a
     // lookup misses the instance's own properties. The miss-check below
     // restores ordinary behavior for anything that exists on the real
-    // chain — hooks only ever see TRUE misses, so overrides never need to
+    // chain — hooks fire only for TRUE misses, so overrides never need to
     // delegate to Reflect.* to keep inherited methods working.
     get(target, property, receiver) {
       if (Reflect.has(target, property)) {

@@ -104,7 +104,7 @@ describe('reads', () => {
     expect(env.calls).toEqual([['_getIndex', 'HOME']]);
   });
 
-  it('lets await resolve the instance when _getIndex answers the then probe with a non-callable', async () => {
+  it('lets await resolve the instance when _getIndex returns a non-callable for the then probe', async () => {
     const env = makeEnv();
 
     expect(await env).toBe(env);
@@ -198,7 +198,7 @@ describe('writes', () => {
 });
 
 describe('operations the indexer does not serve', () => {
-  it('answers in from the instance and its real chain only', () => {
+  it("resolves 'in' from the instance and its real chain only", () => {
     const env = makeEnv();
     env.HOME = '/home';
 

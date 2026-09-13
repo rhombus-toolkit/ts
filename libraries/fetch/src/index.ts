@@ -87,8 +87,8 @@ export function wrapResponse(response: Response) {
 // augmentation and the `globalThis.fetch` monkey-patch below reach outside
 // this module's own exports to rewrite a global. wrapResponse/nativeFetch
 // are the intended public surface -- restoring this pair would silently
-// change every consumer's `fetch` again, so don't restore it by
-// pattern-matching on the surrounding code.
+// change every consumer's `fetch`, so don't restore it by pattern-matching
+// on the surrounding code.
 // declare global {
 //   interface Response /*extends ProgressEventTarget*/ {
 //     progress: ProgressEventTarget;
@@ -98,8 +98,8 @@ export function wrapResponse(response: Response) {
 export const nativeFetch = globalThis.fetch;
 // `as typeof fetch`: newer lib.dom.d.ts adds static members to the `fetch`
 // function type (e.g. `preconnect`) that this wrapper doesn't implement --
-// this cast preserves the prior (pre-toolchain-swap) compile behavior without
-// reshaping the monkey-patch.
+// this cast keeps the assignment type-checking without reshaping the
+// monkey-patch.
 // globalThis.fetch = function(this: typeof globalThis, ...args: Parameters<typeof fetch>) {
 //   return nativeFetch.apply(this, args).then(wrapResponse);
 // } as typeof fetch;

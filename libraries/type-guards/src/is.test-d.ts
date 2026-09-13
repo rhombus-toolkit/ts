@@ -6,8 +6,9 @@ declare function isAssignable<TActual extends TExpected, TExpected>(actual?: TAc
 declare function isAssignable<TExpected>(actual?: TExpected): void;
 
 // `isAllThere` is two overloads rather than one so a mutable array keeps its
-// mutability through the narrowing -- the ReadonlyArray overload alone matches a
-// mutable array too, handing back `readonly T[]` and taking write access with it.
+// mutability through the narrowing -- the ReadonlyArray overload alone also
+// matches a mutable array, narrowing it to `readonly T[]` and losing write
+// access along with it.
 
 namespace isAllThereNarrowsAnArrayTest {
   const items: Array<string | undefined> = [];
@@ -31,7 +32,7 @@ namespace hasMemberNamesTheCheckedKeyTest {
   if (hasMember(value, 'foo')) {
     // @ts-expect-no-error
     isAssignable<typeof value, Record<'foo', unknown>>;
-    // @ts-expect-error - a key that was never checked is not on the narrowed type
+    // @ts-expect-error - a key never checked is not on the narrowed type
     value.neverChecked;
   }
 }
@@ -85,7 +86,7 @@ namespace isIteratorObjectKeepsTheElementTypeTest {
 }
 
 // The mutable overload is listed first so a mutable array narrows to `T[]`,
-// not to the `readonly T[]` the second overload would hand back.
+// not to the `readonly T[]` the second overload would resolve to.
 namespace isAllThereKeepsMutabilityTest {
   const items: Array<string | undefined> = [];
   const frozen: ReadonlyArray<string | undefined> = [];

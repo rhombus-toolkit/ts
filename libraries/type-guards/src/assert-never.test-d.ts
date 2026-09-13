@@ -27,7 +27,7 @@ namespace assertNeverAcceptsOnlyNeverTest {
       break;
     }
     default: {
-      // @ts-expect-error - 'square' was not handled, so `shape` is not `never` here
+      // @ts-expect-error - 'square' is not handled, so `shape` is not `never` here
       assertNever(shape);
     }
   }

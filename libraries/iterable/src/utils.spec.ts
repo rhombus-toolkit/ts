@@ -40,11 +40,11 @@ describe('replace', () => {
 });
 
 describe('tryFirst', () => {
-  it('gives the first element of a non-empty source', () => {
+  it('returns the first element of a non-empty source', () => {
     expect(tryFirst([7, 8, 9])).toBe(7);
   });
 
-  it('gives undefined for an empty source', () => {
+  it('returns undefined for an empty source', () => {
     expect(tryFirst([])).toBeUndefined();
   });
 
@@ -63,7 +63,7 @@ describe('tryFirst', () => {
 });
 
 describe('first', () => {
-  it('gives the first element of a non-empty source', () => {
+  it('returns the first element of a non-empty source', () => {
     expect(first([7, 8, 9])).toBe(7);
   });
 
@@ -85,11 +85,11 @@ describe('tryFirstDefined', () => {
     expect(tryFirstDefined([undefined, undefined, 3])).toBe(3);
   });
 
-  it('gives undefined when every element is undefined', () => {
+  it('returns undefined when every element is undefined', () => {
     expect(tryFirstDefined([undefined, undefined])).toBeUndefined();
   });
 
-  it('gives undefined for an empty source', () => {
+  it('returns undefined for an empty source', () => {
     expect(tryFirstDefined([])).toBeUndefined();
   });
 
@@ -145,7 +145,7 @@ describe('iterable', () => {
     expect([...iterable(() => [1, 2, 3][Symbol.iterator]())]).toEqual([1, 2, 3]);
   });
 
-  it('asks the factory again on every walk, so the result is re-readable', () => {
+  it('invokes the factory again on every walk, so the result is re-readable', () => {
     let walks = 0;
     const numbers = iterable(() => {
       walks++;
@@ -167,7 +167,7 @@ describe('zip', () => {
     expect([...zip('inner', [1, 2, 3], ['a', 'b'])]).toEqual([[1, 'a'], [2, 'b']]);
   });
 
-  it("'outer' runs to the longest source, filling an exhausted slot with undefined", () => {
+  it("'outer' runs to the longest source, filling an exhausted position with undefined", () => {
     expect([...zip('outer', [1, 2, 3], ['a', 'b'])]).toEqual([[1, 'a'], [2, 'b'], [3, undefined]]);
   });
 
@@ -281,15 +281,15 @@ describe('replace, the match', () => {
 });
 
 describe('tryFirst, the edges', () => {
-  it('gives undefined when the first element is undefined, the same as for an empty source', () => {
+  it('returns undefined when the first element is undefined, the same as for an empty source', () => {
     expect(tryFirst([undefined, 1])).toBeUndefined();
   });
 
-  it('gives the first character of a string', () => {
+  it('returns the first character of a string', () => {
     expect(tryFirst('ab')).toBe('a');
   });
 
-  it('gives a null first element as itself', () => {
+  it('returns a null first element as itself', () => {
     expect(tryFirst([null, 1])).toBeNull();
   });
 });
@@ -381,7 +381,7 @@ describe('iterable, the edges', () => {
     expect([...iterable(numbers)]).toEqual([1, 2]);
   });
 
-  it('does not ask the factory until a walk begins', () => {
+  it('does not invoke the factory until a walk begins', () => {
     let walks = 0;
     iterable(() => {
       walks++;
@@ -418,7 +418,7 @@ describe('zip, the edges', () => {
     expect([...zip('inner', [1, 2, 3], ['a'], [true, false])]).toEqual([[1, 'a', true]]);
   });
 
-  it("'outer' cannot tell a yielded undefined from an exhausted source", () => {
+  it("'outer' does not distinguish a yielded undefined from an exhausted source", () => {
     expect([...zip('outer', [undefined, 1], ['a'])]).toEqual([[undefined, 'a'], [1, undefined]]);
   });
 
@@ -475,7 +475,7 @@ describe('sequenceEquals, the edges', () => {
     expect(read).toBe(2);
   });
 
-  it('hands the comparison the left element from the first source and the right from the second', () => {
+  it('passes the comparison the left element from the first source and the right from the second', () => {
     const pairs: Array<[string, number]> = [];
     sequenceEquals(['a', 'b'], [1, 2], (left: string | number, right: string | number) => {
       pairs.push([left as string, right as number]);
@@ -511,7 +511,7 @@ describe('sequenceEquals, the edges', () => {
     expect(sequenceEquals(shared, shared, strictEquals)).toBe(false);
   });
 
-  it('treats a result that omits done as an element, and ends together only when both report done', () => {
+  it('treats a result that omits done as an element, and ends together only when both return done', () => {
     let calls = 0;
     const omitsDone: Iterator<number> = { next: () => {
       calls++;

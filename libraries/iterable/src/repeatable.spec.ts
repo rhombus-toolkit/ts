@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'bun:test';
 import { repeatable } from './repeatable';
 
-/** A generator over `values` alongside a count of how many of them it has handed out so far. */
+/** A generator over `values` alongside a count of how many of them have been yielded so far. */
 function counted<T>(values: readonly T[]) {
   const reads = { count: 0 };
   function* source(): Generator<T> {
@@ -14,7 +14,7 @@ function counted<T>(values: readonly T[]) {
 }
 
 describe('repeatable', () => {
-  it('walks a one-shot generator as many times as asked', () => {
+  it('walks a one-shot generator as many times as requested', () => {
     const sequence = repeatable(counted([1, 2, 3]).source);
 
     expect([...sequence]).toEqual([1, 2, 3]);
@@ -31,7 +31,7 @@ describe('repeatable', () => {
     expect(reads.count).toBe(3);
   });
 
-  it('reads nothing until a walk asks for it', () => {
+  it('reads nothing until a walk requests an element', () => {
     const { reads, source } = counted([1, 2, 3]);
     const walk = repeatable(source)[Symbol.iterator]();
 
@@ -79,7 +79,7 @@ describe('repeatable', () => {
     expect([...sequence]).toEqual([0, 1]);
   });
 
-  it('stops asking the source once it has reported done', () => {
+  it('stops reading the source once it returns done', () => {
     let calls = 0;
     const iterator: Iterator<number> = { next: () => {
       calls++;
@@ -104,7 +104,7 @@ describe('repeatable', () => {
     expect([...repeatable('ab')]).toEqual(['a', 'b']);
   });
 
-  it('hands back a repeatable it is given rather than wrapping it again', () => {
+  it('returns a repeatable it is given rather than wrapping it again', () => {
     const sequence = repeatable([1, 2]);
 
     expect(repeatable(sequence)).toBe(sequence);
@@ -136,7 +136,7 @@ describe('repeatable, the source and the cache', () => {
     expect(later.next().value).toBe(1);
   });
 
-  it('hands every walk the same element objects, not copies', () => {
+  it('yields the same element objects to every walk, not copies', () => {
     const elements = [{ id: 1 }, { id: 2 }];
     const sequence = repeatable(counted(elements).source);
     const [firstWalk] = [...sequence];

@@ -70,14 +70,14 @@ export function concat<T>(...args: ReadonlyArray<Iterable<T> | T>): IteratorObje
   return Iterator.from(args).flatMap(item => isIterable(item) ? Iterator.from(item as Iterable<T>) : [item]);
 }
 
-/** Wraps an iterator factory as an `Iterable`, so every walk over the result asks `fn` for a fresh iterator. */
+/** Wraps an iterator factory as an `Iterable`, so every walk over the result invokes `fn` for a fresh iterator. */
 export function iterable<T>(fn: Func<[], Iterator<T>>): Iterable<T> {
   return { [Symbol.iterator]: fn };
 }
 
 /**
  * Yields tuples pairing the sources' elements positionally. `inner` ends with the shortest source,
- * every slot present; `outer` runs to the longest, an exhausted source's slot `undefined` — which a
+ * every position present; `outer` runs to the longest, an exhausted source's position `undefined` — which a
  * source yielding `undefined` is indistinguishable from.
  */
 export function zip<T1, T2>(mode: 'inner', source1: Iterable<T1>, source2: Iterable<T2>): Generator<[T1, T2]>;
@@ -148,7 +148,7 @@ export function* zip(mode: 'inner' | 'outer', ...sources: ReadonlyArray<Iterable
       yield results.map(result => result.value);
     }
   } finally {
-    // Whichever way the walk stops, every source still open is closed, as the protocol asks of an early exit.
+    // Whichever way the walk stops, every source still open is closed, as the iterator protocol requires on an early exit.
     iterators.forEach(iterator => iterator.return?.());
   }
 }

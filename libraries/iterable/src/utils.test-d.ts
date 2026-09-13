@@ -9,7 +9,7 @@ namespace concatKeepsItsElementTypeTest {
   isAssignable<ReturnType<typeof concat<number>>, IteratorObject<number, undefined, unknown>>;
 }
 
-namespace zipModeDecidesTheSlotTypeTest {
+namespace zipModeSetsThePositionTypeTest {
   const strings: Iterable<string> = [];
   const numbers: Iterable<number> = [];
   const innerPairs = zip('inner', strings, numbers);
@@ -20,12 +20,12 @@ namespace zipModeDecidesTheSlotTypeTest {
   // @ts-expect-no-error
   isAssignable<typeof outerPairs, Generator<[string | undefined, number | undefined]>>;
 
-  // an exhausted source's slot is `undefined`, so 'outer' does not satisfy 'inner'
+  // an exhausted source's position is `undefined`, so 'outer' does not satisfy 'inner'
   // @ts-expect-error
   isAssignable<typeof outerPairs, Generator<[string, number]>>;
 }
 
-namespace replaceReplacementDecidesTheElementTypeTest {
+namespace replaceReplacementSetsTheElementTypeTest {
   const numbers: Iterable<number> = [];
   const sameType = replace(numbers, 1, 2);
   const sameTypeByFunction = replace(numbers, 1, n => n * 2);

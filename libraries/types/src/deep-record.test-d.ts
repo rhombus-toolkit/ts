@@ -27,7 +27,7 @@ namespace deepRecordTest {
   isAssignable<{ a: 1; b: { a: 'x'; b: 2; }; }, Tree>;
 }
 
-/** The item is exactly what a record's value slot holds: a leaf or a nested record. */
+/** The item is exactly a record property's value: a leaf or a nested record. */
 namespace deepRecordItemTest {
   type Item = DeepRecordItem<'a', number>;
 

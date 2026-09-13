@@ -25,8 +25,8 @@ namespace addTest {
 }
 
 /**
- * The regression. `Subtract` routed through `Skip`, so it inherited `Skip`'s
- * broken fallback and returned `X` unchanged -- `Subtract<5, 2>` was `5`.
+ * Guards against a fallback that returns `X` unchanged instead of subtracting:
+ * `Subtract<5, 2>` must reduce to `3`.
  */
 namespace subtractTest {
   // @ts-expect-no-error

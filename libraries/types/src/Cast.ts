@@ -5,7 +5,7 @@
  * Differs from `V & T` where `V` is not assignable to `T`:
  *
  * ```ts
- * Cast<number, string>   // -> string   discards V, hands back something usable
+ * Cast<number, string>   // -> string   discards V, yields something usable
  * number & string        // -> never    lossless, but uninhabitable
  * ```
  */

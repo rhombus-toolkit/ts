@@ -1,7 +1,7 @@
 import { AbstractCtor as _ACtor, Ctor as _Ctor, Func as _Func } from './func';
 export declare const $: unique symbol;
 export type $ = typeof $;
-/** Slot on a generic signature that keeps its un-substituted `[Args, Return]`, so an enclosing {@link Replace} can link a nested `$` to the outer type parameter; never present at runtime. */
+/** A property on a generic signature that carries its un-substituted `[Args, Return]`, so an enclosing {@link Replace} can link a nested `$` to the outer type parameter; never present at runtime. */
 declare const Γ: unique symbol;
 type Template<Args extends readonly any[], Return> = { readonly [Γ]?: [Args, Return]; };
 
@@ -49,12 +49,12 @@ type ReplaceArray<Arr extends readonly any[], R, done extends readonly any[] = [
 
 type _ = { readonly _: unique symbol; };
 
-type _FuncG<Args extends readonly any[], Return, Constraint> = (_ extends Constraint // see if Constraint is 'any'
+type _FuncG<Args extends readonly any[], Return, Constraint> = (_ extends Constraint // checks whether Constraint is 'any'
   ? <T>(...args: Replace<Args, T>) => Replace<Return, T>
   : <T extends Constraint>(...args: Replace<Args, T>) => Replace<Return, T>) & Template<Args, Return>;
 
 export type Func<Args extends readonly any[] = any[], Return = any, Constraint = any> =
-  Replace<[Args, Return], 'asdf'> extends Replace<[Args, Return], 'qwer'> // see if there are any placeholders for generic usage
+  Replace<[Args, Return], 'asdf'> extends Replace<[Args, Return], 'qwer'> // checks whether there are any placeholders for generic usage
     ? _Func<Args, Return>
     : _FuncG<Args, Return, Constraint>;
 

@@ -44,7 +44,7 @@ namespace makeRequiredTest {
   isAssignable<{ a: string; b?: number; }, MakeRequired<Source, 'a'>>;
 }
 
-/** `DistributiveOmit` omits per union member; plain `Omit` sees only the keys every member shares. */
+/** `DistributiveOmit` omits per union member; plain `Omit` operates only on the keys every member shares. */
 namespace distributiveOmitTest {
   interface Circle {
     kind: 'circle';
@@ -92,7 +92,7 @@ namespace simplifyTest {
   isAssignable<{ a: string; }, Simplify<A & B>>;
 }
 
-/** `Except` is `Omit` that refuses a key the object does not have. */
+/** `Except` is `Omit` limited to keys the object actually has. */
 namespace exceptTest {
   // @ts-expect-no-error
   isAssignable<Except<Source, 'a'>, { b: number; }>;

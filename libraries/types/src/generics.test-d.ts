@@ -37,7 +37,7 @@ namespace placeholderFuncTest {
 
   declare const pair: Func<[$, $], [$, $]>;
 
-  // both slots are the one type parameter; a rebuilt tuple comes back readonly
+  // both parameter positions are the one type parameter; a rebuilt tuple comes back readonly
   // @ts-expect-no-error
   isAssignable<readonly [number, number]>(pair(1, 2));
   // @ts-expect-error
@@ -63,7 +63,7 @@ namespace constraintTest {
   free('a');
 }
 
-/** The placeholder is found inside the containers the checker knows how to open. */
+/** The placeholder is found inside the containers the checker recognizes. */
 namespace nestedPlaceholderTest {
   declare const first: Func<[$[]], $>;
   // @ts-expect-no-error

@@ -69,7 +69,7 @@ namespace brandMeetsFlavorTest {
   isAssignable<Brand<string, 'OrderId'>, Flavor<string, 'UserId'>>;
 }
 
-/** The scope must be a property key that can sit in the marker slot. */
+/** The scope must be a `string` or `symbol`, per `Brand`'s type parameter constraint. */
 namespace scopeConstraintTest {
   // @ts-expect-error
   type Numeric = Brand<string, 1>;

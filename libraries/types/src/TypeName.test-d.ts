@@ -19,14 +19,14 @@ namespace primitivesTest {
   isAssignable<TypeName<{ a: 1; }>, 'object'>;
 }
 
-/** The regression: neither arm existed, so both fell through to `'object'`. */
+/** Guards against `symbol` and `bigint` falling through to `'object'` when neither arm exists. */
 namespace symbolAndBigintTest {
   // @ts-expect-no-error
   isAssignable<TypeName<symbol>, 'symbol'>;
   // @ts-expect-no-error
   isAssignable<TypeName<bigint>, 'bigint'>;
 
-  // the old broken behaviour
+  // what falling through to `'object'` would give
   // @ts-expect-error
   isAssignable<TypeName<symbol>, 'object'>;
   // @ts-expect-error

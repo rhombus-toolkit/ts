@@ -5,7 +5,7 @@ export type ToStringable = string | number | bigint | boolean | null | undefined
  * `T` narrowed to its string part.
  *
  * @remarks
- * The idiom `string & T` in one name: it keeps a template literal slot happy
+ * The idiom `string & T` in one name: it keeps a template literal position satisfied
  * while preserving whatever literal type `T` already carried.
  */
 export type AsString<T> = string & T;

@@ -83,7 +83,7 @@ namespace asStringNarrowsTest {
   // @ts-expect-no-error
   isAssignable<string, AsString<string>>;
 
-  // what it is for: a template slot that stays satisfied while `T` is still a parameter
+  // what it is for: a template literal position that stays satisfied while `T` is still a parameter
   type Tag<T> = `#${AsString<T>}`;
   // @ts-expect-no-error
   isAssignable<Tag<'x'>, '#x'>;

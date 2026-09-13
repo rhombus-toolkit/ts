@@ -1,5 +1,5 @@
 /**
- * Brand `Type` with a phantom `Scope` so it is no longer assignable *from* the bare underlying
+ * Brand `Type` with a phantom `Scope` so it is not assignable *from* the bare underlying
  * type — a `Brand<string, 'UserId'>` still assigns to `string`, but not the reverse.
  *
  * @remarks

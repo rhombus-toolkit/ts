@@ -4,17 +4,16 @@ import { Func } from './func';
 declare function isAssignable<TActual extends TExpected, TExpected>(actual?: TActual, expected?: TExpected): void;
 declare function isAssignable<TExpected>(actual?: TExpected): void;
 
-/** `function test(a: 'asdf', b: true, c: Date) { return 44; }` -- the probe that used to live in `curry.ts`. */
+/** `function test(a: 'asdf', b: true, c: Date) { return 44; }`, as a `Func`. */
 type TestFn = Func<['asdf', true, Date], number>;
 
 declare const curried: Curry<TestFn>;
 declare const date: Date;
 
 /**
- * The regression. `_CurryWithGaps` recurses on what is left after the applied
- * arguments, which came back as the whole argument list while `Skip` returned
- * its input -- so the partially applied result never narrowed to the remaining
- * `Date`.
+ * Guards against `_CurryWithGaps` recursing on the whole argument list instead
+ * of what remains after the applied arguments -- the partially applied result
+ * must narrow to the remaining `Date`, not repeat the first argument.
  */
 namespace partialApplicationTest {
   const rest = curried('asdf', true);
@@ -36,9 +35,8 @@ namespace fullApplicationTest {
 }
 
 /**
- * The placeholder is Ramda's, structurally. It was a local `unique symbol`,
- * which no Ramda `R.__` is ever assignable to -- so gap application could not
- * work for the library the compat target names.
+ * The placeholder matches Ramda's `R.__` structurally, so gap application
+ * works with the library the compat target names.
  */
 namespace gapTest {
   declare const __: { '@@functional/placeholder': true; };

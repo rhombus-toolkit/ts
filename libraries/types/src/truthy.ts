@@ -2,9 +2,8 @@
  * Every value JavaScript treats as false in a boolean position.
  *
  * @remarks
- * `false` and `0n` are members. Leaving them out is not a rounding error: it
- * made `Truthy<boolean>` come back as `boolean`, so everything built on top
- * encoded a wrong answer for the most common type there is.
+ * `false` and `0n` are members: omitting either leaves `Truthy<boolean>` as
+ * `boolean` instead of `true`, a wrong answer for the most common type there is.
  *
  * `NaN` has no type-level spelling, so it cannot be a member — a `number` is
  * always truthy here, even where the value would not be.

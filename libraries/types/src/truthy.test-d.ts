@@ -3,7 +3,7 @@ import { Falsy, IfFalsy, IfTruthy, IsFalsy, IsTruthy, Truthy } from './truthy';
 declare function isAssignable<TActual extends TExpected, TExpected>(actual?: TActual, expected?: TExpected): void;
 declare function isAssignable<TExpected>(actual?: TExpected): void;
 
-/** The regression: `false` and `0n` were missing, so `Truthy<boolean>` came back as `boolean`. */
+/** Guards against `false` and `0n` missing from `Falsy`, which would leave `Truthy<boolean>` as `boolean`. */
 namespace falsyMembershipTest {
   // @ts-expect-no-error
   isAssignable<false, Falsy>;

@@ -41,7 +41,7 @@ namespace singleMemberTest {
   isAssignable<Subject, readonly ['y']>;
 }
 
-/** The round trip, which is what the shared `UnionToIntersection` had to keep working. */
+/** The round trip that the shared `UnionToIntersection` needs to support. */
 namespace roundTripTest {
   // @ts-expect-no-error
   isAssignable<TupleToUnion<[1, '2', 3]>, 1 | '2' | 3>;

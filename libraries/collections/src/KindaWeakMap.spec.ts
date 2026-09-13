@@ -164,7 +164,7 @@ describe('KindaWeakMap', () => {
       map.set(dying, new Array(10000).fill(0));
     })();
 
-    // A single Bun.gc(true) can miss an object a stale native-stack slot still references
+    // A single Bun.gc(true) can miss an object a stale native-stack reference still holds
     // (the collector scans the stack conservatively), so keep collecting until it lets go.
     const deadline = Date.now() + 2000;
     while (!collected && Date.now() < deadline) {
@@ -227,7 +227,7 @@ describe('KindaWeakMap', () => {
 
     expect(map.size).toBe(1);
 
-    // A single Bun.gc(true) can miss an object a stale native-stack slot still references
+    // A single Bun.gc(true) can miss an object a stale native-stack reference still holds
     // (the collector scans the stack conservatively), so keep collecting until it lets go.
     const deadline = Date.now() + 2000;
     while (map.size !== 0 && Date.now() < deadline) {

@@ -203,7 +203,7 @@ describe('MultiKeyWeakMap', () => {
       map.set([kept, 'label', dying], new Array(10000).fill(0));
     })();
 
-    // A single Bun.gc(true) can miss an object a stale native-stack slot still references
+    // A single Bun.gc(true) can miss an object a stale native-stack reference still holds
     // (the collector scans the stack conservatively), so keep collecting until it lets go.
     const deadline = Date.now() + 2000;
     while (!collected && Date.now() < deadline) {

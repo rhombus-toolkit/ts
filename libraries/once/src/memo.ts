@@ -5,8 +5,8 @@ import type { Func } from '@rhombus-toolkit/types';
  * `compute` with its answers remembered — one call per distinct key tuple.
  *
  * @remarks
- * Keys are held weakly, so an unreachable key takes its answer with it. A call
- * that throws stores nothing, so the next ask recomputes.
+ * Keys are held weakly, so an unreachable key's answer is collected along with it. A call
+ * that throws stores nothing, so the next call recomputes.
  */
 export function memo<Keys extends readonly [WeakKey, ...WeakKey[]], Value>(
   compute: Func<Keys, Value>,

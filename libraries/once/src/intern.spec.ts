@@ -92,7 +92,7 @@ describe('intern', () => {
   });
 
   it('counts an object-valued field by identity', () => {
-    // A plain inner value would now be descended into by structure rather than counted by
+    // A plain inner value would be descended into by structure rather than counted by
     // identity, so this uses a class instance -- a non-plain value stays identity-keyed.
     class Thing {}
 
@@ -197,7 +197,7 @@ describe('intern', () => {
     expect(intern(a)).not.toBe(intern(b));
   });
 
-  it('forgets an instance holding an object once that object is unreachable', async () => {
+  it('discards an instance holding an object once that object is unreachable', async () => {
     // A plain dying value would be descended into and described entirely by primitives, leaving
     // nothing weakly held anywhere on its path -- so this uses a class instance, held by identity.
     class Thing {}

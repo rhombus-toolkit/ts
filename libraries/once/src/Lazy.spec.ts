@@ -86,7 +86,7 @@ describe('Lazy', () => {
     expect(calls).toBe(0);
   });
 
-  it('caches nothing when the factory throws, so the next ask runs it again', () => {
+  it('caches nothing when the factory throws, so the next call runs it again', () => {
     let calls = 0;
     const lazy = new Lazy(() => {
       calls++;
@@ -102,7 +102,7 @@ describe('Lazy', () => {
     expect(calls).toBe(2);
   });
 
-  it('hands back the very object the factory built', () => {
+  it('returns the very object the factory built', () => {
     const built = { id: 1 };
     const lazy = new Lazy(() => built);
 
@@ -144,7 +144,7 @@ describe('Lazy', () => {
     expect(calls).toBe(1);
   });
 
-  it('answers a re-entrant ask from inside the factory by running the factory again', () => {
+  it('runs the factory again for a re-entrant access from inside the factory', () => {
     let calls = 0;
     const lazy: Lazy<number> = new Lazy(() => {
       calls++;

@@ -16,12 +16,12 @@ namespace keysMustBeWeaklyHoldableTest {
   memo((key: object, other: string) => [key, other]);
 }
 
-// A compute taking no key is not turned away -- fewer parameters always assign -- but the memo
-// it answers with still demands a key at every call.
+// A compute taking no key is not turned away -- fewer parameters always assign -- but the
+// memoized function still demands a key at every call.
 namespace zeroParameterComputeStillDemandsAKeyTest {
   const constant = memo(() => 1);
 
-  // @ts-expect-error - there is no key to remember the answer under
+  // @ts-expect-error - there is no key to store the answer under
   constant();
   // @ts-expect-no-error
   constant({});
@@ -64,7 +64,7 @@ namespace selectKeysAdmitsAPrimitiveArgumentTest {
   memo((n: number) => n, (n) => [n]);
   // @ts-expect-error - without selectKeys, a number cannot key a WeakMap
   memo((n: number) => n);
-  // @ts-expect-error - selectKeys has to answer an array of keys
+  // @ts-expect-error - selectKeys has to return an array of keys
   memo((n: number) => n, (n) => n);
 }
 

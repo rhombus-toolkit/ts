@@ -1,4 +1,4 @@
-// Type-level probes for intern: it answers the argument's own type, rejects a primitive, and lets
+// Type-level probes for intern: it returns the argument's own type, rejects a primitive, and lets
 // a function type pass through unchanged.
 
 import type { Func } from '@rhombus-toolkit/types';
@@ -6,7 +6,7 @@ import { intern } from './intern';
 
 declare function isAssignable<TActual extends TExpected, TExpected>(actual?: TActual, expected?: TExpected): void;
 
-namespace internAnswersTheArgumentsOwnTypeTest {
+namespace internReturnsTheArgumentsOwnTypeTest {
   // @ts-expect-no-error
   isAssignable<ReturnType<typeof intern<{ x: number; }>>, { x: number; }>;
 }

@@ -47,7 +47,7 @@ describe('memo', () => {
     expect(calls).toBe(1);
   });
 
-  it('stores nothing when compute throws, so the next ask recomputes', () => {
+  it('stores nothing when compute throws, so the next call recomputes', () => {
     let calls = 0;
     const failing = memo((_key: object) => {
       calls++;
@@ -117,7 +117,7 @@ describe('memo', () => {
     expect(calls).toBe(2);
   });
 
-  it('hands back the very object compute built', () => {
+  it('returns the very object compute built', () => {
     const built = { built: true };
     const same = memo((_key: object) => built);
 
@@ -184,7 +184,7 @@ describe('memo', () => {
     expect(calls).toBe(1);
   });
 
-  it('caches a function compute answers with, calling it for nobody', () => {
+  it('caches the function compute returns, without invoking it', () => {
     let innerCalls = 0;
     const handlerFor = memo((_key: object) => () => ++innerCalls);
     const key = {};
@@ -193,7 +193,7 @@ describe('memo', () => {
     expect(innerCalls).toBe(0);
   });
 
-  it('remembers a stored undefined under a key tuple', () => {
+  it('stores undefined under a key tuple', () => {
     let calls = 0;
     const nothing = memo((_first: object, _second: object) => {
       calls++;
@@ -207,7 +207,7 @@ describe('memo', () => {
     expect(calls).toBe(1);
   });
 
-  it('remembers each tuple sharing a prefix on its own', () => {
+  it('keeps tuples that share a prefix cached separately', () => {
     let calls = 0;
     const join = memo((left: { name: string; }, right: { name: string; }) => {
       calls++;
@@ -244,7 +244,7 @@ describe('memo', () => {
     expect(calls).toBe(3);
   });
 
-  it('lets compute ask the memo for another key on the way to its own answer', () => {
+  it('supports compute recursively calling the memoized function for a different key', () => {
     let calls = 0;
     const depth: Func<[Node], number> = memo((node: Node) => {
       calls++;
@@ -259,7 +259,7 @@ describe('memo', () => {
     expect(calls).toBe(3);
   });
 
-  it('remembers a promise, settled or not, as the answer', async () => {
+  it('stores a promise, settled or not, as the answer', async () => {
     let calls = 0;
     const load = memo(async (_key: object) => {
       calls++;
@@ -273,7 +273,7 @@ describe('memo', () => {
     expect(calls).toBe(1);
   });
 
-  it('forgets an answer along with its key once nothing else holds the key', async () => {
+  it('discards an answer along with its key once nothing else holds the key', async () => {
     let collected = false;
     const registry = new FinalizationRegistry(() => {
       collected = true;

@@ -58,7 +58,7 @@ type _flattenMap<T extends DeepDictionary<any>, Leaf, prefix extends string, Bud
 /** Flattens `map`, treating functions as leaves. */
 export function flattenMap<T extends DeepDictionary<Func>>(map: T): flattenMap<T>;
 
-/** Flattens `map`, `leafPredicate` deciding what counts as a leaf. */
+/** Flattens `map`, treating a value as a leaf where `leafPredicate` returns `true` for it. */
 export function flattenMap<T extends DeepDictionary<Leaf>, Leaf>(map: T,
   leafPredicate: (p: any) => p is Leaf): flattenMap<T, Leaf>;
 

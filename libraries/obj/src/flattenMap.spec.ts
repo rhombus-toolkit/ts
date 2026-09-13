@@ -152,7 +152,7 @@ describe('flattenMap (what counts as a leaf)', () => {
     expect(result.generatorLeaf).toBe(generatorLeaf);
   });
 
-  it('lets `leafPredicate` decide what a leaf is, so arrays can stop the descent', () => {
+  it('treats a value as a leaf where `leafPredicate` returns `true` for it, so arrays can stop the descent', () => {
     const list = [1, 2];
     const result = flattenMap({ a: { list }, b: [3] }, (p): p is number[] => Array.isArray(p));
 
@@ -160,14 +160,14 @@ describe('flattenMap (what counts as a leaf)', () => {
     expect(result['a.list']).toBe(list);
   });
 
-  it('descends into a function when `leafPredicate` says it is not a leaf', () => {
+  it('descends into a function when `leafPredicate` returns `false` for it', () => {
     const branch = Object.assign((): void => undefined, { inner: 1 });
     const result = flattenMap({ branch }, (p): p is number => typeof p === 'number');
 
     expect(result).toEqual({ 'branch.inner': 1 });
   });
 
-  it('asks `leafPredicate` about every value it reaches, branches included', () => {
+  it('calls `leafPredicate` on every value it reaches, branches included', () => {
     const seen: unknown[] = [];
     const inner = { leaf: 1 };
     flattenMap({ inner, other: 2 }, (p): p is number => {

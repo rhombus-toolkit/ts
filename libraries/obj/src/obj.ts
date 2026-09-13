@@ -62,7 +62,7 @@ type _MergeArrays<TTL extends readonly any[], A extends readonly any[], B extend
  * `B`'s element at this index, falling back to `A`'s where `B` has none.
  *
  * @remarks
- * An explicit `undefined` in `B` also falls back, since a tuple type can't tell it apart from a
+ * An explicit `undefined` in `B` also falls back, since a tuple type has no way to distinguish it from a
  * hole — this diverges from the runtime `Object.assign`, where an explicit `undefined` overwrites.
  */
 type MergeValue<A extends readonly any[], B extends readonly any[], N extends number> = At<B, N> extends undefined
@@ -79,10 +79,10 @@ type Spent<A extends readonly any[], B extends readonly any[], I extends readonl
   ? Covers<B, I> extends true ? true : false
   : false;
 
-/** Whether `I` has walked past everything `T` can offer. */
+/** Whether `I` has walked past every index `T` has. */
 // An unbounded or still-generic `T` (length `number`) is treated as covered from the start, since
 // there's no index to walk to — without that a merge inside a generic function has no base case
-// and the checker gives up with an excessive-stack-depth error.
+// and the checker fails with an excessive-stack-depth error.
 type Covers<T extends readonly any[], I extends readonly any[]> = number extends T['length'] ? true
   : keyof T extends keyof I ? true
   : false;
@@ -115,9 +115,9 @@ export namespace obj {
   }
 
   /** `Keys` paired with the member each one names on `T`. */
-  // `Keys` arrives as a parameter rather than being computed inline so the mapped type reads it as
-  // a tuple and hands back one; mapping straight over an unevaluated conditional instead maps
-  // `length` and the array methods in as members of their own.
+  // `Keys` arrives as a parameter rather than being computed inline so the checker treats it as a
+  // tuple when mapping, producing a tuple back; mapping straight over an unevaluated conditional
+  // instead maps `length` and the array methods in as members of their own.
   export type keysToEntries<T extends {}, Keys extends ReadonlyArray<StringKey<T>>> = {
     [K in keyof Keys]: Entry<Keys[K], T[Keys[K]]>;
   };

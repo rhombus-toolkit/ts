@@ -76,7 +76,7 @@ describe('KindaWeakMap', () => {
     expect(map.get('k')).toBeUndefined();
   });
 
-  it('hands back the very object stored', () => {
+  it('returns the very object stored', () => {
     const map = new KindaWeakMap<string, object>();
     const built = { built: true };
 
@@ -151,7 +151,7 @@ describe('KindaWeakMap', () => {
     expect(Object.prototype.toString.call(new KindaWeakMap())).toBe('[object KindaWeakMap]');
   });
 
-  it('forgets an entry along with an object key once nothing else holds the key', async () => {
+  it('removes an entry along with an object key once nothing else holds the key', async () => {
     let collected = false;
     const registry = new FinalizationRegistry(() => {
       collected = true;

@@ -1,5 +1,5 @@
 /**
- * A stack whose entries leave when their scope does.
+ * A stack whose entries are removed when their scope ends.
  *
  * @remarks
  * Iterates outermost first.

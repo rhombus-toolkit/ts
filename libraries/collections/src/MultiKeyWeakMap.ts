@@ -13,8 +13,8 @@ class Node<Value> {
  * A `KindaWeakMap` keyed by a tuple, matched key by key rather than by the tuple's identity.
  *
  * @remarks
- * Tuples of every length share one map, the empty tuple included. An entry goes when any weakly
- * held key in its tuple is collected; a tuple of primitives lives as long as the map.
+ * Tuples of every length share one map, the empty tuple included. An entry is removed when any
+ * weakly held key in its tuple is collected; a tuple of primitives lives as long as the map.
  */
 export class MultiKeyWeakMap<in out Keys extends readonly unknown[] = unknown[], in out Value = unknown>
   implements WeakMap<Keys, Value>
@@ -78,7 +78,7 @@ export class MultiKeyWeakMap<in out Keys extends readonly unknown[] = unknown[],
     return (this.#ensureNodeAt(keys).entry ??= { value }).value;
   }
 
-  /** The entry at `keys`, storing what `compute` answers there first when there is none. A throw stores nothing. */
+  /** The entry at `keys`, storing what `compute` returns there first when there is none. A throw stores nothing. */
   getOrInsertComputed(keys: Keys, compute: Func<[Keys], Value>): Value {
     return (this.#ensureNodeAt(keys).entry ??= { value: compute(keys) }).value;
   }

@@ -86,7 +86,7 @@ describe('MultiKeyWeakMap', () => {
     expect(map.get([key])).toBeUndefined();
   });
 
-  it('hands back the very object stored', () => {
+  it('returns the very object stored', () => {
     const map = new MultiKeyWeakMap<[object], object>();
     const built = { built: true };
 
@@ -189,7 +189,7 @@ describe('MultiKeyWeakMap', () => {
     expect(map.get([Symbol.for('registered')])).toBe(1);
   });
 
-  it('forgets an entry along with a weakly held key once nothing else holds it', async () => {
+  it('removes an entry along with a weakly held key once nothing else holds it', async () => {
     let collected = false;
     const registry = new FinalizationRegistry(() => {
       collected = true;

@@ -49,13 +49,13 @@ describe('ImmutableLinkedList', () => {
     expect(list.tailToHead()).toEqual(['oldest', 'middle', 'newest']);
   });
 
-  test('the tail-to-head order is settled once and answered from then on', () => {
+  test('the tail-to-head order is settled once and returned from then on', () => {
     const list = listOf('a', 'b');
 
     expect(list.tailToHead()).toBe(list.tailToHead());
   });
 
-  test('removing answers the list itself when nothing matches', () => {
+  test('removing returns the list itself when nothing matches', () => {
     const list = listOf('a', 'b');
 
     expect(list.remove(value => value === 'absent')).toBe(list);
@@ -120,7 +120,7 @@ describe('ImmutableLinkedList', () => {
     expect(settled).toEqual(['a', 'b']);
   });
 
-  test('removing from the empty list answers the empty list', () => {
+  test('removing from the empty list returns the empty list', () => {
     const empty = ImmutableLinkedList.empty<string>();
 
     expect(empty.remove(() => true)).toBe(empty);

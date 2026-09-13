@@ -44,7 +44,7 @@ namespace computeReceivesTheKeyTest {
 
   // @ts-expect-no-error
   map.getOrInsertComputed('k', (key: string) => key.length);
-  // @ts-expect-error - compute answers with the map's value type
+  // @ts-expect-error - compute returns the map's value type
   map.getOrInsertComputed('k', (key: string): string => key);
 }
 

@@ -10,7 +10,7 @@ export class ImmutableLinkedList<T> implements Iterable<T> {
 
   readonly #head: Link<T> | undefined;
   readonly #tail: Link<T> | undefined;
-  /** Settled the first time the list is read from its tail, and answered from then on. */
+  /** Settled the first time the list is read from its tail, and returned from then on. */
   #reversed: readonly T[] | undefined;
 
   /** How many values the list holds. */
@@ -44,8 +44,8 @@ export class ImmutableLinkedList<T> implements Iterable<T> {
   }
 
   /**
-   * This list without the first value `matches` answers for, everything after it shared; the list
-   * itself where nothing matches.
+   * This list without the first value `matches` returns true for, everything after it shared; the
+   * list itself where nothing matches.
    */
   remove(matches: (value: T) => boolean): ImmutableLinkedList<T> {
     const head = removed(this.#head, matches);
@@ -75,7 +75,7 @@ interface Link<T> {
   readonly next: Link<T> | undefined;
 }
 
-/** `link` without the first value `matches` answers for, or `link` itself where nothing matches. */
+/** `link` without the first value `matches` returns true for, or `link` itself where nothing matches. */
 function removed<T>(link: Link<T> | undefined, matches: (value: T) => boolean): Link<T> | undefined {
   if (link === undefined) {
     return undefined;

@@ -1,4 +1,4 @@
-// Collection data structures: the shelf anything holding many values goes on.
+// Collection data structures: anything that holds many values.
 export * from './AutoStack';
 export * from './ImmutableLinkedList';
 export * from './KindaWeakMap';

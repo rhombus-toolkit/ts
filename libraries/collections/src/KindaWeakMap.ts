@@ -20,8 +20,8 @@ function isWeaklyHoldable(key: unknown): key is WeakKey {
  * in a `WeakMap`; everything else goes in a `Map`.
  *
  * @remarks
- * An entry under a weakly held key goes when the key is collected; one under any other key lives
- * as long as the map.
+ * An entry under a weakly held key is removed when the key is collected; one under any other key
+ * lives as long as the map.
  */
 export class KindaWeakMap<in out K = unknown, in out V = unknown> {
   readonly #weak = new WeakMap<WeakKey, V>();
@@ -94,7 +94,7 @@ export class KindaWeakMap<in out K = unknown, in out V = unknown> {
     return value;
   }
 
-  /** The entry under `key`, storing what `compute` answers there first when there is none. A throw stores nothing. */
+  /** The entry under `key`, storing what `compute` returns there first when there is none. A throw stores nothing. */
   getOrInsertComputed(key: K, compute: Func<[K], V>): V {
     const existing = this.get(key);
     if (existing !== undefined || this.has(key)) {

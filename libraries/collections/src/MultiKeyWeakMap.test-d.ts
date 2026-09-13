@@ -56,6 +56,6 @@ namespace computeReceivesTheTupleTest {
 
   // @ts-expect-no-error
   map.getOrInsertComputed([{ id: 1 }, { name: 'a' }], ([first, second]) => first.id + second.name);
-  // @ts-expect-error - compute answers with the map's value type
+  // @ts-expect-error - compute returns the map's value type
   map.getOrInsertComputed([{ id: 1 }, { name: 'a' }], ([first]) => first.id);
 }

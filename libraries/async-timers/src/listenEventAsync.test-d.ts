@@ -30,7 +30,7 @@ namespace listenEventAsyncResolvesTheInferredEvent {
   isAssignable<typeof message, Promise<MessageEvent>>;
 }
 
-// `once` is the helper's own concern: the options type refuses it rather than letting a caller turn it off.
+// `once` is the helper's own concern: the options type has no `once` member, so a caller cannot turn it off.
 namespace optionsCannotOverrideOnce {
   declare const target: EventTarget;
 

@@ -32,8 +32,8 @@ namespace leadingSignalIsNotPartOfTheValue {
 }
 
 // The runtime drops a leading signal before building the tuple, so the type has to as well.
-// Today the signal-less rest overload is declared first and captures this call with the
-// signal inside `T`; declaring the signal-first rest overload ahead of it resolves this probe.
+// The signal-less rest overload is declared first and captures this call with the signal
+// inside `T`, which is what this probe pins.
 namespace leadingSignalStaysOutOfTheTuple {
   const several = setImmediateAsync(signal, 'a', 2);
   // @ts-expect-no-error

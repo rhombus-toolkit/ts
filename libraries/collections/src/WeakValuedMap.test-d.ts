@@ -33,7 +33,7 @@ namespace constructorAcceptsEntriesTest {
 }
 
 // Keys are held strongly, so anything at all can be one.
-// The weak mechanics stay behind the Map contract, so the map goes anywhere a Map is expected.
+// The weak mechanics stay behind the Map contract, so the map is usable anywhere a Map is expected.
 namespace isAMapTest {
   // @ts-expect-no-error
   isAssignable<WeakValuedMap<string, object>, Map<string, object>>;
@@ -48,8 +48,8 @@ namespace keyIsUnboundedTest {
   new WeakValuedMap<string | undefined, object>();
 }
 
-// `set` answers the map so calls chain and a subclass keeps its own type.
-namespace setAnswersThisTest {
+// `set`'s return type is the map itself, so calls chain, and a subclass's `set` returns its own type.
+namespace setReturnTypeTest {
   declare const map: WeakValuedMap<string, object>;
 
   // @ts-expect-no-error
@@ -80,7 +80,7 @@ namespace viewsCarryTheIteratorHelpersTest {
   isAssignable<ReturnType<ReturnType<typeof map.values>['map']>, IteratorObject<unknown>>;
 }
 
-// forEach hands the callback the value first, then the key, then the map.
+// The callback receives the value first, then the key, then the map.
 namespace forEachArgumentOrderTest {
   declare const map: WeakValuedMap<string, { n: number; }>;
 

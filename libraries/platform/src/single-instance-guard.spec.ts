@@ -1,19 +1,19 @@
 import { describe, expect, it } from 'bun:test';
 import { stampSingleInstance } from './single-instance-guard';
 
-/** A package name no other test has stamped, so the process-wide slot starts empty. */
+/** A package name no other test has stamped, so its process-wide key starts empty. */
 function freshPackageName(): string {
   return `@rhombus-toolkit/spec-${Math.random().toString(36).slice(2)}`;
 }
 
 describe('stampSingleInstance', () => {
-  it("records the first copy under the package's Symbol.for slot", () => {
+  it("records the first copy under the package's Symbol.for key", () => {
     const packageName = freshPackageName();
 
     stampSingleInstance(packageName, 'file:///first/index.js');
 
-    const slot = Symbol.for(`rhombus-toolkit:${packageName}/instance`);
-    expect((globalThis as unknown as Record<symbol, unknown>)[slot]).toBe('file:///first/index.js');
+    const key = Symbol.for(`rhombus-toolkit:${packageName}/instance`);
+    expect((globalThis as unknown as Record<symbol, unknown>)[key]).toBe('file:///first/index.js');
   });
 
   it('is a no-op when the same copy stamps again', () => {

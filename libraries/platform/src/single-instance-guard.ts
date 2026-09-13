@@ -13,11 +13,11 @@
  * A later call with the same `moduleUrl` is a no-op; a different `moduleUrl` throws.
  */
 export function stampSingleInstance(packageName: string, moduleUrl: string): void {
-  const slot = Symbol.for(`rhombus-toolkit:${packageName}/instance`);
+  const key = Symbol.for(`rhombus-toolkit:${packageName}/instance`);
   const globals = globalThis as unknown as Record<symbol, unknown>;
-  const existing = globals[slot];
+  const existing = globals[key];
   if (existing === undefined) {
-    globals[slot] = moduleUrl;
+    globals[key] = moduleUrl;
     return;
   }
   if (existing === moduleUrl) {
